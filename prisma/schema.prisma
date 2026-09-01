@@ -1,0 +1,313 @@
+// Qyvea Limited - PostgreSQL via Prisma
+// Modern schema covering original site: products store, services, leads, orders, RBAC, partners, etc.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  USER
+  CLIENT
+  PARTNER
+  ADMIN
+}
+
+enum OrderStatus {
+  PENDING
+  QUOTE_SENT
+  CONFIRMED
+  PROCESSING
+  SHIPPED
+  DELIVERED
+  CANCELLED
+}
+
+enum LeadStatus {
+  NEW
+  QUOTED
+  CONVERTED
+  LOST
+}
+
+enum Category {
+  CCTV
+  INTERCOM
+  ACCESS_CONTROL
+  BIOMETRICS
+  NETWORKING
+  ELECTRIC_FENCE
+  GATE_AUTOMATION
+  FIRE_ALARM
+  SOLAR
+  SMART_HOME
+  ELECTRICAL
+  IT_SUPPORT
+  ACCESSORIES
+}
+
+enum ServiceSlug {
+  CCTV
+  BIOMETRICS
+  ELECTRIC_FENCE
+  AUTOMATIC_GATES
+  FIRE_ALARM
+  NETWORKING
+  SMART_HOME
+  SOLAR_INSTALLATION
+  SOLAR_BACKUP
+  ELECTRICAL_INSTALLATION
+  BMS
+  CYBERSECURITY
+  SYSTEM_INTEGRATION
+  IT_SUPPORT
+  MAINTENANCE
+  ESTATE_SOLUTIONS
+}
+
+// NextAuth models
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String    @unique
+  emailVerified DateTime?
+  image         String?
+  phone         String?
+  password      String? // hashed for credentials
+  role          Role      @default(USER)
+  refCode       String?   @unique // for partners
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+
+  accounts      Account[]
+  sessions      Session[]
+  orders        Order[]
+  leads         Lead[] @relation("UserLeads")
+  partnerLeads  Lead[] @relation("PartnerLeads")
+  reviews       Review[]
+  wishlist      WishlistItem[]
+  cartItems     CartItem[]
+  subscriptions Subscription[]
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+// Catalogue
+model Product {
+  id              String   @id @default(cuid())
+  name            String
+  slug            String   @unique
+  description     String?  @db.Text
+  category        Category
+  price           Int // KES cents? store as KES integer for simplicity (KES)
+  oldPrice        Int?
+  image           String?
+  images          String[] // additional URLs
+  inStock         Boolean  @default(true)
+  stockQty        Int      @default(0)
+  featured        Boolean  @default(false)
+  active          Boolean  @default(true)
+  rating          Float    @default(0)
+  reviewsCount    Int      @default(0)
+  views           Int      @default(0)
+  sold            Int      @default(0)
+  badge           String? // NEW HOT SALE FEATURED
+  specs           Json? // [{key, value}]
+  tags            String[]
+  installationAvailable Boolean @default(false)
+  labourPrice     Int? // KES
+  labourNote      String?
+  createdAt       DateTime @default(now())
+  updatedAt       DateTime @updatedAt
+
+  orderItems      OrderItem[]
+  reviews         Review[]
+  wishlistItems   WishlistItem[]
+  cartItems       CartItem[]
+
+  @@index([category])
+  @@index([price])
+  @@index([featured])
+}
+
+model Service {
+  id          String      @id @default(cuid())
+  slug        ServiceSlug @unique
+  title       String
+  excerpt     String?     @db.Text
+  description String?     @db.Text
+  icon        String?
+  image       String?
+  priceFrom   Int? // KES
+  featured    Boolean     @default(false)
+  active      Boolean     @default(true)
+  createdAt   DateTime    @default(now())
+  updatedAt   DateTime    @updatedAt
+}
+
+// Commerce
+model Order {
+  id              String      @id @default(cuid())
+  userId          String?
+  user            User?       @relation(fields: [userId], references: [id])
+  status          OrderStatus @default(PENDING)
+  total           Int // KES
+  deliveryFee     Int         @default(0)
+  installationFee Int         @default(0)
+  phone           String?
+  email           String?
+  address         String?
+  notes           String?     @db.Text
+  mpesaRef        String?
+  includeInstallation Boolean @default(false)
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  items           OrderItem[]
+
+  @@index([status])
+  @@index([userId])
+}
+
+model OrderItem {
+  id        String  @id @default(cuid())
+  orderId   String
+  productId String
+  qty       Int     @default(1)
+  price     Int // snapshot KES
+  order     Order   @relation(fields: [orderId], references: [id], onDelete: Cascade)
+  product   Product @relation(fields: [productId], references: [id])
+
+  @@index([orderId])
+}
+
+model CartItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  qty       Int      @default(1)
+  withInstall Boolean @default(false)
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, productId, withInstall])
+}
+
+model WishlistItem {
+  id        String   @id @default(cuid())
+  userId    String
+  productId String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  product   Product  @relation(fields: [productId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([userId, productId])
+}
+
+model Review {
+  id        String   @id @default(cuid())
+  productId String
+  userId    String?
+  rating    Int
+  comment   String?  @db.Text
+  author    String?
+  createdAt DateTime @default(now())
+
+  product Product @relation(fields: [productId], references: [id], onDelete: Cascade)
+  user    User?   @relation(fields: [userId], references: [id])
+
+  @@index([productId])
+}
+
+// CRM / Leads
+model Lead {
+  id        String     @id @default(cuid())
+  name      String
+  phone     String
+  email     String?
+  service   ServiceSlug?
+  location  String?
+  message   String?    @db.Text
+  source    String? // refCode or direct
+  partnerId String?
+  userId    String?
+  status    LeadStatus @default(NEW)
+  createdAt DateTime   @default(now())
+  updatedAt DateTime   @updatedAt
+
+  user    User? @relation("UserLeads", fields: [userId], references: [id])
+  partner User? @relation("PartnerLeads", fields: [partnerId], references: [id])
+
+  @@index([status])
+  @@index([service])
+}
+
+model Subscription {
+  id        String   @id @default(cuid())
+  userId    String
+  service   ServiceSlug
+  amount    Int // KES per period
+  mpesaRef  String?
+  status    String   @default("PENDING") // PENDING ACTIVE CANCELLED EXPIRED
+  startsAt  DateTime?
+  expiresAt DateTime?
+  createdAt DateTime @default(now())
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+}
+
+model Settings {
+  id              String  @id @default("singleton")
+  whatsappNumber  String  @default("254113301244")
+  promoText       String?
+  promoCode       String?
+  promoActive     Boolean @default(false)
+  updatedAt       DateTime @updatedAt
+}
+
+model PageView {
+  id        String   @id @default(cuid())
+  productId String?
+  path      String
+  createdAt DateTime @default(now())
+
+  @@index([productId])
+  @@index([path])
+}

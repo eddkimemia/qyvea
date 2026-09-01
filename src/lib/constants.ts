@@ -1,0 +1,46 @@
+export const SITE = {
+  name: "Qyvea Limited",
+  tagline: "One Company, Every Solution",
+  description: "Kenya's trusted security & IT integration company. CCTV, biometrics, solar, networking — 500+ projects, 47 counties.",
+  phone: "+254 113 301 244",
+  phoneDisplay: "0113301244",
+  whatsapp: "254113301244",
+  email: "info@qyvea.co.ke",
+  address: "Westlands, Nairobi",
+  founded: "2022",
+} as const;
+
+export const CATEGORIES = [
+  { value: "CCTV", label: "CCTV", href: "/shop?category=CCTV" },
+  { value: "INTERCOM", label: "Intercom" },
+  { value: "ACCESS_CONTROL", label: "Access Control" },
+  { value: "BIOMETRICS", label: "Biometrics" },
+  { value: "NETWORKING", label: "Networking" },
+  { value: "ELECTRIC_FENCE", label: "E-Fence" },
+  { value: "GATE_AUTOMATION", label: "Gates" },
+  { value: "FIRE_ALARM", label: "Fire Alarm" },
+  { value: "SOLAR", label: "Solar" },
+  { value: "SMART_HOME", label: "Smart Home" },
+  { value: "ELECTRICAL", label: "Electrical" },
+  { value: "IT_SUPPORT", label: "IT" },
+  { value: "ACCESSORIES", label: "Accessories" },
+] as const;
+
+export const SERVICES = [
+  { slug: "cctv", title: "CCTV Installation", href: "/services/cctv", cat: "Security" },
+  { slug: "biometrics", title: "Biometric Access Control", href: "/services/biometrics", cat: "Security" },
+  { slug: "electric-fence", title: "Electric Fencing", href: "/services/electric-fence", cat: "Security" },
+  { slug: "automatic-gates", title: "Automatic Gates", href: "/services/automatic-gates", cat: "Security" },
+  { slug: "fire-alarm-systems", title: "Fire Alarm Systems", href: "/services/fire-alarm-systems", cat: "Security" },
+  { slug: "networking", title: "Networking & Structured Cabling", href: "/services/networking", cat: "IT & Networking" },
+  { slug: "it-support", title: "IT Support", href: "/services/it-support", cat: "IT & Networking" },
+  { slug: "cybersecurity", title: "Cybersecurity", href: "/services/cybersecurity", cat: "IT & Networking" },
+  { slug: "system-integration", title: "System Integration", href: "/services/system-integration", cat: "IT & Networking" },
+  { slug: "solar-solutions", title: "Solar Backup Solutions", href: "/services/solar-solutions", cat: "Power & Solar" },
+  { slug: "solar-installation", title: "Solar Installation", href: "/services/solar-installation", cat: "Power & Solar" },
+  { slug: "electrical-installation", title: "Electrical Installation", href: "/services/electrical-installation", cat: "Power & Solar" },
+  { slug: "smart-home-automation", title: "Smart Home Automation", href: "/services/smart-home-automation", cat: "Power & Solar" },
+  { slug: "bms", title: "Building Management System", href: "/services/bms", cat: "Power & Solar" },
+  { slug: "maintenance", title: "Maintenance & Repair", href: "/services/maintenance", cat: "Support" },
+  { slug: "estate-solutions", title: "Estate Solutions", href: "/estates", cat: "Support" },
+] as const;
