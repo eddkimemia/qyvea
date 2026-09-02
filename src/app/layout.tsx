@@ -43,6 +43,10 @@ export const metadata: Metadata = {
     googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
   },
   verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined },
+  icons: {
+    icon: "/fav.png",
+    apple: "/fav.png",
+  },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
