@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
+import { MobileBottomBar } from "@/components/mobile-bottom-bar";
 import { SiteFooter } from "@/components/site-footer";
 import { Providers } from "@/components/providers";
 import { SITE } from "@/lib/constants";
@@ -87,6 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <Providers>
           <SiteHeader />
+          <MobileBottomBar />
           <main className="flex-1 pb-16 lg:pb-0">{children}</main>
           <SiteFooter />
         </Providers>
