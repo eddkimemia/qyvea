@@ -86,10 +86,9 @@ export default function LoginPage() {
               {loginError && <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1">{loginError}</p>}
               <Button type="submit" className="w-full" disabled={loginLoading}>{loginLoading ? "Signing in..." : "Sign In"}</Button>
               <div className="text-xs text-zinc-500 bg-[#F5F7FA] border border-[#0038A0]/20 rounded-lg p-3 space-y-1">
-                <p className="font-bold">Demo logins (seeded):</p>
+                <p className="font-bold">Demo access:</p>
                 <p><span className="font-mono">admin@syntech.co.ke</span> / <span className="font-mono">Admin123!</span> → Admin dashboard</p>
                 <p><span className="font-mono">partner@syntech.co.ke</span> / <span className="font-mono">Partner123!</span> → Partner</p>
-                <p className="text-[11px]">Works even if DB not migrated (mock fallback).</p>
               </div>
             </form>
           </CardContent>
@@ -111,7 +110,7 @@ export default function LoginPage() {
           </CardContent>
         </Card>
       </div>
-      <p className="text-center text-xs text-zinc-400 mt-6">By signing in you agree to our Terms & Privacy. Sessions via JWT • PostgreSQL.</p>
+      <p className="text-center text-xs text-zinc-400 mt-6">By signing in you agree to our Terms & Privacy. Secure authentication.</p>
     </div>
   );
 }

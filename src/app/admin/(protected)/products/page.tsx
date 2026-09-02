@@ -52,7 +52,7 @@ export default async function AdminProductsPage({
             <Button type="submit" size="sm" variant="secondary">Filter</Button>
             <Link href="/admin/products" className="text-sm underline">Clear</Link>
           </form>
-          <Badge className="bg-[#0038A0] text-white">PostgreSQL • live</Badge>
+          <Badge className="bg-[#0038A0] text-white">Live</Badge>
         </CardContent>
       </Card>
 
@@ -71,13 +71,13 @@ export default async function AdminProductsPage({
             </thead>
             <tbody>
               {products.length === 0 ? (
-                <tr><td colSpan={6} className="p-8 text-center text-zinc-500">No products — seed via <code className="bg-zinc-100 px-1 rounded">npm run db:seed</code> or add new.</td></tr>
+                <tr><td colSpan={6} className="p-8 text-center text-zinc-500">No products yet — click “Add Product” to create one.</td></tr>
               ) : (
                 products.map((p: any) => (
                   <tr key={p.id} className="border-b last:border-0 hover:bg-[#F5F7FA]/40">
                     <td className="p-3">
                       <div className="flex gap-3 items-center">
-                        <img src={p.image || `https://placehold.co/48x48/7FAF25/0A0A0A?text=${p.category[0]}`} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" />
+                        <img src={p.image || `https://placehold.co/48x48/0038A0/FFFFFF?text=${p.category[0]}`} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" />
                         <div className="min-w-0">
                           <p className="font-semibold line-clamp-1 max-w-[260px]">{p.name}</p>
                           <p className="text-xs text-zinc-500">{p.slug} • ⭐ {p.rating} • {p.views} views</p>

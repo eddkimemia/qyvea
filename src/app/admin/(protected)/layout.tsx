@@ -48,11 +48,11 @@ export default async function AdminLayout({ children }: { children: React.ReactN
             </nav>
             <div className="p-3 border-t space-y-2">
               <Link href="/shop" target="_blank"><Button variant="outline" size="sm" className="w-full">View Store ↗</Button></Link>
-              <Link href="/api/products" target="_blank"><Button size="sm" className="w-full">API: /api/products</Button></Link>
+              <Link href="/" target="_blank"><Button variant="ghost" size="sm" className="w-full">View Website</Button></Link>
             </div>
             <div className="px-3 pb-3 space-y-2">
               <p className="text-[11px] text-zinc-500 break-all">Signed in as <span className="font-mono">{email}</span></p>
-              <p className="text-[11px] text-zinc-400">Role: {role} • PostgreSQL</p>
+              <p className="text-[11px] text-zinc-400">Role: {role} • Syntech</p>
               <form
                 action={async () => {
                   "use server";

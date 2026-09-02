@@ -8,8 +8,8 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary CTA: Syntech lime #0038A0 with near-black text for best contrast
-        default: "bg-[#0038A0] text-white hover:bg-[#002070] shadow-sm hover:shadow-md font-semibold",
+        // Primary CTA: Syntech #0038A0 → hover red #F00000
+        default: "bg-[#0038A0] text-white hover:bg-[#F00000] shadow-sm hover:shadow-md font-semibold",
         destructive: "bg-red-600 text-white hover:bg-red-700 shadow-sm",
         // Outline: lime border, white bg
         outline: "border-2 border-[#0038A0] bg-white text-[#0038A0] hover:bg-[#F5F7FA] hover:text-[#002070] dark:border-[#0038A0] dark:bg-transparent dark:text-[#0038A0]",

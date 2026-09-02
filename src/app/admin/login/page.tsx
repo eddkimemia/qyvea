@@ -45,9 +45,9 @@ export default function AdminLoginPage() {
     <div className="min-h-[80vh] flex items-center justify-center bg-zinc-50 dark:bg-zinc-950 px-4 py-10">
       <div className="w-full max-w-md">
         <div className="text-center mb-6">
-          <img src="/logo.svg" alt="Syntech Admin" className="h-10 mx-auto" />
+          <img src="/syntechlogo.jpg" alt="Syntech Admin" className="h-12 mx-auto object-contain rounded-md" />
           <h1 className="text-2xl font-black mt-3 tracking-tight">Admin Login</h1>
-          <p className="text-sm text-zinc-500">Syntech Limited • Secure admin only • PostgreSQL</p>
+          <p className="text-sm text-zinc-500">Syntech Solutions • Secure admin access</p>
         </div>
         <Card className="border-2 border-[#0038A0]/20 shadow-lg">
           <div className="h-1 bg-[#0038A0]" />
@@ -68,9 +68,8 @@ export default function AdminLoginPage() {
               {error && <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded-lg px-3 py-2">{error}</p>}
               <Button type="submit" className="w-full h-11" disabled={loading}>{loading ? "Signing in..." : "Sign In to Dashboard"}</Button>
               <div className="text-xs bg-[#F5F7FA] border border-[#0038A0]/20 rounded-xl p-3">
-                <p className="font-bold">Demo admin (seeded):</p>
+                <p className="font-bold">Demo access:</p>
                 <p className="font-mono text-xs">admin@syntech.co.ke / Admin123!</p>
-                <p className="text-[11px] text-zinc-500 mt-1">If DB not migrated, mock login still works.</p>
               </div>
             </form>
             <div className="mt-4 flex justify-between text-xs">
@@ -81,7 +80,7 @@ export default function AdminLoginPage() {
               <div className="mt-4 border-t pt-3 text-xs space-y-2">
                 <p>Signed in as <span className="font-mono">{(session.user as any).email}</span> ({role})</p>
                 {(role !== "ADMIN") && <p className="text-amber-700 bg-amber-50 border border-amber-200 rounded px-2 py-1">Not an admin — use admin@syntech.co.ke</p>}
-                <Button variant="outline" size="sm" className="w-full" onClick={() => signOut({ callbackUrl: "/admin-login" })}>Sign Out</Button>
+                <Button variant="outline" size="sm" className="w-full" onClick={() => signOut({ callbackUrl: "/admin/login" })}>Sign Out</Button>
               </div>
             )}
           </CardContent>

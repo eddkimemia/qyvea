@@ -12,7 +12,7 @@ export default function NewProductPage() {
       </div>
       <Card className="border-2 border-[#0038A0]/20">
         <div className="h-1 bg-[#0038A0]" />
-        <CardHeader><CardTitle>Add New Product</CardTitle><p className="text-sm text-zinc-500">Creates via <code className="bg-zinc-100 px-1 rounded">POST /api/products</code> → PostgreSQL. Image auto-saved to Unsplash URL or upload.</p></CardHeader>
+        <CardHeader><CardTitle>Add New Product</CardTitle><p className="text-sm text-zinc-500">Add a new product to your store. The image will be displayed in the shop.</p></CardHeader>
         <CardContent>
           <form action="/api/products" method="post" className="grid md:grid-cols-2 gap-3">
             <input name="name" placeholder="Product name *" required className="md:col-span-2 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
@@ -33,7 +33,7 @@ export default function NewProductPage() {
               <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="installationAvailable" className="accent-[#0038A0]" /> Installation available</label>
             </div>
             <Button type="submit" className="md:col-span-2 h-11">Create Product</Button>
-            <p className="md:col-span-2 text-xs text-zinc-500 text-center">After create, you’ll see it in <Link href="/shop" className="text-[#0038A0] underline">/shop</Link> and dashboard. Use Prisma Studio for advanced edits: <code>npm run db:studio</code></p>
+            <p className="md:col-span-2 text-xs text-zinc-500 text-center">Product will appear in your shop immediately.</p>
           </form>
         </CardContent>
       </Card>

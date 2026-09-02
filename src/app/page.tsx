@@ -32,38 +32,39 @@ export default async function HomePage() {
 
   return (
     <div className="flex flex-col">
-      {/* Hero — brand lime + black with Unsplash tech image */}
+      {/* Hero — Syntech dark with red accent */}
       <section className="relative overflow-hidden bg-[#002070] text-white">
         {/* Unsplash tech background */}
         <div className="absolute inset-0">
-          <img src={IMAGES.hero.server} alt="Syntech security tech" className="h-full w-full object-cover opacity-35" />
-          <div className="absolute inset-0 bg-gradient-to-br from-black/80 via-[#002070]/85 to-black/90" />
-          <div className="absolute inset-0 bg-gradient-to-tr from-[#0038A0]/20 via-transparent to-transparent" />
-          {/* Lime accent line bottom */}
-          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0038A0]" />
+          <img src={IMAGES.hero.server} alt="Syntech security tech" className="h-full w-full object-cover opacity-30" />
+          <div className="absolute inset-0 bg-gradient-to-br from-black/85 via-[#002070]/90 to-[#0038A0]/60" />
+          <div className="absolute inset-0 bg-gradient-to-tr from-[#F00000]/15 via-transparent to-transparent" />
+          {/* Accent line bottom — red */}
+          <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#F00000]" />
+          <div className="absolute top-0 left-0 right-0 h-1 bg-[#0038A0]/40" />
         </div>
 
         <div className="relative container mx-auto px-4 py-12 md:py-16 lg:py-20 grid lg:grid-cols-2 gap-8 lg:gap-10 items-center">
           <div>
-            <Badge className="bg-[#0038A0] text-white font-bold mb-4 border-0 px-3 py-1 text-xs tracking-widest">NCA • EPRA • CAK • PSRA Licensed • Insured</Badge>
-            <h1 className="text-4xl md:text-5xl lg:text-[48px] font-black tracking-tight leading-[1.05]">
-              One Company,<br />
-              <span className="text-[#0064D8]">Every Solution</span>
+            <Badge className="bg-[#F00000] text-white font-bold mb-4 border-0 px-3 py-1 text-xs tracking-widest shadow-md">NCA • EPRA • CAK • PSRA Licensed • Insured</Badge>
+            <h1 className="text-4xl md:text-5xl lg:text-[50px] font-black tracking-tight leading-[0.95]">
+              <span className="text-white">Secure.</span> <span className="text-[#0064D8]">Connected.</span><br />
+              <span className="text-[#F00000]">Powered by Syntech.</span>
             </h1>
-            <p className="mt-4 text-lg text-zinc-300 max-w-xl leading-relaxed">
-              CCTV, biometrics, solar, networking & automation — we <span className="text-white font-semibold">supply, install, warrant & maintain</span>. Same-week installation across 47 counties.
+            <p className="mt-4 text-lg text-zinc-200 max-w-xl leading-relaxed">
+              We don&apos;t just install — we <span className="text-white font-semibold underline decoration-[#F00000] decoration-2">protect what you&apos;ve built</span>. CCTV, biometrics, solar & networks with <span className="text-white font-semibold">5-year warranty</span> across 47 counties.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="#contact"><Button size="lg" className="shadow-lg shadow-[#0038A0]/20">Get Free Quote <ArrowRight className="h-4 w-4" /></Button></Link>
-              <Link href={`tel:${SITE.phone}`}><Button size="lg" variant="outline" className="border-white text-white hover:bg-white hover:text-black bg-transparent"><Phone className="h-4 w-4" /> Call {SITE.phoneDisplay}</Button></Link>
+              <Link href="#contact"><Button size="lg" className="shadow-lg shadow-[#F00000]/20 bg-[#0038A0] hover:bg-[#F00000]">Get Free Quote <ArrowRight className="h-4 w-4" /></Button></Link>
+              <Link href={`tel:${SITE.phone}`}><Button size="lg" variant="outline" className="border-white/80 text-white hover:bg-[#F00000] hover:border-[#F00000] hover:text-white bg-transparent"><Phone className="h-4 w-4" /> Call {SITE.phoneDisplay}</Button></Link>
             </div>
-            {/* Trust stats — Syntech light */}
+            {/* Trust stats — red accent */}
             <div className="mt-8 grid grid-cols-3 gap-6 text-center border-t border-white/10 pt-6">
-              <div><div className="text-2xl font-black text-white">500+</div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Projects</div></div>
-              <div><div className="text-2xl font-black text-white">47</div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Counties</div></div>
-              <div><div className="text-2xl font-black text-white">5 Years</div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Warranty</div></div>
+              <div><div className="text-2xl font-black text-white">500<span className="text-[#F00000]">+</span></div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Projects</div></div>
+              <div><div className="text-2xl font-black text-white">47<span className="text-[#F00000]"></span></div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Counties</div></div>
+              <div><div className="text-2xl font-black text-white">5<span className="text-[#F00000]"> Years</span></div><div className="text-xs text-zinc-400 uppercase tracking-widest font-medium">Warranty</div></div>
             </div>
-            <p className="mt-3 text-xs text-zinc-500">Trusted by Safaricom • Equity • KCB • Kenya Power — 10 years of secure installs</p>
+            <p className="mt-3 text-xs text-zinc-400">Trusted by Safaricom • Equity • KCB • Kenya Power — <span className="text-white">10 years of secure installs</span></p>
           </div>
 
           {/* Service quick select — elevated card with Unsplash thumb */}

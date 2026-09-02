@@ -43,12 +43,12 @@ export default async function AdminBlogPage({ searchParams }: { searchParams: Pr
             </thead>
             <tbody>
               {posts.length === 0 ? (
-                <tr><td colSpan={4} className="p-8 text-center text-zinc-500">No posts — <Link href="/admin/blog/new" className="underline text-[#0038A0]">create one</Link> or run <code className="bg-zinc-100 px-1 rounded">npm run db:seed</code></td></tr>
+                <tr><td colSpan={4} className="p-8 text-center text-zinc-500">No posts yet — <Link href="/admin/blog/new" className="underline text-[#0038A0]">create your first post</Link>.</td></tr>
               ) : posts.map((p: any) => (
                 <tr key={p.id} className="border-b last:border-0 hover:bg-[#F5F7FA]/30">
                   <td className="p-3">
                     <div className="flex gap-3">
-                      <img src={p.image || "https://placehold.co/80x60/7FAF25/0A0A0A?text=Q"} alt={p.title} className="h-12 w-16 rounded-lg object-cover border" />
+                      <img src={p.image || "https://placehold.co/80x60/0038A0/FFFFFF?text=S"} alt={p.title} className="h-12 w-16 rounded-lg object-cover border" />
                       <div className="min-w-0">
                         <p className="font-semibold line-clamp-1 max-w-[320px]">{p.title}</p>
                         <p className="text-xs text-zinc-500">/{p.slug} • {p.tags?.join(", ") || "no tags"}</p>

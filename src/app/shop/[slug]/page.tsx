@@ -108,8 +108,8 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
 
       <Card className="mt-8 border-2 border-[#0038A0]/10 overflow-hidden">
         <div className="h-1 bg-[#0038A0]" />
-        <CardHeader><CardTitle>You May Also Like</CardTitle><p className="text-sm text-zinc-500">From the same category — genuine stock with install available.</p></CardHeader>
-        <CardContent className="text-sm text-zinc-500">Related products are loaded dynamically via <code className="bg-[#F5F7FA] px-1.5 py-0.5 rounded text-[#002070] font-mono text-xs">/api/products?category={product.category}</code></CardContent>
+        <CardHeader><CardTitle>You May Also Like</CardTitle><p className="text-sm text-zinc-500">More from {product.category.replace("_"," ")} — genuine stock with installation available.</p></CardHeader>
+        <CardContent className="text-sm text-zinc-500">Explore similar products in our catalogue, all warranted and ready for same-week installation.</CardContent>
       </Card>
     </div>
   );

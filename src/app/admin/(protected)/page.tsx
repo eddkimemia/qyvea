@@ -43,9 +43,9 @@ export default async function AdminDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-black tracking-tight">Dashboard</h1>
-          <p className="text-sm text-zinc-500">Syntech PostgreSQL • Brand <span className="text-[#0038A0] font-bold">#0038A0</span> • 36 products across 13 categories</p>
+          <p className="text-sm text-zinc-500">36 products • 13 categories • Secure admin</p>
         </div>
-        <Badge className="bg-[#0038A0] text-white font-bold">LIVE SYNC</Badge>
+        <Badge className="bg-[#F00000] text-white font-bold">LIVE</Badge>
       </div>
 
       {/* Stats */}
@@ -57,7 +57,7 @@ export default async function AdminDashboardPage() {
         </Card>
         <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Orders</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.orders}</div><p className="text-xs text-zinc-500"><Link href="/admin/orders" className="text-[#0038A0] underline">View orders →</Link></p></CardContent></Card>
         <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Leads</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.leads}</div><p className="text-xs text-zinc-500"><Link href="/admin/leads" className="text-[#0038A0] underline">CRM →</Link></p></CardContent></Card>
-        <Card className="bg-[#002070] text-white border-0"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-400">Revenue</CardTitle></CardHeader><CardContent><div className="text-3xl font-black text-[#0038A0]">{formatKES(stats.revenue)}</div><p className="text-xs text-zinc-400">Total fulfilled</p></CardContent></Card>
+        <Card className="bg-[#002070] text-white border-0"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-400">Revenue</CardTitle></CardHeader><CardContent><div className="text-3xl font-black text-white">{formatKES(stats.revenue)}</div><p className="text-xs text-zinc-400">Total fulfilled</p></CardContent></Card>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -124,7 +124,7 @@ export default async function AdminDashboardPage() {
           <CardHeader><CardTitle className="text-base">Recent Leads</CardTitle></CardHeader>
           <CardContent>
             {recentLeads.length === 0 ? (
-              <p className="text-sm text-zinc-500 py-4 text-center border-2 border-dashed rounded-xl">No leads yet — homepage forms post to <code className="bg-zinc-100 px-1 rounded">/api/leads</code></p>
+              <p className="text-sm text-zinc-500 py-4 text-center border-2 border-dashed rounded-xl">No leads yet — new inquiries will appear here.</p>
             ) : (
               <div className="space-y-2">
                 {recentLeads.map((l: any) => (

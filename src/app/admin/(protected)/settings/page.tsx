@@ -19,18 +19,18 @@ export default async function AdminSettingsPage() {
     <div className="space-y-4 max-w-3xl">
       <div className="flex items-center justify-between">
         <h1 className="text-xl font-black">Settings</h1>
-        <Badge variant="secondary">singleton • PostgreSQL</Badge>
+        <Badge variant="secondary" className="bg-[#0038A0] text-white">Store Configuration</Badge>
       </div>
 
       <Card className="border-2 border-[#0038A0]/20">
         <div className="h-1 bg-[#0038A0]" />
-        <CardHeader><CardTitle>Store Settings</CardTitle><p className="text-sm text-zinc-500">Edit WhatsApp, promo banner, and DB info. Saves to <code className="bg-zinc-100 px-1 rounded">Settings</code> table.</p></CardHeader>
+        <CardHeader><CardTitle>Store Settings</CardTitle><p className="text-sm text-zinc-500">Update your store’s public settings — changes reflect instantly on the website.</p></CardHeader>
         <CardContent>
           <form action="/api/settings" method="post" className="space-y-4">
             <div>
               <label className="text-sm font-semibold">WhatsApp Number</label>
               <input name="whatsappNumber" defaultValue={settings.whatsappNumber} placeholder="254715135141" required className="w-full mt-1 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <p className="text-xs text-zinc-500 mt-1">Used for <code>wa.me</code> links and floating button. Include country code, no +.</p>
+              <p className="text-xs text-zinc-500 mt-1">Used for WhatsApp buttons and floating chat. Include country code without +.</p>
             </div>
             <div>
               <label className="text-sm font-semibold">Promo Banner Text</label>
@@ -51,16 +51,12 @@ export default async function AdminSettingsPage() {
       </Card>
 
       <Card>
-        <CardHeader><CardTitle>Database Info</CardTitle></CardHeader>
+        <CardHeader><CardTitle>Store Overview</CardTitle><p className="text-sm text-zinc-500">Quick stats for your Syntech store.</p></CardHeader>
         <CardContent className="text-sm space-y-2">
           <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Products</span><span className="font-bold">{counts.products}</span></div>
           <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Users</span><span className="font-bold">{counts.users}</span></div>
-          <div className="flex justify-between border-b py-2"><span className="text-zinc-500">DATABASE_URL</span><span className="font-mono text-xs truncate max-w-[200px]">postgresql://syntech:***@localhost:5432/syntech</span></div>
-          <div className="flex justify-between"><span className="text-zinc-500">Admin</span><span className="font-mono text-xs">admin@syntech.co.ke / Admin123!</span></div>
-          <div className="pt-3 grid grid-cols-2 gap-2">
-            <div className="border rounded-xl p-3 bg-[#F5F7FA]"><p className="font-bold text-sm">Prisma Studio</p><p className="text-xs text-zinc-600">Visual DB editor</p><code className="text-xs bg-white px-1 rounded">npm run db:studio</code></div>
-            <div className="border rounded-xl p-3"><p className="font-bold text-sm">Seed</p><p className="text-xs text-zinc-600">36 products • 16 services</p><code className="text-xs bg-zinc-100 px-1 rounded">npm run db:seed</code></div>
-          </div>
+          <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Website</span><span className="font-medium">syntech.co.ke</span></div>
+          <div className="flex justify-between"><span className="text-zinc-500">Support</span><span className="text-xs">0715 135 141 • info@syntech.co.ke</span></div>
         </CardContent>
       </Card>
 

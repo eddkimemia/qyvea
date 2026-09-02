@@ -29,8 +29,8 @@ export function SiteHeader() {
   };
   return (
     <header className="sticky top-0 z-50 w-full border-b bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950 dark:border-zinc-800">
-      {/* Top bar — black secondary with lime accent */}
-      <div className="bg-[#002070] text-white text-xs border-b-2 border-[#0038A0]">
+      {/* Top bar — Syntech dark with red accent */}
+      <div className="bg-[#002070] text-white text-xs border-b-2 border-[#F00000]">
         <div className="container mx-auto flex h-7 items-center justify-between px-4">
           <div className="hidden md:flex gap-3 overflow-hidden whitespace-nowrap">
             <span>CCTV Installation • Biometric Access • Solar • Electric Fencing • IT Support • Automatic Gates • Fire Alarm • Electrical • Smart Home • 24/7 Emergency</span>
@@ -47,20 +47,20 @@ export function SiteHeader() {
 
       {/* Main nav */}
       <div className="container mx-auto px-4">
-        <div className="flex h-16 items-center justify-between gap-4">
+        <div className="flex h-20 items-center justify-between gap-4">
           <Link href="/" className="flex items-center gap-2">
-            {/* Syntech logo — no words, brand blue */}
+            {/* Syntech logo — larger */}
             <img
               src="/syntechlogo.jpg"
               alt="Syntech Solutions"
-              className="h-9 w-auto max-w-[160px] object-contain rounded-md"
+              className="h-12 md:h-14 w-auto max-w-[190px] object-contain rounded-md"
               loading="eager"
             />
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
-            <Link href="/shop" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">Shop</Link>
-            {/* SECURITY ▼ */}
+            <Link href="/shop" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition font-medium">Shop</Link>
+            {/* SECURITY ▼ — first */}
             <div className="relative group">
               <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">Security <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
               <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-64 mt-2 z-50 overflow-hidden">
@@ -69,7 +69,18 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
-            {/* IT & NETWORKING ▼ */}
+            {/* POWER & SOLAR ▼ — second for balance */}
+            <div className="relative group">
+              <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">Power & Solar <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
+                <div className="p-2 space-y-1">
+                  {SERVICES.filter(s=>s.cat==="Power & Solar").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
+                  <div className="border-t my-1" />
+                  <Link href="/services/maintenance" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] text-sm">Maintenance & Repair</Link>
+                </div>
+              </div>
+            </div>
+            {/* IT & NETWORKING ▼ — third */}
             <div className="relative group">
               <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">IT & Networking <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
               <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
@@ -78,21 +89,10 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
-            {/* POWER & SOLAR ▼ */}
-            <div className="relative group">
-              <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">Power & Solar <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
-              <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
-                <div className="p-2 space-y-1">
-                  {SERVICES.filter(s=>s.cat==="Power & Solar").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
-                  <div className="border-t my-1" />
-                  <Link href="/services/maintenance" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] text-sm">Maintenance & Repair</Link>
-                  <Link href="/estates" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] text-sm font-medium text-[#0038A0]">Estate Solutions</Link>
-                </div>
-              </div>
-            </div>
             <Link href="/estates" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">Estates</Link>
-            <Link href="/about" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">About</Link>
             <Link href="/blog" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">Blog</Link>
+            <Link href="/about" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">About</Link>
+            <Link href="#contact" className="px-3 py-2 rounded-lg hover:bg-[#F00000] hover:text-white bg-[#0038A0]/5 text-[#0038A0] transition font-semibold">Contact</Link>
           </nav>
 
           <div className="flex items-center gap-1">
@@ -133,32 +133,50 @@ export function SiteHeader() {
           </form>
         </div>
       </div>
-      {/* Mobile menu */}
+      {/* Mobile menu — floating overlay (not push) */}
       {mobileOpen && (
-        <div className="container mx-auto px-4 lg:hidden border-t py-4 space-y-3">
-          <Link href="/shop" className="block py-2 font-medium">Shop</Link>
-          <div className="pl-2 border-l-2 border-[#0038A0]/20 ml-1 space-y-1">
-            <p className="text-xs font-bold uppercase tracking-widest text-[#0038A0]">Services</p>
-            <Link href="/services/cctv" className="block py-1.5 text-sm">CCTV Installation</Link>
-            <Link href="/services/biometrics" className="block py-1.5 text-sm">Biometric Access</Link>
-            <Link href="/services/electric-fence" className="block py-1.5 text-sm">Electric Fence</Link>
-            <Link href="/services/automatic-gates" className="block py-1.5 text-sm">Automatic Gates</Link>
-            <Link href="/services/networking" className="block py-1.5 text-sm">Networking</Link>
-            <Link href="/services/solar-installation" className="block py-1.5 text-sm">Solar</Link>
+        <>
+          <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />
+          <div className="absolute top-full left-0 right-0 bg-white border-t-2 border-[#F00000] shadow-2xl z-50 lg:hidden max-h-[85vh] overflow-y-auto">
+            <div className="container mx-auto px-4 py-5 space-y-3">
+              <Link href="/shop" onClick={() => setMobileOpen(false)} className="block py-2 font-medium">Shop</Link>
+              <div className="pl-3 border-l-2 border-[#0038A0]/20 ml-1 space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#0038A0]">Security</p>
+                <Link href="/services/cctv" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">CCTV Installation</Link>
+                <Link href="/services/biometrics" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Biometric Access</Link>
+                <Link href="/services/electric-fence" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Electric Fence</Link>
+                <Link href="/services/automatic-gates" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Automatic Gates</Link>
+                <Link href="/services/fire-alarm-systems" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Fire Alarm</Link>
+              </div>
+              <div className="pl-3 border-l-2 border-[#0064D8]/20 ml-1 space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#0064D8]">Power & Solar</p>
+                <Link href="/services/solar-solutions" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Solar Backup</Link>
+                <Link href="/services/solar-installation" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Solar Installation</Link>
+                <Link href="/services/electrical-installation" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Electrical</Link>
+                <Link href="/services/smart-home-automation" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Smart Home</Link>
+              </div>
+              <div className="pl-3 border-l-2 border-[#F00000]/20 ml-1 space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#F00000]">IT & Networking</p>
+                <Link href="/services/networking" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Networking</Link>
+                <Link href="/services/it-support" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">IT Support</Link>
+                <Link href="/services/cybersecurity" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Cybersecurity</Link>
+              </div>
+              <Link href="/estates" onClick={() => setMobileOpen(false)} className="block py-2">Estate Solutions</Link>
+              <Link href="/about" onClick={() => setMobileOpen(false)} className="block py-2">About</Link>
+              <Link href="/blog" onClick={() => setMobileOpen(false)} className="block py-2">Blog</Link>
+              <Link href="#contact" onClick={() => setMobileOpen(false)} className="block py-2 font-medium text-[#0038A0]">Contact</Link>
+              {session?.user ? (
+                <>
+                  {(session.user as any).role === "ADMIN" && <Link href="/admin" onClick={() => setMobileOpen(false)} className="block py-2 font-semibold text-[#F00000]">Dashboard</Link>}
+                  <button onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }} className="block py-2 text-left w-full">Sign Out ({(session.user as any).email})</button>
+                </>
+              ) : (
+                <Link href="/login" onClick={() => setMobileOpen(false)} className="block py-2 font-semibold">Sign In</Link>
+              )}
+              <Link href="#contact" onClick={() => setMobileOpen(false)} className="block"><Button className="w-full bg-[#F00000] hover:bg-[#CC0000]">Get Free Quote</Button></Link>
+            </div>
           </div>
-          <Link href="/estates" className="block py-2">Estate Solutions</Link>
-          <Link href="/about" className="block py-2">About</Link>
-          <Link href="/blog" className="block py-2">Blog</Link>
-          {session?.user ? (
-            <>
-              {(session.user as any).role === "ADMIN" && <Link href="/admin" className="block py-2 font-semibold text-[#0038A0]">Dashboard</Link>}
-              <button onClick={() => signOut({ callbackUrl: "/" })} className="block py-2 text-left w-full">Sign Out ({(session.user as any).email})</button>
-            </>
-          ) : (
-            <Link href="/login" className="block py-2 font-semibold">Sign In</Link>
-          )}
-          <Link href="#contact" className="block"><Button className="w-full">Get Free Quote</Button></Link>
-        </div>
+        </>
       )}
 
       {/* Cart Drawer */}
