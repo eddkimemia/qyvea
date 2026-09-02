@@ -100,6 +100,26 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
+            {/* ICT PRODUCTS ▼ */}
+            <div className="relative group">
+              <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${isActive("/shop?category=ICT") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>ICT Products <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-56 mt-2 z-50 overflow-hidden">
+                <div className="p-2 space-y-1">
+                  <Link href="/shop?category=ICT" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm font-semibold">All ICT Products</Link>
+                  <div className="border-t my-1" />
+                  <Link href="/shop?category=ICT&q=monitor" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Monitors</Link>
+                  <Link href="/shop?category=ICT&q=laptop" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Laptops</Link>
+                  <Link href="/shop?category=ICT&q=desktop" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Desktops</Link>
+                  <Link href="/shop?category=ICT&q=printer" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Printers</Link>
+                  <Link href="/shop?category=ICT&q=keyboard" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Peripherals</Link>
+                  <Link href="/shop?category=ICT&q=headset" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Headsets & Webcams</Link>
+                  <Link href="/shop?category=ICT&q=ssd" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Storage</Link>
+                  <Link href="/shop?category=ICT&q=UPS" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">UPS & Power</Link>
+                  <Link href="/shop?category=ICT&q=router" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Networking</Link>
+                  <Link href="/shop?category=ICT&q=dock" className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">Docking Stations</Link>
+                </div>
+              </div>
+            </div>
             <Link href="/blog" className={`px-3 py-2 rounded-lg transition ${isActive("/blog") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Blog</Link>
 
           </nav>
@@ -176,6 +196,18 @@ export function SiteHeader() {
                 <Link href="/services/website-design" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Website Design</Link>
                 <Link href="/services/graphic-design" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Graphic Design</Link>
                 <Link href="/services/ai-solutions" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">AI Solutions</Link>
+              </div>
+              <div className="pl-3 border-l-2 border-[#F00000]/20 ml-1 space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#F00000]">ICT Products</p>
+                <Link href="/shop?category=ICT" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm font-semibold">All ICT Products</Link>
+                <Link href="/shop?category=ICT&q=monitor" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Monitors</Link>
+                <Link href="/shop?category=ICT&q=laptop" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Laptops</Link>
+                <Link href="/shop?category=ICT&q=desktop" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Desktops</Link>
+                <Link href="/shop?category=ICT&q=printer" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Printers</Link>
+                <Link href="/shop?category=ICT&q=keyboard" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Peripherals</Link>
+                <Link href="/shop?category=ICT&q=UPS" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">UPS & Power</Link>
+                <Link href="/shop?category=ICT&q=router" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Networking</Link>
+                <Link href="/shop?category=ICT&q=dock" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Docking Stations</Link>
               </div>
               <Link href="/blog" onClick={() => setMobileOpen(false)} className="block py-2">Blog</Link>
               {session?.user ? (

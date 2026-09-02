@@ -13,11 +13,14 @@ export const dynamic = "force-dynamic";
 
 async function getFeaturedProducts() {
   try {
-    return await prisma.product.findMany({
-      where: { featured: true, active: true },
-      take: 8,
+    // Get random products from all categories
+    const products = await prisma.product.findMany({
+      where: { active: true },
       orderBy: { sold: "desc" },
     });
+    // Shuffle and pick 8
+    const shuffled = products.sort(() => Math.random() - 0.5);
+    return shuffled.slice(0, 8);
   } catch {
     return [];
   }
@@ -28,7 +31,7 @@ export default async function HomePage() {
 
   const displayProducts = products.length
     ? products
-    : (MOCK_PRODUCTS.filter((p) => (p as any).featured).slice(0, 8) as any[]);
+    : ([...MOCK_PRODUCTS].sort(() => Math.random() - 0.5).slice(0, 8) as any[]);
 
   return (
     <div className="flex flex-col">
