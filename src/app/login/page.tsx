@@ -15,6 +15,8 @@ export default function LoginPage() {
   const [signupError, setSignupError] = useState<string | null>(null);
   const [signupOk, setSignupOk] = useState<string | null>(null);
   const [signupLoading, setSignupLoading] = useState(false);
+  const [password, setPassword] = useState("");
+  const [passwordErrors, setPasswordErrors] = useState<string[]>([]);
 
   async function handleLogin(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
@@ -30,17 +32,41 @@ export default function LoginPage() {
       return;
     }
     if (res?.ok) {
-      // Redirect based on email — admin to /admin
-      if (email.toLowerCase() === "admin@syntech.co.ke") router.push("/admin");
+      // Redirect based on role from session
+      const sessionRes = await fetch("/api/auth/session");
+      const sessionData = await sessionRes.json();
+      const userRole = sessionData?.user?.role;
+      if (userRole === "ADMIN") router.push("/admin");
       else router.push("/");
       router.refresh();
     }
+  }
+
+  function validatePassword(pw: string): string[] {
+    const errors: string[] = [];
+    if (pw.length < 8) errors.push("At least 8 characters");
+    if (pw.length > 128) errors.push("Under 128 characters");
+    if (!/[A-Z]/.test(pw)) errors.push("One uppercase letter");
+    if (!/[a-z]/.test(pw)) errors.push("One lowercase letter");
+    if (!/[0-9]/.test(pw)) errors.push("One number");
+    if (!/[^A-Za-z0-9]/.test(pw)) errors.push("One special character");
+    return errors;
+  }
+
+  function handlePasswordChange(value: string) {
+    setPassword(value);
+    setPasswordErrors(validatePassword(value));
   }
 
   async function handleSignup(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     setSignupError(null);
     setSignupOk(null);
+    const errors = validatePassword(password);
+    if (errors.length > 0) {
+      setSignupError("Password requirements: " + errors.join(", "));
+      return;
+    }
     setSignupLoading(true);
     const form = new FormData(e.currentTarget);
     const payload = {
@@ -60,12 +86,18 @@ export default function LoginPage() {
       setSignupError(json.error || "Signup failed");
       return;
     }
-    setSignupOk("Account created! You can now sign in.");
+    if (json.mock) {
+      setSignupOk("Account created (demo mode). Please sign in.");
+      return;
+    }
+    setSignupOk("Account created! Signing you in...");
     // auto sign in
     const loginRes = await signIn("credentials", { email: payload.email, password: payload.password, redirect: false });
     if (loginRes?.ok) {
       router.push("/");
       router.refresh();
+    } else {
+      setSignupOk("Account created! You can now sign in.");
     }
   }
 
@@ -101,7 +133,22 @@ export default function LoginPage() {
               <Input name="name" placeholder="Full Name" required />
               <Input name="email" placeholder="Email" type="email" required />
               <Input name="phone" placeholder="Phone (e.g., 0712...)" required />
-              <Input name="password" placeholder="Password (min 6 chars)" type="password" required minLength={6} />
+              <div>
+                <Input name="password" placeholder="Password" type="password" required minLength={8} value={password} onChange={(e) => handlePasswordChange(e.target.value)} />
+                {password.length > 0 && (
+                  <div className="mt-1.5 flex flex-wrap gap-1">
+                    {[
+                      { label: "8+ chars", ok: password.length >= 8 },
+                      { label: "A-Z", ok: /[A-Z]/.test(password) },
+                      { label: "a-z", ok: /[a-z]/.test(password) },
+                      { label: "0-9", ok: /[0-9]/.test(password) },
+                      { label: "!@#", ok: /[^A-Za-z0-9]/.test(password) },
+                    ].map((r) => (
+                      <span key={r.label} className={`text-[10px] px-1.5 py-0.5 rounded-full border font-medium ${r.ok ? "bg-green-50 border-green-300 text-green-700" : "bg-zinc-50 border-zinc-200 text-zinc-400"}`}>{r.label}</span>
+                    ))}
+                  </div>
+                )}
+              </div>
               {signupError && <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1">{signupError}</p>}
               {signupOk && <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1">{signupOk}</p>}
               <Button type="submit" variant="outline" className="w-full" disabled={signupLoading}>{signupLoading ? "Creating..." : "Create Account"}</Button>

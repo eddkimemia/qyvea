@@ -1,11 +1,10 @@
 import NextAuth from "next-auth";
 import Credentials from "next-auth/providers/credentials";
-import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
+import { rateLimit } from "@/lib/rate-limit";
 
 export const { handlers, auth, signIn, signOut } = NextAuth({
-  adapter: PrismaAdapter(prisma) as any,
   session: { strategy: "jwt" },
   trustHost: true,
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
@@ -20,6 +19,10 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         const email = (credentials?.email as string)?.toLowerCase().trim();
         const password = credentials?.password as string;
         if (!email || !password) return null;
+
+        // Rate limit login attempts — 10 per 15 min per email
+        const rl = rateLimit(`login:${email}`, 10, 15 * 60 * 1000);
+        if (!rl.allowed) return null;
 
         // Allow mock admin even if DB not available (fallback for demo)
         const isMockAdmin = email === "admin@syntech.co.ke" && password === "Admin123!";

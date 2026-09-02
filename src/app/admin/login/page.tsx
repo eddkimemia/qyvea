@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { signIn, signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
 import { Card, CardContent, CardHeader, CardTitle, CardDescription } from "@/components/ui/card";
@@ -14,11 +14,13 @@ export default function AdminLoginPage() {
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
-  // If already admin, redirect
   const role = (session?.user as any)?.role;
-  if (role === "ADMIN") {
-    if (typeof window !== "undefined") router.replace("/admin");
-  }
+
+  useEffect(() => {
+    if (role === "ADMIN") {
+      router.replace("/admin");
+    }
+  }, [role, router]);
 
   async function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
