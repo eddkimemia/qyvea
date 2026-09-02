@@ -12,7 +12,7 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     priority: route === "" ? 1 : route === "/shop" ? 0.9 : 0.7,
   }));
 
-  const services = ["cctv","biometrics","electric-fence","automatic-gates","fire-alarm-systems","networking","smart-home-automation","solar-installation","solar-solutions","electrical-installation","bms","cybersecurity","system-integration","it-support","maintenance"].map((slug) => ({
+  const services = ["cctv","biometrics","electric-fence","automatic-gates","fire-alarm-systems","networking","smart-home-automation","solar-installation","solar-solutions","electrical-installation","bms","cybersecurity","system-integration","it-support","website-design","graphic-design","ai-solutions","maintenance"].map((slug) => ({
     url: `${siteUrl}/services/${slug}`,
     lastModified: new Date(),
     changeFrequency: "monthly" as const,
@@ -43,6 +43,11 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     posts = [
       { slug: "cctv-installation-cost-kenya-2026", updatedAt: new Date() },
       { slug: "solar-backup-cctv-electric-fence-blackouts", updatedAt: new Date() },
+      { slug: "website-design-cost-kenya-2026", updatedAt: new Date() },
+      { slug: "graphic-design-kenya-2026-guide", updatedAt: new Date() },
+      { slug: "ai-solutions-kenya-sme-2026", updatedAt: new Date() },
+      { slug: "biometric-access-vs-keys-kenya-2026", updatedAt: new Date() },
+      { slug: "estate-security-hoa-guide-kenya", updatedAt: new Date() },
     ];
   }
   const postRoutes = posts.map((p) => ({

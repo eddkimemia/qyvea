@@ -18,7 +18,7 @@ async function main() {
     },
   });
 
-  // Services (mirror original site)
+  // Services — Syntech 2026 (19 incl. Website, Graphic, AI)
   const services = [
     { slug: ServiceSlug.CCTV, title: "CCTV Installation", excerpt: "Professional CCTV surveillance, remote monitoring, 4/8/16+ camera kits.", icon: "Video", priceFrom: 25000 },
     { slug: ServiceSlug.BIOMETRICS, title: "Biometric Access Control", excerpt: "Fingerprint, face, card access for offices & homes.", icon: "Fingerprint", priceFrom: 18000 },
@@ -36,6 +36,9 @@ async function main() {
     { slug: ServiceSlug.IT_SUPPORT, title: "IT Support", excerpt: "Helpdesk, maintenance, uptime SLA.", icon: "Headset", priceFrom: 8000 },
     { slug: ServiceSlug.MAINTENANCE, title: "Maintenance & Repair", excerpt: "24/7 support, 2hr response Nairobi/Msa/Ksm.", icon: "Wrench", priceFrom: 3000 },
     { slug: ServiceSlug.ESTATE_SOLUTIONS, title: "Estate Solutions", excerpt: "Bulk pricing for 50-200 homes, one contract.", icon: "Homes", priceFrom: 0 },
+    { slug: ServiceSlug.WEBSITE_DESIGN, title: "Website Design", excerpt: "Modern, fast, SEO-ready websites that convert visitors to customers.", icon: "Globe", priceFrom: 35000 },
+    { slug: ServiceSlug.GRAPHIC_DESIGN, title: "Graphic Design", excerpt: "Logos, brand identity, social and print that make you memorable.", icon: "Palette", priceFrom: 8000 },
+    { slug: ServiceSlug.AI_SOLUTIONS, title: "AI Solutions", excerpt: "Chatbots, automation, analytics — practical AI for Kenyan businesses.", icon: "Bot", priceFrom: 45000 },
   ];
 
   const serviceImages: Record<string,string> = {
@@ -55,6 +58,9 @@ async function main() {
     IT_SUPPORT: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
     MAINTENANCE: "https://images.unsplash.com/photo-1581092160562-40aa08e78837?auto=format&fit=crop&w=1200&q=80",
     ESTATE_SOLUTIONS: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+    WEBSITE_DESIGN: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+    GRAPHIC_DESIGN: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+    AI_SOLUTIONS: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
   };
   for (const s of services) {
     await prisma.service.upsert({
@@ -226,37 +232,73 @@ async function main() {
     });
   }
 
-  // Blog posts — SEO ready
+  // Blog posts — detailed, SEO-optimized (7 posts incl. Website, Graphic, AI)
   const blogPosts = [
     {
-      title: "CCTV Installation Cost in Kenya 2026: What Affects Your Quote?",
+      title: "CCTV Installation Cost in Kenya 2026: Complete Price Guide (4CH to 32CH)",
       slug: "cctv-installation-cost-kenya-2026",
-      excerpt: "4CH vs 8CH vs 16CH, dome vs bullet, storage and labour — we break down real 2026 pricing for Nairobi homes & businesses.",
-      content: `Planning CCTV in 2026? Costs depend on camera count, resolution (1080p vs 5MP), storage (1TB vs 4TB), night vision, and analytics.\n\n**Syntech tip:** For a 3-bedroom home, a 4CH 1080p kit + 1TB at KES 28,500 installed covers most needs. Businesses need 8CH+ with remote monitoring — from KES 52,000.\n\nWe offer same-week install, 5-year workmanship warranty, and free site survey across 47 counties. Get a quote in 30 minutes via WhatsApp.`,
+      excerpt: "Real 2026 pricing: 4CH from KES 28,500, 8CH from KES 52,000, 16CH from KES 115,000. Dome vs bullet, storage, labour & hidden costs explained.",
+      content: `## Why 2026 CCTV Costs Vary So Much\nCCTV isn’t just “cameras + DVR”. In 2026, Kenyan quotes range from KES 28k (4CH home) to KES 350k+ (32CH enterprise) — and the difference is **spec, not just count**.\n\n### 1. The 5 Price Drivers\n- **Channels & Layout:** 4CH covers a 3-bed home (gate + veranda + living + backyard). 8CH adds perimeter + kitchen. 16CH is for malls, schools, factories.\n- **Resolution:** 2MP (1080p) is fine for homes. 5MP sees plates at 20m — essential for estates/gates. Adds ~30%.\n- **Storage:** 1TB ≈ 7 days for 4 cameras (H.265). 2TB ≈ 14 days for 8 cam. We size for *at least* 14 days — DCI requests footage after 1 week.\n- **Night Vision & AI:** IR 20m vs 40m, WDR for gates against sun, human/vehicle detection to cut false alerts.\n- **Labour & Warranty:** Cheapest quote often skips trunking, earthing, and 1-year warranty. Syntech does **5-year workmanship**, NCA/CAK, and labelled UTP.\n\n### 2. Real Syntech Pricing (Installed)\n| Kit | Spec | Price | Best For |\n| 4CH Bullet 1080p + 1TB | 4× bullet, 1TB, mobile app | **KES 28,500** | 2–3 bed, shop |\n| 8CH Dome 2MP + 2TB | 8× dome, 2TB, analytics | **KES 52,000** | Office, 4-bed maisonette |\n| 16CH 5MP + 4TB + Analytics | 16× 5MP, 4TB, line-cross | **KES 115,000** | Mini-mart, school |\n| PTZ 4MP 25× | Auto-track, 100m IR | **KES 68,000** | Gate, yard |\n\n*Includes mounting, configuration, app, training.*\n\n### 3. Hidden Costs to Ask About\nCable per metre (outdoor vs indoor), power supply (central vs individual), HDMI/monitor, internet for remote view, and **SLA**. Syntech includes 2-hour Nairobi response.\n\n### 4. How We Quote in 30 Minutes\nWe request: location (Google pin), front/back photos, power point, internet. Then we propose 2 options (budget vs best) with diagram. **Free site survey** within Nairobi.\n\n> **Syntech tip:** Don’t overbuy channels — buy resolution. A 4CH 5MP often beats 8CH 2MP for evidence.\n\n**Ready?** WhatsApp 0715 135 141 for a same-day diagram.`,
       image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1200&q=80",
-      tags: ["CCTV", "Security", "Kenya"],
+      tags: ["CCTV", "Security", "Kenya", "Cost Guide"],
       published: true,
       featured: true,
-      seoTitle: "CCTV Installation Cost Kenya 2026 | Syntech",
-      seoDescription: "CCTV cost in Kenya 2026: 4CH, 8CH, 16CH pricing, what affects quotes, and Syntech’s 5-year warranty. Free site survey.",
+      seoTitle: "CCTV Installation Cost Kenya 2026: 4CH to 32CH Price Guide | Syntech",
+      seoDescription: "CCTV installation cost Kenya 2026: 4CH KES 28,500, 8CH KES 52,000, 16CH KES 115,000. Dome vs bullet, storage, labour. Syntech 5-year warranty.",
     },
     {
-      title: "Solar Backup for CCTV & Electric Fence: Stay Secure During Blackouts",
+      title: "Solar Backup for CCTV & Electric Fence: 3KVA vs 5KVA vs Lithium (Kenya Blackouts Guide)",
       slug: "solar-backup-cctv-electric-fence-blackouts",
-      excerpt: "Keep your fence, cameras and lights on when Kenya Power goes off. 3KVA vs 5KVA kits explained.",
-      content: `Blackouts shouldn’t mean black screens. A 3KVA inverter + 2x200Ah + 2x550W keeps 8 cameras, fence and lights for 8-12 hours.\n\n**Bundles from KES 85k** with auto-changeover and lithium options. Syntech designs for your load, installs in 1-3 days, and warrants 5 years.`,
+      excerpt: "Blackouts = blind cameras. Compare 3KVA lead-acid vs 5KVA lithium, runtime maths, and Syntech’s auto-changeover kits from KES 85k.",
+      content: `## Blackouts Shouldn’t Mean Blind\nKenya Power off = fence energizer off = cameras off — exactly when thieves test. Solar backup keeps CCTV + fence + 4 lights **8–18 hours**.\n\n### 1. Size Your Kit (Real Maths)\n- **Load:** 8× CCTV (80W) + DVR (20W) + fence (30W) + 4× 10W bulbs = ~170W continuous.\n- **Battery:** 2× 200Ah lead-acid = 2.4kWh usable (50% DoD) → 14h at 170W. Lithium 5kWh = 4.8kWh usable (96% DoD) → 28h, 10-year life.\n- **Panel:** 2× 550W = 1.1kW charge — refills lead-acid in 3h sun, lithium in 4h.\n\n### 2. Syntech Bundles (Installed)\n- **3KVA + 2×200Ah + 2×550W:** **KES 145,000** (SALE was 165k) — best for 4–8 cam homes. 2-year battery warranty.\n- **5KVA Hybrid + 5kWh Lithium:** **KES 285,000** — for 16+ cam, estate gatehouse, shop. 10-year lithium, app monitoring.\n- **550W Panel alone:** **KES 18,500** — add to existing.\n\n### 3. Lead-Acid vs Lithium?\nLead: cheap upfront, 2-year life, needs water/top-up. Lithium: 2× price, 10-year, zero maintenance, 2× runtime. **If fence is critical, go lithium.**\n\n### 4. Auto-Changeover & Install\nWe install ATS (20ms switch) + DB + earthing + county “cage”. 1–2 days, COC, 5-year workmanship.\n\n> **Syntech tip:** Don’t run solar backup on cheap modified-sine inverters — they kill DVRs. We use pure-sine hybrids.\n\n**Get a load audit:** WhatsApp your current bill + photo of DB — we size in 30 min.`,
       image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80",
-      tags: ["Solar", "Backup", "Power"],
+      tags: ["Solar", "Backup", "Power", "CCTV"],
       published: true,
       featured: true,
-      seoTitle: "Solar Backup for CCTV & Fence Kenya | Syntech",
-      seoDescription: "Solar backup kits Kenya: 3KVA & 5KVA for CCTV & fence, lithium vs lead-acid, prices and install by Syntech.",
+      seoTitle: "Solar Backup for CCTV & Fence Kenya 2026: 3KVA vs 5KVA | Syntech",
+      seoDescription: "Solar backup Kenya: 3KVA KES 145k vs 5KVA lithium KES 285k for CCTV & fence. Runtime, lead vs lithium, install by Syntech.",
+    },
+    {
+      title: "Website Design Cost in Kenya 2026: From KES 35k to Converts (Not Just Looks)",
+      slug: "website-design-cost-kenya-2026",
+      excerpt: "Why a KES 15k site costs you sales — and what a Syntech KES 35k sites deliver: SEO, M-Pesa, speed, and leads.",
+      content: `## A Website Isn’t a Brochure — It’s a Sales Machine\nIn 2026, 83% of Nairobi clients Google you first. A slow, non-SEO site loses them in 3 seconds. Syntech sites load <2s, rank, and convert.\n\n### 1. What KES 35k Actually Includes\n- **Design:** Figma → Next.js/Tailwind, mobile-first, #0038A0/#F00000 Syntech system, not template.\n- **SEO:** Title/descriptions, sitemap.xml, robots.txt, JSON-LD (LocalBusiness + BlogPosting), OpenGraph, internal linking — we rank for “CCTV Nairobi”.\n- **Speed:** Image optimize, lazy, edge CDN — 95+ Lighthouse.\n- **Features:** M-Pesa STK, WhatsApp float (#25D366), shop/cart, blog CMS, admin.\n- **Growth:** Blog + analytics + ` + "`/sitemap.xml`" + ` for Google.\n\n### 2. Our Process (7–14 Days)\n1. Discovery (brand, competitors, keywords)\n2. Wireframe + copy\n3. Design + build + CMS\n4. SEO + speed + training\n5. Launch + 30-day support\n\n### 3. Graphic + AI Extras\nAdd **Graphic Design** (logos, social, packaging) from KES 8k and **AI** (chatbot, content, analytics) from KES 45k — one partner.\n\n> **Syntech tip:** Don’t buy a “cheap site + separate SEO” — SEO built-in from day one saves KES 80k later.\n\n**See our work:** syntech.co.ke + /blog — all managed by admin at /admin/blog.`,
+      image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80",
+      tags: ["Website Design", "SEO", "Kenya"],
+      published: true,
+      featured: true,
+      seoTitle: "Website Design Cost Kenya 2026: From KES 35k | Syntech",
+      seoDescription: "Website design Kenya 2026 from KES 35k: SEO, M-Pesa, speed 95+, blog. Syntech Syntech Solutions.",
+    },
+    {
+      title: "Graphic Design That Sells in Kenya: Beyond a Pretty Logo (2026 Guide)",
+      slug: "graphic-design-kenya-2026-guide",
+      excerpt: "Logos from KES 8k that work on dust, matatu, and Instagram. Brand, not just art.",
+      content: `## Good Design Isn’t Art — It’s Business\nA logo must survive **matatu dust, Instagram 1-inch, and invoice stamp**. Syntech’s 2026 system: #0038A0 primary, #F00000 accent, F5F7FA light — tested on shop signage.\n\n### 1. FKI Test\nWe test every logo: **F**avicon (16px), **K**iosk (3m banner), **I**nvoice (B&W). If it fails any, we redo.\n\n### 2. What You Get (From KES 8k)\n- Primary + secondary logo, palette (#0038A0/#0064D8/#F00000), typography (Inter), 3 mockups, brand sheet, social kit.\n- Files: SVG, PNG, PDF, favicon.\n\n### 3. Why It Converts\nWe pair graphic with **website + AI**: Your site uses same palette, and AI resizes posts for Instagram/X/LinkedIn in 1 click — admin-managed.\n\n> **Syntech tip:** Don’t pay for 10 concepts — pay for 2 great ones with strategy.\n\n**Need a rebrand?** WhatsApp 0715 135 141 — 48h first draft.`,
+      image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80",
+      tags: ["Graphic Design", "Branding", "Kenya"],
+      published: true,
+      featured: true,
+      seoTitle: "Graphic Design Kenya 2026: Logo Brand Guide | Syntech",
+      seoDescription: "Graphic design Kenya from KES 8k: logo FKI test, brand palette #0038A0, Syntech.",
+    },
+    {
+      title: "AI for Kenyan SMEs 2026: Chatbots & Automation That Actually Save KES (Not Hype)",
+      slug: "ai-solutions-kenya-sme-2026",
+      excerpt: "From KES 45k: AI that replies to CCTV quotes at 2am, drafts blog, and flags shoplifting — without monthly GPT bills.",
+      content: `## AI Isn’t ChatGPT — It’s Your Night Shift\nKenyan SMEs lose leads at 9pm–6am. Syntech AI replies instantly, qualifies, and books site survey — then hands to human.\n\n### 1. What KES 45k Gets You\n- **WhatsApp Bot:** Answers “CCTV 4CH price?” with KES 28,500 + brochure + books survey. Human takeover in one tap.\n- **Blog AI:** Drafts 800-word SEO posts (like this) from admin prompt — you edit, publish at /admin/blog.\n- **Vision:** Flags “intruder” vs cat on your Dahua 16CH — reduces false alerts 80%.\n\n### 2. No Surprise Bills\nWe host on your Vercel Postgres, not $200/mo SaaS. One-time build + KES 5k/mo optional.\n\n### 3. Pair With Website + Graphic\nYour site (Next.js) + brand (#0038A0/#F00000) + AI = one Syntech stack. No 3 vendors.\n\n> **Syntech tip:** Start with one bot (CCTV quotes), not 5. Measure saved hours.\n\n**Demo:** Try the WhatsApp float on syntech.co.ke — that’s our bot.`,
+      image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80",
+      tags: ["AI", "Chatbot", "Automation", "Kenya"],
+      published: true,
+      featured: true,
+      seoTitle: "AI Solutions Kenya 2026 for SMEs | Syntech",
+      seoDescription: "AI solutions Kenya from KES 45k: WhatsApp bot, blog AI, vision. Syntech practical AI.",
     },
     {
       title: "Biometric Access vs Keys: Why Kenyan Offices Are Switching in 2026",
       slug: "biometric-access-vs-keys-kenya-2026",
       excerpt: "Fingerprint, face, card — 98% fewer tail-gating incidents and auditable logs. Here’s how to choose.",
-      content: `Keys get copied. Cards get shared. Biometrics don’t. ZKTeco F22 + face terminals give you per-person logs, time attendance, and anti-passback.\n\n**From KES 18,500 installed** with mobile access. Syntech integrates with payroll and CCTV for one dashboard.`,
+      content: `## Keys Get Copied. Cards Get Shared. Biometrics Don’t.\nIn 2026, Nairobi offices lose KES 400k/year to “buddy punching”. ZKTeco F22 + face terminals cut it to zero — and give you **who, when, where**.\n\n### 1. F22 vs Face: Which?\n- **F22 (KES 18,500):** Finger + card, 1,000 users, TCP/IP, for 10–30 staff.\n- **SpeedFace V5L (KES 38,500):** Face + palm + mask, 3,000 users, for 50+ staff/reception.\n- **Terminal DS-K1T341A (KES 42,000):** Face + temp, for clinics/schools.\n\n### 2. Integration That Matters\nWe link to **payroll (time attendance)** + **CCTV (snapshot on entry)** + **turnstile** — one report.\n\n> **Syntech tip:** Don’t buy “face only” — buy face + finger backup for dusty sites.\n\n**From KES 18,500 installed** with mobile access. WhatsApp for payroll demo.`,
       image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
       tags: ["Biometrics", "Access Control"],
       published: true,
@@ -265,15 +307,15 @@ async function main() {
       seoDescription: "Biometric access control Kenya: F22, Face Terminal, why offices choose biometrics over keys.",
     },
     {
-      title: "Estate Security: One Contract for 50–200 Homes (HOA Guide)",
+      title: "Estate Security: One Contract for 50–200 Homes (HOA Guide 2026)",
       slug: "estate-security-hoa-guide-kenya",
       excerpt: "How Kitengela & Syokimau estates save 35% with bulk CCTV, fence and gates — single SLA, one manager.",
-      content: `Managing 87 homes? One contract beats 87 quotes. Syntech offers per-unit pricing, 4-hour emergency SLA, and monthly health reports for HOAs.\n\n**15+ estates, 2,000+ homes** already secured. Request bulk pricing today.`,
+      content: `## 87 Homes, 87 Quotes? No — One Contract.\nHOAs waste months collecting fundis. Syntech does **one site + one price + one SLA**.\n\n### 1. What’s Included (Per Home)\n- **Perimeter:** Druid 25 5J, 8km, battery + siren.\n- **Gate:** D5 Evo 500kg + safety beams + remotes.\n- **Entry:** 2× bullet + intercom 7” + F22.\n- **Core:** NVR + 1-month retention + app.\n\n### 2. Pricing & SLA\nFrom **KES 18,500/home** (50+ homes) — includes **4-hour emergency**, monthly health report, and 5-year fence warranty. **2,000+ homes** already.\n\n### 3. How It Works (6 Weeks for 87 Homes)\nWeek 1: Survey + HOA vote. Week 2–5: 3 teams parallel. Week 6: Handover + training.\n\n> **Syntech tip:** Insist on *one* manager, not 3 subs. We give you a named PM on WhatsApp.\n\n**Request bulk:** WhatsApp 0715 135 141 — we visit in 48h.`,
       image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
       tags: ["Estates", "HOA", "Gated Community"],
       published: true,
       featured: true,
-      seoTitle: "Estate Security Kenya HOA Guide | Syntech",
+      seoTitle: "Estate Security Kenya HOA Guide 2026 | Syntech",
       seoDescription: "Estate security for HOAs Kenya: bulk pricing, one contract, SLA for 50-200 homes. Syntech.",
     },
   ];

@@ -7,7 +7,6 @@ const nextConfig: NextConfig = {
       { protocol: "https", hostname: "qyvea.co.ke" },
       { protocol: "https", hostname: "images.unsplash.com" },
       { protocol: "https", hostname: "plus.unsplash.com" },
-      { protocol: "https", hostname: "**" },
     ],
   },
   typedRoutes: false,

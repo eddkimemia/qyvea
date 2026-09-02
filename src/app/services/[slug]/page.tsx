@@ -23,6 +23,9 @@ const SERVICES: Record<string, { title: string; desc: string; bullets: string[];
   cybersecurity: { title: "Cybersecurity", desc: "Audit, firewall, endpoint protection.", bullets: ["Vulnerability audit","Firewall & VPN","Endpoint protection","Staff training"], priceFrom: "KES 20,000", image: IMAGES.hero.tech },
   "system-integration": { title: "System Integration", desc: "Unify security, IT & power systems.", bullets: ["Unified dashboard","API integration","Automation rules","Single support SLA"], priceFrom: "KES 30,000", image: IMAGES.hero.server },
   "it-support": { title: "IT Support", desc: "Helpdesk, maintenance, uptime SLA.", bullets: ["On-site & remote","Server & network","Backup & recovery","SLA 2hr response"], priceFrom: "KES 8,000", image: IMAGES.services.maintenance },
+  "website-design": { title: "Website Design", desc: "Modern, SEO-ready, M-Pesa integrated websites that convert visitors into customers.", bullets: ["Figma to Next.js", "SEO + sitemap + JSON-LD", "M-Pesa & shop integration", "Blog CMS & training"], priceFrom: "KES 35,000", image: "https://images.unsplash.com/photo-1460925895917-afdab827c52f?auto=format&fit=crop&w=1200&q=80" },
+  "graphic-design": { title: "Graphic Design", desc: "Logos, brand identity, social and print that make you memorable — FKI tested.", bullets: ["Logo + brand sheet", "Social kit + mockups", "Print & packaging", "Files: SVG/PNG/PDF"], priceFrom: "KES 8,000", image: "https://images.unsplash.com/photo-1561070791-2526d30994b5?auto=format&fit=crop&w=1200&q=80" },
+  "ai-solutions": { title: "AI Solutions", desc: "Chatbots, automation, analytics — practical AI for Kenyan SMEs, hosted on your stack.", bullets: ["WhatsApp bot for quotes", "Blog AI drafts", "Vision for shoplifting", "No monthly GPT bills"], priceFrom: "KES 45,000", image: "https://images.unsplash.com/photo-1677442136019-21780ecad995?auto=format&fit=crop&w=1200&q=80" },
   maintenance: { title: "Maintenance & Repair", desc: "24/7 support, 2hr response Nairobi/Msa/Ksm.", bullets: ["Preventive maintenance","Emergency call-out","Spare parts","Health reports"], priceFrom: "KES 3,000", image: IMAGES.services.maintenance },
 };
 
@@ -43,6 +46,9 @@ const SERVICE_CATEGORY_MAP: Record<string, string> = {
   cybersecurity: "IT_SUPPORT",
   "system-integration": "IT_SUPPORT",
   "it-support": "IT_SUPPORT",
+  "website-design": "IT_SUPPORT",
+  "graphic-design": "ACCESSORIES",
+  "ai-solutions": "IT_SUPPORT",
   maintenance: "ACCESSORIES",
 };
 

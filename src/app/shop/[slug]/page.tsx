@@ -6,6 +6,7 @@ import { Badge } from "@/components/ui/badge";
 import { IMAGES, imageForCategory } from "@/lib/images";
 import { MOCK_PRODUCTS } from "@/lib/mock-products";
 import { ProductActions } from "@/components/product-actions";
+import { ProductCard } from "@/components/product-card";
 import Link from "next/link";
 import { Star, ShieldCheck, Truck, Wrench } from "lucide-react";
 
@@ -106,11 +107,55 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
         </div>
       </div>
 
-      <Card className="mt-8 border-2 border-[#0038A0]/10 overflow-hidden">
-        <div className="h-1 bg-[#0038A0]" />
-        <CardHeader><CardTitle>You May Also Like</CardTitle><p className="text-sm text-zinc-500">More from {product.category.replace("_"," ")} — genuine stock with installation available.</p></CardHeader>
-        <CardContent className="text-sm text-zinc-500">Explore similar products in our catalogue, all warranted and ready for same-week installation.</CardContent>
-      </Card>
+      {/* Related Products */}
+      <RelatedProducts category={product.category} currentSlug={product.slug} />
     </div>
+  );
+}
+
+async function RelatedProducts({ category, currentSlug }: { category: string; currentSlug: string }) {
+  let related: any[] = [];
+  try {
+    related = await prisma.product.findMany({
+      where: { category: category as any, active: true, slug: { not: currentSlug } },
+      take: 4,
+      orderBy: { sold: "desc" },
+    });
+  } catch {}
+  if (!related.length) {
+    related = ([...MOCK_PRODUCTS] as any[])
+      .filter((p) => p.category === category && p.slug !== currentSlug)
+      .slice(0, 4);
+  }
+  if (!related.length) {
+    related = ([...MOCK_PRODUCTS] as any[])
+      .filter((p) => p.slug !== currentSlug)
+      .slice(0, 4);
+  }
+  if (!related.length) return null;
+
+  return (
+    <Card className="mt-8 border-2 border-[#0038A0]/10 overflow-hidden">
+      <div className="h-1 bg-[#0038A0]" />
+      <CardHeader>
+        <div className="flex items-center justify-between">
+          <div>
+            <CardTitle>You May Also Like</CardTitle>
+            <p className="text-sm text-zinc-500">More from {category.replace("_", " ")} — genuine stock with installation available.</p>
+          </div>
+          <Link href={`/shop?category=${category}`} className="hidden sm:inline-flex text-sm font-semibold text-[#0038A0] hover:underline">View all →</Link>
+        </div>
+      </CardHeader>
+      <CardContent>
+        <div className="grid sm:grid-cols-2 lg:grid-cols-4 gap-5">
+          {related.map((p: any) => (
+            <ProductCard key={p.id} product={p} />
+          ))}
+        </div>
+        <Link href={`/shop?category=${category}`} className="sm:hidden mt-4 block">
+          <button className="w-full border-2 border-[#0038A0] text-[#0038A0] rounded-lg py-2 text-sm font-semibold hover:bg-[#F5F7FA] transition">View all {category.replace("_", " ")}</button>
+        </Link>
+      </CardContent>
+    </Card>
   );
 }

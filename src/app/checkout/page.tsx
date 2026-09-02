@@ -19,10 +19,11 @@ export default function CheckoutPage() {
   const [form, setForm] = useState({ name: "", phone: "", email: "", address: "", location: "", notes: "", delivery: "nairobi", includeInstall: false });
   const subtotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
   const deliveryFee = form.delivery === "nairobi" ? (subtotal > 5000 ? 0 : 300) : form.delivery === "outside" ? 800 : 0;
-  const installFee = form.includeInstall ? 3500 : 0; // placeholder estimate
+  const installItemQty = form.includeInstall ? cart.reduce((sum, c) => sum + c.qty, 0) : 0;
+  const installFee = installItemQty * 3500; // est. KES 3,500 per item for professional install
   const total = subtotal + deliveryFee + installFee;
 
-  const waText = `Hello Syntech! I want to place an ORDER:\n\n${cart.map((c) => `• ${c.name} × ${c.qty} = ${formatKES(c.price * c.qty)}`).join("\n")}\n\nSubtotal: ${formatKES(subtotal)}\nDelivery: ${formatKES(deliveryFee)}\nInstall: ${formatKES(installFee)}\nTotal: ${formatKES(total)}\n\nCustomer: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address} ${form.location}\nNotes: ${form.notes}\n\nPlease confirm availability.`;
+  const waText = `Hello Syntech! I want to place an ORDER:\n\n${cart.map((c) => `• ${c.name} × ${c.qty} = ${formatKES(c.price * c.qty)}`).join("\n")}\n\nSubtotal: ${formatKES(subtotal)}\nDelivery: ${formatKES(deliveryFee)}\nInstall: ${installFee ? formatKES(installFee) + ` (${installItemQty} items × KES 3,500)` : "—"}\nTotal: ${formatKES(total)}\n\nCustomer: ${form.name}\nPhone: ${form.phone}\nEmail: ${form.email}\nAddress: ${form.address} ${form.location}\nNotes: ${form.notes}\n\nPlease confirm availability & installation cost.`;
 
   async function handlePlaceOrder(e: React.FormEvent) {
     e.preventDefault();
@@ -114,7 +115,7 @@ export default function CheckoutPage() {
                 </div>
                 <div><label className="text-sm font-medium">Notes</label><textarea value={form.notes} onChange={(e) => setForm({ ...form, notes: e.target.value })} placeholder="Delivery instructions, preferred time, etc." rows={3} className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2 text-sm mt-1" /></div>
                 <label className="flex items-center gap-2 text-sm font-medium p-3 border-2 border-[#0038A0]/20 rounded-xl bg-[#F5F7FA] cursor-pointer">
-                  <input type="checkbox" checked={form.includeInstall} onChange={(e) => setForm({ ...form, includeInstall: e.target.checked })} className="accent-[#0038A0] h-4 w-4" /> Include professional installation (+ KES 3,500 est.)
+                  <input type="checkbox" checked={form.includeInstall} onChange={(e) => setForm({ ...form, includeInstall: e.target.checked })} className="accent-[#0038A0] h-4 w-4" /> Include professional installation ({installItemQty ? `${installItemQty} item${installItemQty > 1 ? "s" : ""} × KES 3,500 = ${formatKES(installFee)}` : "KES 3,500 per item"} est.)
                 </label>
 
                 <div className="grid grid-cols-2 gap-3 pt-2">
@@ -143,7 +144,7 @@ export default function CheckoutPage() {
                 <div className="space-y-1.5 text-sm pt-2">
                   <div className="flex justify-between"><span className="text-zinc-500">Subtotal</span><span className="font-medium">{formatKES(subtotal)}</span></div>
                   <div className="flex justify-between"><span className="text-zinc-500">Delivery</span><span className={deliveryFee === 0 ? "text-[#0038A0] font-bold" : ""}>{deliveryFee === 0 ? "FREE" : formatKES(deliveryFee)}</span></div>
-                  <div className="flex justify-between"><span className="text-zinc-500">Installation est.</span><span>{installFee ? formatKES(installFee) : "—"}</span></div>
+                  <div className="flex justify-between"><span className="text-zinc-500">Installation est.</span><span>{installFee ? `${formatKES(installFee)} (${installItemQty}×KES 3,500)` : "—"}</span></div>
                   <div className="flex justify-between font-black text-base border-t pt-2 mt-2"><span>Total</span><span>{formatKES(total)}</span></div>
                 </div>
                 <div className="grid grid-cols-3 gap-2 text-[11px] text-center pt-2">

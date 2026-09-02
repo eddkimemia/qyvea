@@ -1,7 +1,7 @@
 "use client";
 import Link from "next/link";
 import { useState } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
 import { ShoppingCart, Heart, Menu, X, Phone, Search, User, Trash2, Minus, Plus, LogOut } from "lucide-react";
 import { Button } from "@/components/ui/button";
@@ -15,7 +15,9 @@ export function SiteHeader() {
   const [cartOpen, setCartOpen] = useState(false);
   const [query, setQuery] = useState("");
   const router = useRouter();
+  const pathname = usePathname();
   const { data: session } = useSession();
+  const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
   const cart = useStore((s) => s.cart);
   const wishlist = useStore((s) => s.wishlist);
   const removeFromCart = useStore((s) => s.removeFromCart);
@@ -59,10 +61,10 @@ export function SiteHeader() {
           </Link>
 
           <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
-            <Link href="/shop" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition font-medium">Shop</Link>
+            <Link href="/shop" className={`px-3 py-2 rounded-lg transition font-medium ${isActive("/shop") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Shop</Link>
             {/* SECURITY ▼ — first */}
             <div className="relative group">
-              <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">Security <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${SERVICES.filter(s=>s.cat==="Security").some(s=>isActive(s.href)) ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Security <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
               <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-64 mt-2 z-50 overflow-hidden">
                 <div className="p-2 space-y-1">
                   {SERVICES.filter(s=>s.cat==="Security").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
@@ -71,7 +73,7 @@ export function SiteHeader() {
             </div>
             {/* POWER & SOLAR ▼ — second for balance */}
             <div className="relative group">
-              <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">Power & Solar <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${SERVICES.filter(s=>s.cat==="Power & Solar").some(s=>isActive(s.href)) ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Power & Solar <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
               <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
                 <div className="p-2 space-y-1">
                   {SERVICES.filter(s=>s.cat==="Power & Solar").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
@@ -82,17 +84,26 @@ export function SiteHeader() {
             </div>
             {/* IT & NETWORKING ▼ — third */}
             <div className="relative group">
-              <button className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition flex items-center gap-1 font-medium">IT & Networking <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${SERVICES.filter(s=>s.cat==="IT & Networking").some(s=>isActive(s.href)) ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>IT & Networking <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
               <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
                 <div className="p-2 space-y-1">
                   {SERVICES.filter(s=>s.cat==="IT & Networking").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
                 </div>
               </div>
             </div>
-            <Link href="/estates" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">Estates</Link>
-            <Link href="/blog" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">Blog</Link>
-            <Link href="/about" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition">About</Link>
-            <Link href="#contact" className="px-3 py-2 rounded-lg hover:bg-[#F00000] hover:text-white bg-[#0038A0]/5 text-[#0038A0] transition font-semibold">Contact</Link>
+            {/* DIGITAL & CREATIVE ▼ */}
+            <div className="relative group">
+              <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${SERVICES.filter(s=>s.cat==="Digital & Creative").some(s=>isActive(s.href)) ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Digital & Creative <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
+              <div className="absolute left-0 top-full hidden group-hover:block group-focus-within:block bg-white border-2 border-[#0038A0]/10 rounded-xl shadow-xl w-72 mt-2 z-50 overflow-hidden">
+                <div className="p-2 space-y-1">
+                  {SERVICES.filter(s=>s.cat==="Digital & Creative").map(s=><Link key={s.slug} href={s.href} className="block px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#002070] text-sm">{s.title}</Link>)}
+                </div>
+              </div>
+            </div>
+            <Link href="/estates" className={`px-3 py-2 rounded-lg transition ${isActive("/estates") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Estates</Link>
+            <Link href="/blog" className={`px-3 py-2 rounded-lg transition ${isActive("/blog") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Blog</Link>
+            <Link href="/about" className={`px-3 py-2 rounded-lg transition ${isActive("/about") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>About</Link>
+            <Link href="#contact" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition font-medium">Contact</Link>
           </nav>
 
           <div className="flex items-center gap-1">
@@ -160,6 +171,13 @@ export function SiteHeader() {
                 <Link href="/services/networking" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Networking</Link>
                 <Link href="/services/it-support" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">IT Support</Link>
                 <Link href="/services/cybersecurity" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Cybersecurity</Link>
+                <Link href="/services/system-integration" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">System Integration</Link>
+              </div>
+              <div className="pl-3 border-l-2 border-[#0038A0]/20 ml-1 space-y-1">
+                <p className="text-xs font-bold uppercase tracking-widest text-[#0038A0]">Digital & Creative</p>
+                <Link href="/services/website-design" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Website Design</Link>
+                <Link href="/services/graphic-design" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Graphic Design</Link>
+                <Link href="/services/ai-solutions" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">AI Solutions</Link>
               </div>
               <Link href="/estates" onClick={() => setMobileOpen(false)} className="block py-2">Estate Solutions</Link>
               <Link href="/about" onClick={() => setMobileOpen(false)} className="block py-2">About</Link>
