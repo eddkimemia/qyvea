@@ -26,9 +26,11 @@ export function ProductActions({ product }: { product: { id: string; slug: strin
         Add installation service to my order
       </label>
       <div className="mt-4 flex flex-col sm:flex-row gap-3 px-4 sm:px-0">
-        <Button size="lg" className="flex-1 h-14 sm:h-12 text-base shadow-md" onClick={handleAdd}>
-          {added ? "Added to Cart ✓" : "Add to Cart"}
-        </Button>
+        <div className="flex-1">
+          <Button size="lg" className="w-full h-14 sm:h-12 text-base shadow-md" onClick={handleAdd}>
+            {added ? "Added to Cart ✓" : "Add to Cart"}
+          </Button>
+        </div>
         <Link
           href={`https://wa.me/254715135141?text=${encodeURIComponent(waText)}`}
           target="_blank"
