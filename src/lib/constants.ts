@@ -37,6 +37,7 @@ export const CATEGORIES = [
   { value: "ELECTRICAL", label: "Electrical" },
   { value: "IT_SUPPORT", label: "IT" },
   { value: "ACCESSORIES", label: "Accessories" },
+  { value: "ICT", label: "ICT Products" },
 ] as const;
 
 export const SERVICES = [

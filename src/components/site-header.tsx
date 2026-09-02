@@ -100,10 +100,8 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
-            <Link href="/estates" className={`px-3 py-2 rounded-lg transition ${isActive("/estates") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Estates</Link>
             <Link href="/blog" className={`px-3 py-2 rounded-lg transition ${isActive("/blog") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Blog</Link>
-            <Link href="/about" className={`px-3 py-2 rounded-lg transition ${isActive("/about") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>About</Link>
-            <Link href="#contact" className="px-3 py-2 rounded-lg hover:bg-[#F5F7FA] hover:text-[#0038A0] transition font-medium">Contact</Link>
+
           </nav>
 
           <div className="flex items-center gap-1">
@@ -179,10 +177,7 @@ export function SiteHeader() {
                 <Link href="/services/graphic-design" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">Graphic Design</Link>
                 <Link href="/services/ai-solutions" onClick={() => setMobileOpen(false)} className="block py-1.5 text-sm">AI Solutions</Link>
               </div>
-              <Link href="/estates" onClick={() => setMobileOpen(false)} className="block py-2">Estate Solutions</Link>
-              <Link href="/about" onClick={() => setMobileOpen(false)} className="block py-2">About</Link>
               <Link href="/blog" onClick={() => setMobileOpen(false)} className="block py-2">Blog</Link>
-              <Link href="#contact" onClick={() => setMobileOpen(false)} className="block py-2 font-medium text-[#0038A0]">Contact</Link>
               {session?.user ? (
                 <>
                   {(session.user as any).role === "ADMIN" && <Link href="/admin" onClick={() => setMobileOpen(false)} className="block py-2 font-semibold text-[#F00000]">Dashboard</Link>}

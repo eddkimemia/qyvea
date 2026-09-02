@@ -53,7 +53,7 @@ export default async function ShopPage({ searchParams }: SearchParams) {
     if (dbFailed) products = filtered; // still show mock
   }
 
-  const categories = ["CCTV","INTERCOM","ACCESS_CONTROL","BIOMETRICS","NETWORKING","ELECTRIC_FENCE","GATE_AUTOMATION","FIRE_ALARM","SOLAR","SMART_HOME","ELECTRICAL","IT_SUPPORT","ACCESSORIES"];
+  const categories = ["CCTV","INTERCOM","ACCESS_CONTROL","BIOMETRICS","NETWORKING","ELECTRIC_FENCE","GATE_AUTOMATION","FIRE_ALARM","SOLAR","SMART_HOME","ELECTRICAL","IT_SUPPORT","ACCESSORIES","ICT"];
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
