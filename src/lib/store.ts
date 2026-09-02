@@ -11,6 +11,7 @@ interface Store {
   compare: string[]; // max 3
   addToCart: (item: CartItem) => void;
   removeFromCart: (productId: string) => void;
+  updateQty: (productId: string, qty: number) => void;
   clearCart: () => void;
   toggleWishlist: (slug: string) => void;
   toggleCompare: (slug: string) => void;
@@ -31,6 +32,7 @@ export const useStore = create<Store>()(
         }
       },
       removeFromCart: (productId) => set({ cart: get().cart.filter((c) => c.productId !== productId) }),
+      updateQty: (productId, qty) => set({ cart: get().cart.map((c) => c.productId === productId ? { ...c, qty: Math.max(1, qty) } : c) }),
       clearCart: () => set({ cart: [] }),
       toggleWishlist: (slug) => {
         const cur = get().wishlist;
