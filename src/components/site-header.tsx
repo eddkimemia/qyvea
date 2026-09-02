@@ -3,12 +3,11 @@ import Link from "next/link";
 import { useState, useEffect } from "react";
 import { useRouter, usePathname } from "next/navigation";
 import { useSession, signOut } from "next-auth/react";
-import { ShoppingCart, Heart, Menu, X, Phone, Search, User, Trash2, LogOut, ChevronDown } from "lucide-react";
+import { ShoppingCart, Heart, Menu, X, Phone, Search, User, LogOut, ChevronDown } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { SITE, SERVICES } from "@/lib/constants";
 import { useStore } from "@/lib/store";
-import { formatKES } from "@/lib/utils";
 
 const MOBILE_SECTIONS = [
   { key: "security", label: "Security", color: "#0038A0", filter: "Security" },
@@ -20,7 +19,7 @@ const MOBILE_SECTIONS = [
 
 export function SiteHeader() {
   const [mobileOpen, setMobileOpen] = useState(false);
-  const [cartOpen, setCartOpen] = useState(false);
+
   const [searchOpen, setSearchOpen] = useState(false);
   const [query, setQuery] = useState("");
   const [expandedSection, setExpandedSection] = useState<string | null>(null);
@@ -30,16 +29,9 @@ export function SiteHeader() {
   const isActive = (href: string) => pathname === href || pathname.startsWith(href + "/");
   const cart = useStore((s) => s.cart);
   const wishlist = useStore((s) => s.wishlist);
-  const removeFromCart = useStore((s) => s.removeFromCart);
-  const clearCart = useStore((s) => s.clearCart);
   const cartCount = cart.reduce((sum, c) => sum + c.qty, 0);
-  const cartTotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
 
-  useEffect(() => {
-    const handler = () => setCartOpen(true);
-    window.addEventListener("open-cart", handler);
-    return () => window.removeEventListener("open-cart", handler);
-  }, []);
+
 
   const handleSearch = (e: React.FormEvent) => {
     e.preventDefault();
@@ -54,6 +46,7 @@ export function SiteHeader() {
   };
 
   return (
+    <>
     <header className="w-full">
       {/* Top bar — NOT sticky */}
       <div className="bg-[#002070] text-white text-xs border-b-2 border-[#F00000]">
@@ -73,8 +66,8 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Main nav — STICKY */}
-      <div className="sticky top-0 z-50 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950 border-b dark:border-zinc-800">
+      {/* Main nav — FIXED */}
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950 border-b dark:border-zinc-800">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -130,10 +123,10 @@ export function SiteHeader() {
                 </Button>
               </Link>
               {/* Cart */}
-              <Button variant="ghost" size="icon" className="relative hover:text-[#0038A0] h-9 w-9" onClick={() => setCartOpen(true)}>
+              <Link href="/cart"><Button variant="ghost" size="icon" className="relative hover:text-[#0038A0] h-9 w-9">
                 <ShoppingCart className="h-4 w-4" />
                 {cartCount > 0 && <span className="absolute -top-0.5 -right-0.5 bg-[#F00000] text-white text-[8px] font-bold rounded-full h-3.5 w-3.5 grid place-items-center">{cartCount}</span>}
-              </Button>
+              </Button></Link>
               {/* Quote button — desktop */}
               <Link href="/quote" className="hidden sm:inline-flex"><Button size="sm" className="hidden lg:inline-flex h-8 text-xs">Get Quote</Button></Link>
               {/* Auth */}
@@ -257,61 +250,10 @@ export function SiteHeader() {
         </>
       )}
 
-      {/* Cart Drawer */}
-      {cartOpen && (
-        <div className="fixed inset-0 z-[60] flex justify-end">
-          <div className="absolute inset-0 bg-black/40 backdrop-blur-sm" onClick={() => setCartOpen(false)} />
-          <div className="relative bg-white w-full max-w-md h-[100vh] shadow-2xl flex flex-col">
-            <div className="p-4 border-b flex items-center justify-between bg-[#002070] text-white">
-              <h3 className="font-black flex items-center gap-2"><ShoppingCart className="h-5 w-5 text-[#0038A0]" /> Cart ({cartCount})</h3>
-              <Button variant="ghost" size="icon" className="text-white hover:bg-white/10" onClick={() => setCartOpen(false)}><X className="h-5 w-5" /></Button>
-            </div>
-            <div className="flex-1 overflow-y-auto p-4 space-y-3">
-              {cart.length === 0 ? (
-                <div className="text-center py-12">
-                  <ShoppingCart className="h-12 w-12 mx-auto text-zinc-300" />
-                  <p className="font-semibold mt-3">Your cart is empty</p>
-                  <p className="text-sm text-zinc-500">Add products to get a quote via WhatsApp</p>
-                  <Link href="/shop" onClick={() => setCartOpen(false)}><Button className="mt-4">Browse Shop</Button></Link>
-                </div>
-              ) : (
-                cart.map((item) => (
-                  <div key={`${item.productId}-${item.slug}`} className="flex gap-3 border rounded-xl p-3">
-                    <div className="flex-1 min-w-0">
-                      <p className="font-semibold text-sm line-clamp-2">{item.name}</p>
-                      <p className="text-xs text-zinc-500">{item.slug} • Qty: {item.qty}</p>
-                      <p className="font-bold text-sm text-[#002070]">{formatKES(item.price)} × {item.qty} = {formatKES(item.price * item.qty)}</p>
-                    </div>
-                    <Button variant="ghost" size="icon" className="h-8 w-8 text-red-600 hover:bg-red-50" onClick={() => removeFromCart(item.productId)}><Trash2 className="h-4 w-4" /></Button>
-                  </div>
-                ))
-              )}
-            </div>
-            {cart.length > 0 && (
-              <div className="border-t p-4 space-y-3 bg-zinc-50">
-                <div className="flex justify-between font-black text-lg"><span>Total</span><span className="text-[#002070]">{formatKES(cartTotal)}</span></div>
-                <p className="text-xs text-zinc-500">Free delivery Nairobi &gt; KES 5k • Installation billed separately</p>
-                <div className="grid grid-cols-2 gap-2">
-                  <Button variant="outline" onClick={clearCart} className="w-full">Clear</Button>
-                  <Link href="/cart" onClick={() => setCartOpen(false)}><Button className="w-full">View Cart</Button></Link>
-                </div>
-                <a
-                  href={`https://wa.me/${SITE.whatsapp}?text=${encodeURIComponent(`Hello Syntech! I want to order:\n\n${cart.map((c) => `• ${c.name} × ${c.qty} = ${formatKES(c.price * c.qty)}`).join("\n")}\n\nTotal: ${formatKES(cartTotal)}\n\nPlease confirm availability & delivery to [my location].`)}`}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block"
-                >
-                  <Button className="w-full bg-[#25D366] hover:bg-[#20BD55] text-white gap-2 h-11">
-                    <svg viewBox="0 0 32 32" className="h-5 w-5 fill-white"><path d="M16.04 2C8.43 2 2.22 8.21 2.22 15.83c0 2.44.64 4.81 1.85 6.9L2.08 30l7.48-1.97a13.76 13.76 0 0 0 6.48 1.64h.01c7.61 0 13.82-6.21 13.82-13.83 0-3.7-1.44-7.17-4.05-9.78A13.75 13.75 0 0 0 16.04 2Zm7.93 19.8c-.33.95-1.95 1.84-2.71 1.96-.68.1-1.36.1-2.2-.1-.58-.14-1.33-.33-2.28-.65-4.02-1.72-6.64-5.74-6.84-6-.2-.27-1.66-2.21-1.66-4.22s1.05-3 1.43-3.41c.33-.36.87-.52 1.39-.52h1c.37 0 .69.02.99.83.33.95 1.14 3.28 1.24 3.52.1.24.16.52.02.83-.14.31-.21.5-.42.77-.2.27-.43.57-.61.77-.2.22-.41.46-.18.9.23.44 1.04 1.72 2.23 2.79 1.53 1.36 2.82 1.78 3.22 1.98.31.15.5.13.68-.08.19-.2.79-.92 1-1.22.21-.31.42-.26.71-.16.29.1 1.83.87 2.15 1.02.31.16.52.24.6.37.08.13.08.76-.25 1.71Z"/></svg>
-                    Order on WhatsApp
-                  </Button>
-                </a>
-                <p className="text-[11px] text-center text-zinc-400">Instant quote • No payment now • 5-yr warranty</p>
-              </div>
-            )}
-          </div>
-        </div>
-      )}
+
     </header>
+    {/* Spacer for fixed nav */}
+    <div className="h-16" />
+    </>
   );
 }

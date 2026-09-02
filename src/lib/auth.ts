@@ -8,6 +8,11 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   trustHost: true,
   secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  logger: {
+    error(error) { console.error("[NextAuth ERROR]", error); },
+    warn(code) { console.warn("[NextAuth WARN]", code); },
+    debug(code, metadata) { console.debug("[NextAuth DEBUG]", code, metadata); },
+  },
   providers: [
     Credentials({
       name: "Credentials",

@@ -25,20 +25,24 @@ export default function LoginPage() {
     const form = new FormData(e.currentTarget);
     const email = String(form.get("email") || "");
     const password = String(form.get("password") || "");
-    const res = await signIn("credentials", { email, password, redirect: false });
-    setLoginLoading(false);
-    if (res?.error) {
-      setLoginError("Invalid email or password");
-      return;
-    }
-    if (res?.ok) {
-      // Redirect based on role from session
-      const sessionRes = await fetch("/api/auth/session");
-      const sessionData = await sessionRes.json();
-      const userRole = sessionData?.user?.role;
-      if (userRole === "ADMIN") router.push("/admin");
-      else router.push("/");
-      router.refresh();
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: email.toLowerCase() === "admin@syntech.co.ke" ? "/admin" : "/",
+      });
+      setLoginLoading(false);
+      if (res?.error) {
+        setLoginError("Invalid email or password");
+        return;
+      }
+      // Login successful — full page reload to pick up session
+      window.location.href = res?.url || (email.toLowerCase() === "admin@syntech.co.ke" ? "/admin" : "/");
+    } catch (err: any) {
+      setLoginLoading(false);
+      console.error("Login error:", err);
+      setLoginError(err?.message?.includes("NEXTAUTH") ? "Auth configuration error — check AUTH_SECRET" : "Login failed. Please try again.");
     }
   }
 

@@ -29,17 +29,23 @@ export default function AdminLoginPage() {
     const form = new FormData(e.currentTarget);
     const email = String(form.get("email") || "");
     const password = String(form.get("password") || "");
-    const res = await signIn("credentials", { email, password, redirect: false });
-    setLoading(false);
-    if (res?.error) {
-      setError("Invalid admin email or password");
-      return;
-    }
-    if (res?.ok) {
-      // Need to check role — fetch session
-      // For now, push to /admin; layout will verify role
-      router.push("/admin");
-      router.refresh();
+    try {
+      const res = await signIn("credentials", {
+        email,
+        password,
+        redirect: false,
+        callbackUrl: "/admin",
+      });
+      setLoading(false);
+      if (res?.error) {
+        setError("Invalid admin email or password");
+        return;
+      }
+      window.location.href = res?.url || "/admin";
+    } catch (err: any) {
+      setLoading(false);
+      console.error("Admin login error:", err);
+      setError(err?.message?.includes("NEXTAUTH") ? "Auth configuration error — check AUTH_SECRET" : "Login failed. Please try again.");
     }
   }
 
