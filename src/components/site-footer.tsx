@@ -1,6 +1,6 @@
 import Link from "next/link";
 import { SITE } from "@/lib/constants";
-import { Facebook, Instagram, Linkedin, Twitter, Phone } from "lucide-react";
+import { Facebook, Instagram, Linkedin, Twitter, Youtube, Phone } from "lucide-react";
 
 function WhatsAppIcon({ className }: { className?: string }) {
   return (
@@ -20,38 +20,40 @@ function TikTokIcon({ className }: { className?: string }) {
 
 export function SiteFooter() {
   return (
-    <footer className="border-t-2 border-[#7FAF25] bg-[#0A0A0A] text-zinc-300">
+    <footer className="border-t-2 border-[#0038A0] bg-[#002070] text-zinc-300">
       <div className="container mx-auto px-4 py-12 grid md:grid-cols-4 gap-10">
         <div>
           <Link href="/" className="flex items-center gap-2 font-black text-white text-lg">
-            <img src="/logo.svg" alt="Qyvea" className="h-8 w-auto" />
-            <span className="hidden sm:inline">Qyvea Limited</span>
+            <img src="/syntechlogo.jpg" alt="Syntech Solutions" className="h-9 w-auto max-w-[160px] object-contain rounded-md bg-white p-1" />
           </Link>
           <p className="mt-3 text-sm text-zinc-400 leading-relaxed">
             Kenya&apos;s trusted security & IT company. 10+ years, 500+ projects, 47 counties. Licensed & insured. 5-year warranty.
           </p>
-          <div className="mt-4 flex gap-2">
-            <Link href={`https://wa.me/${SITE.whatsapp}`} target="_blank" aria-label="WhatsApp" className="h-9 w-9 rounded-xl bg-[#25D366] text-white grid place-items-center hover:bg-[#20BD5A] transition">
+          <div className="mt-4 flex gap-2 flex-wrap">
+            <Link href="https://wa.me/254715135141" target="_blank" aria-label="WhatsApp" className="h-9 w-9 rounded-xl bg-[#25D366] text-white grid place-items-center hover:bg-[#20BD5A] transition">
               <WhatsAppIcon className="h-4 w-4" />
             </Link>
-            <Link href="https://www.facebook.com/profile.php?id=61590574734874" target="_blank" aria-label="Facebook" className="h-9 w-9 rounded-xl bg-white text-[#1877F2] grid place-items-center hover:bg-zinc-100 transition">
+            <Link href="https://www.facebook.com/SyntechSolutions" target="_blank" aria-label="Facebook" className="h-9 w-9 rounded-xl bg-white text-[#1877F2] grid place-items-center hover:bg-zinc-100 transition">
               <Facebook className="h-4 w-4" />
             </Link>
-            <Link href="https://www.instagram.com/qyvea254?igsh=OTRmcXJqbjh0a3lz" target="_blank" aria-label="Instagram" className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#515BD4] text-white grid place-items-center hover:opacity-90 transition">
+            <Link href="https://www.instagram.com/syntechsolutions" target="_blank" aria-label="Instagram" className="h-9 w-9 rounded-xl bg-gradient-to-br from-[#F58529] via-[#DD2A7B] to-[#515BD4] text-white grid place-items-center hover:opacity-90 transition">
               <Instagram className="h-4 w-4" />
             </Link>
-            <Link href="https://x.com/NgigiElias" target="_blank" aria-label="X / Twitter" className="h-9 w-9 rounded-xl bg-white text-black grid place-items-center hover:bg-zinc-100 transition">
+            <Link href="https://x.com/syntechsolutions" target="_blank" aria-label="X / Twitter" className="h-9 w-9 rounded-xl bg-white text-black grid place-items-center hover:bg-zinc-100 transition">
               <Twitter className="h-4 w-4" />
             </Link>
-            <Link href="https://www.tiktok.com/@qyvea" target="_blank" aria-label="TikTok" className="h-9 w-9 rounded-xl bg-white text-black grid place-items-center hover:bg-zinc-100 transition">
+            <Link href="https://www.tiktok.com/@syntechsolutions" target="_blank" aria-label="TikTok" className="h-9 w-9 rounded-xl bg-white text-black grid place-items-center hover:bg-zinc-100 transition">
               <TikTokIcon className="h-4 w-4" />
             </Link>
-            <Link href="https://www.linkedin.com/company/securetech-solutions-kenya" target="_blank" aria-label="LinkedIn" className="h-9 w-9 rounded-xl bg-[#0A66C2] text-white grid place-items-center hover:bg-[#084482] transition">
+            <Link href="https://www.linkedin.com/company/syntech-solutions-ltd" target="_blank" aria-label="LinkedIn" className="h-9 w-9 rounded-xl bg-[#0A66C2] text-white grid place-items-center hover:bg-[#084482] transition">
               <Linkedin className="h-4 w-4" />
+            </Link>
+            <Link href="https://www.youtube.com/@syntechsolutions" target="_blank" aria-label="YouTube" className="h-9 w-9 rounded-xl bg-[#FF0000] text-white grid place-items-center hover:bg-[#CC0000] transition">
+              <Youtube className="h-4 w-4" />
             </Link>
           </div>
           <div className="mt-3 flex gap-3 text-xs">
-            <Link href={`tel:${SITE.phone}`} className="inline-flex items-center gap-1 hover:text-[#7FAF25]"><Phone className="h-3 w-3" /> {SITE.phone}</Link>
+            <Link href={`tel:${SITE.phone}`} className="inline-flex items-center gap-1 hover:text-[#0038A0]"><Phone className="h-3 w-3" /> {SITE.phone}</Link>
           </div>
         </div>
         <div>
@@ -77,13 +79,13 @@ export function SiteFooter() {
           <p className="text-sm"><Link href={`tel:${SITE.phone}`} className="hover:text-white">{SITE.phone}</Link></p>
           <p className="text-sm">{SITE.email}</p>
           <p className="text-sm">{SITE.address}</p>
-          <p className="text-xs text-zinc-500 mt-4">© 2026 Qyvea Limited Kenya. All rights reserved.</p>
+          <p className="text-xs text-zinc-500 mt-4">© 2026 Syntech Limited Kenya. All rights reserved.</p>
         </div>
       </div>
       <div className="border-t border-zinc-800 py-4 text-center text-xs text-zinc-500">
         <div className="container mx-auto px-4 flex justify-center gap-4">
-          <Link href="/privacy" className="hover:text-[#7FAF25]">Privacy</Link>
-          <Link href="/terms" className="hover:text-[#7FAF25]">Terms</Link>
+          <Link href="/privacy" className="hover:text-[#0038A0]">Privacy</Link>
+          <Link href="/terms" className="hover:text-[#0038A0]">Terms</Link>
           <span>NCA • EPRA • PSRA • ISO 9001:2015 • KES 50M All-Risk Cover</span>
         </div>
       </div>

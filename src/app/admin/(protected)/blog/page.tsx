@@ -43,9 +43,9 @@ export default async function AdminBlogPage({ searchParams }: { searchParams: Pr
             </thead>
             <tbody>
               {posts.length === 0 ? (
-                <tr><td colSpan={4} className="p-8 text-center text-zinc-500">No posts — <Link href="/admin/blog/new" className="underline text-[#7FAF25]">create one</Link> or run <code className="bg-zinc-100 px-1 rounded">npm run db:seed</code></td></tr>
+                <tr><td colSpan={4} className="p-8 text-center text-zinc-500">No posts — <Link href="/admin/blog/new" className="underline text-[#0038A0]">create one</Link> or run <code className="bg-zinc-100 px-1 rounded">npm run db:seed</code></td></tr>
               ) : posts.map((p: any) => (
-                <tr key={p.id} className="border-b last:border-0 hover:bg-[#F2F9E6]/30">
+                <tr key={p.id} className="border-b last:border-0 hover:bg-[#F5F7FA]/30">
                   <td className="p-3">
                     <div className="flex gap-3">
                       <img src={p.image || "https://placehold.co/80x60/7FAF25/0A0A0A?text=Q"} alt={p.title} className="h-12 w-16 rounded-lg object-cover border" />
@@ -57,7 +57,7 @@ export default async function AdminBlogPage({ searchParams }: { searchParams: Pr
                     </div>
                   </td>
                   <td className="p-3 text-center">
-                    <Badge className={p.published ? "bg-[#7FAF25] text-black" : "bg-zinc-200 text-zinc-700"}>{p.published ? "Published" : "Draft"}</Badge>
+                    <Badge className={p.published ? "bg-[#0038A0] text-white" : "bg-zinc-200 text-zinc-700"}>{p.published ? "Published" : "Draft"}</Badge>
                     {p.featured && <Badge className="ml-1 bg-black text-white text-[10px]">Featured</Badge>}
                   </td>
                   <td className="p-3 text-center text-xs">{p.views}</td>

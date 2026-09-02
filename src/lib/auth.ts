@@ -22,15 +22,15 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
         if (!email || !password) return null;
 
         // Allow mock admin even if DB not available (fallback for demo)
-        const isMockAdmin = email === "admin@qyvea.co.ke" && password === "Admin123!";
-        const isMockPartner = email === "partner@qyvea.co.ke" && password === "Partner123!";
+        const isMockAdmin = email === "admin@syntech.co.ke" && password === "Admin123!";
+        const isMockPartner = email === "partner@syntech.co.ke" && password === "Partner123!";
 
         try {
           const user = await prisma.user.findUnique({ where: { email } });
           if (!user || !user.password) {
             // fallback mock if DB missing but credentials match mock
-            if (isMockAdmin) return { id: "mock-admin", name: "Qyvea Admin", email: "admin@qyvea.co.ke", image: null, role: "ADMIN" } as any;
-            if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@qyvea.co.ke", image: null, role: "PARTNER" } as any;
+            if (isMockAdmin) return { id: "mock-admin", name: "Syntech Admin", email: "admin@syntech.co.ke", image: null, role: "ADMIN" } as any;
+            if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@syntech.co.ke", image: null, role: "PARTNER" } as any;
             return null;
           }
           const ok = await bcrypt.compare(password, user.password);
@@ -44,8 +44,8 @@ export const { handlers, auth, signIn, signOut } = NextAuth({
           } as any;
         } catch {
           // DB unavailable — allow mock logins only
-          if (isMockAdmin) return { id: "mock-admin", name: "Qyvea Admin", email: "admin@qyvea.co.ke", image: null, role: "ADMIN" } as any;
-          if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@qyvea.co.ke", image: null, role: "PARTNER" } as any;
+          if (isMockAdmin) return { id: "mock-admin", name: "Syntech Admin", email: "admin@syntech.co.ke", image: null, role: "ADMIN" } as any;
+          if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@syntech.co.ke", image: null, role: "PARTNER" } as any;
           return null;
         }
       },

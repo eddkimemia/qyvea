@@ -17,12 +17,12 @@ export function ProductActions({ product }: { product: { id: string; slug: strin
     setTimeout(() => setAdded(false), 1200);
   };
 
-  const waText = `Hello Qyvea! \n\nI want to ORDER this product:\n\n*${product.name}*\nPrice: ${formatKES(product.price)}${product.oldPrice ? " (was " + formatKES(product.oldPrice) + ")" : ""}\nCategory: ${product.category.replace("_"," ")}\nLink: https://qyvea.co.ke/shop/${product.slug}${withInstall ? "\n+ Professional Installation" : ""}\n\nPlease confirm:\n- Availability in stock\n- Delivery to [my location]\n- Installation cost (if needed)\n\nThank you!`;
+  const waText = `Hello Syntech! \n\nI want to ORDER this product:\n\n*${product.name}*\nPrice: ${formatKES(product.price)}${product.oldPrice ? " (was " + formatKES(product.oldPrice) + ")" : ""}\nCategory: ${product.category.replace("_"," ")}\nLink: https://syntech.co.ke/shop/${product.slug}${withInstall ? "\n+ Professional Installation" : ""}\n\nPlease confirm:\n- Availability in stock\n- Delivery to [my location]\n- Installation cost (if needed)\n\nThank you!`;
 
   return (
     <>
       <label className="flex items-center gap-2 mt-3 font-medium cursor-pointer text-sm">
-        <input type="checkbox" className="accent-[#7FAF25] h-4 w-4" checked={withInstall} onChange={(e) => setWithInstall(e.target.checked)} />
+        <input type="checkbox" className="accent-[#0038A0] h-4 w-4" checked={withInstall} onChange={(e) => setWithInstall(e.target.checked)} />
         Add installation service to my order
       </label>
       <div className="mt-4 flex flex-col sm:flex-row gap-3">
@@ -30,7 +30,7 @@ export function ProductActions({ product }: { product: { id: string; slug: strin
           {added ? "Added to Cart ✓" : "Add to Cart"}
         </Button>
         <Link
-          href={`https://wa.me/254113301244?text=${encodeURIComponent(waText)}`}
+          href={`https://wa.me/254715135141?text=${encodeURIComponent(waText)}`}
           target="_blank"
           rel="noopener noreferrer"
           className="flex-1"

@@ -42,6 +42,6 @@ export const useStore = create<Store>()(
         else if (cur.length < 3) set({ compare: [...cur, slug] });
       },
     }),
-    { name: "qyvea-store" }
+    { name: "syntech-store" }
   )
 );

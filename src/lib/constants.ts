@@ -1,13 +1,26 @@
 export const SITE = {
-  name: "Qyvea Limited",
+  name: "Syntech Solutions",
+  shortName: "Syntech",
   tagline: "One Company, Every Solution",
-  description: "Kenya's trusted security & IT integration company. CCTV, biometrics, solar, networking — 500+ projects, 47 counties.",
-  phone: "+254 113 301 244",
-  phoneDisplay: "0113301244",
-  whatsapp: "254113301244",
-  email: "info@qyvea.co.ke",
+  description: "Kenya's trusted security & IT integration company. CCTV, biometrics, solar, networking — 500+ projects, 47 counties. Licensed, insured, 5-year warranty.",
+  phone: "+254 715 135 141",
+  phoneDisplay: "0715 135 141",
+  whatsapp: "254715135141",
+  email: "info@syntech.co.ke",
   address: "Westlands, Nairobi",
   founded: "2022",
+  domain: "https://syntech.co.ke",
+  url: "https://syntech.co.ke",
+} as const;
+
+export const SOCIALS = {
+  facebook: { handle: "Syntech Solutions", url: "https://www.facebook.com/SyntechSolutions", label: "Facebook" },
+  instagram: { handle: "@syntechsolutions", url: "https://www.instagram.com/syntechsolutions", label: "Instagram" },
+  linkedin: { handle: "Syntech Solutions Ltd", url: "https://www.linkedin.com/company/syntech-solutions-ltd", label: "LinkedIn" },
+  tiktok: { handle: "@syntechsolutions", url: "https://www.tiktok.com/@syntechsolutions", label: "TikTok" },
+  x: { handle: "@syntechsolutions", url: "https://x.com/syntechsolutions", label: "X" },
+  youtube: { handle: "Syntech Solutions", url: "https://www.youtube.com/@syntechsolutions", label: "YouTube" },
+  whatsapp: { handle: "0715 135 141", url: "https://wa.me/254715135141", label: "WhatsApp" },
 } as const;
 
 export const CATEGORIES = [

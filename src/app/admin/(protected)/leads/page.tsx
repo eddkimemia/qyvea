@@ -29,13 +29,13 @@ export default async function AdminLeadsPage() {
                 </thead>
                 <tbody>
                   {leads.map((l: any) => (
-                    <tr key={l.id} className="border-b last:border-0 hover:bg-[#F2F9E6]/30">
+                    <tr key={l.id} className="border-b last:border-0 hover:bg-[#F5F7FA]/30">
                       <td className="p-2 font-semibold">{l.name}</td>
                       <td className="p-2 font-mono text-xs">{l.phone}</td>
                       <td className="p-2"><Badge variant="secondary" className="text-[11px]">{(l.service || "GENERAL").replace("_"," ")}</Badge></td>
                       <td className="p-2 text-xs">{l.location || "—"}</td>
                       <td className="p-2 text-xs">{l.source || "direct"}</td>
-                      <td className="p-2 text-center"><Badge className={`${l.status==="NEW" ? "bg-[#7FAF25] text-black" : l.status==="CONVERTED" ? "bg-black text-white" : "bg-zinc-200 text-zinc-700"} text-[11px]`}>{l.status}</Badge></td>
+                      <td className="p-2 text-center"><Badge className={`${l.status==="NEW" ? "bg-[#0038A0] text-white" : l.status==="CONVERTED" ? "bg-black text-white" : "bg-zinc-200 text-zinc-700"} text-[11px]`}>{l.status}</Badge></td>
                       <td className="p-2 text-right text-xs">{new Date(l.createdAt).toLocaleDateString()}</td>
                     </tr>
                   ))}

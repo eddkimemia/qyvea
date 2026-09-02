@@ -31,7 +31,7 @@ export default function LoginPage() {
     }
     if (res?.ok) {
       // Redirect based on email — admin to /admin
-      if (email.toLowerCase() === "admin@qyvea.co.ke") router.push("/admin");
+      if (email.toLowerCase() === "admin@syntech.co.ke") router.push("/admin");
       else router.push("/");
       router.refresh();
     }
@@ -72,23 +72,23 @@ export default function LoginPage() {
   return (
     <div className="container mx-auto px-4 py-10 max-w-5xl">
       <div className="text-center mb-6">
-        <h1 className="text-2xl font-black">Welcome to Qyvea</h1>
+        <h1 className="text-2xl font-black">Welcome to Syntech</h1>
         <p className="text-sm text-zinc-500">Sign in to manage cart, wishlist, orders & admin</p>
       </div>
       <div className="grid md:grid-cols-2 gap-6">
-        <Card className="border-2 border-[#7FAF25]/20">
-          <div className="h-1 bg-[#7FAF25]" />
+        <Card className="border-2 border-[#0038A0]/20">
+          <div className="h-1 bg-[#0038A0]" />
           <CardHeader><CardTitle>Sign In</CardTitle><CardDescription>Save cart, track orders & more.</CardDescription></CardHeader>
           <CardContent>
             <form onSubmit={handleLogin} className="space-y-3">
-              <Input name="email" placeholder="Email" type="email" required defaultValue="admin@qyvea.co.ke" />
+              <Input name="email" placeholder="Email" type="email" required defaultValue="admin@syntech.co.ke" />
               <Input name="password" placeholder="Password" type="password" required defaultValue="Admin123!" />
               {loginError && <p className="text-xs text-red-600 bg-red-50 border border-red-200 rounded px-2 py-1">{loginError}</p>}
               <Button type="submit" className="w-full" disabled={loginLoading}>{loginLoading ? "Signing in..." : "Sign In"}</Button>
-              <div className="text-xs text-zinc-500 bg-[#F2F9E6] border border-[#7FAF25]/20 rounded-lg p-3 space-y-1">
+              <div className="text-xs text-zinc-500 bg-[#F5F7FA] border border-[#0038A0]/20 rounded-lg p-3 space-y-1">
                 <p className="font-bold">Demo logins (seeded):</p>
-                <p><span className="font-mono">admin@qyvea.co.ke</span> / <span className="font-mono">Admin123!</span> → Admin dashboard</p>
-                <p><span className="font-mono">partner@qyvea.co.ke</span> / <span className="font-mono">Partner123!</span> → Partner</p>
+                <p><span className="font-mono">admin@syntech.co.ke</span> / <span className="font-mono">Admin123!</span> → Admin dashboard</p>
+                <p><span className="font-mono">partner@syntech.co.ke</span> / <span className="font-mono">Partner123!</span> → Partner</p>
                 <p className="text-[11px]">Works even if DB not migrated (mock fallback).</p>
               </div>
             </form>
@@ -96,7 +96,7 @@ export default function LoginPage() {
         </Card>
 
         <Card>
-          <CardHeader><CardTitle>Create Account</CardTitle><CardDescription>Join Qyvea for quotes & installs.</CardDescription></CardHeader>
+          <CardHeader><CardTitle>Create Account</CardTitle><CardDescription>Join Syntech for quotes & installs.</CardDescription></CardHeader>
           <CardContent>
             <form onSubmit={handleSignup} className="space-y-3">
               <Input name="name" placeholder="Full Name" required />
@@ -107,7 +107,7 @@ export default function LoginPage() {
               {signupOk && <p className="text-xs text-green-700 bg-green-50 border border-green-200 rounded px-2 py-1">{signupOk}</p>}
               <Button type="submit" variant="outline" className="w-full" disabled={signupLoading}>{signupLoading ? "Creating..." : "Create Account"}</Button>
             </form>
-            <p className="text-xs text-center mt-3"><Link href="/admin" className="underline text-[#5A7F1B]">Go to Admin Dashboard →</Link> (requires admin login)</p>
+            <p className="text-xs text-center mt-3"><Link href="/admin" className="underline text-[#0038A0]">Go to Admin Dashboard →</Link> (requires admin login)</p>
           </CardContent>
         </Card>
       </div>

@@ -1,4 +1,4 @@
-// Qyvea Limited - PostgreSQL via Prisma
+// Syntech Limited - PostgreSQL via Prisma
 // Modern schema covering original site: products store, services, leads, orders, RBAC, partners, etc.
 
 generator client {
@@ -296,7 +296,7 @@ model Subscription {
 
 model Settings {
   id              String  @id @default("singleton")
-  whatsappNumber  String  @default("254113301244")
+  whatsappNumber  String  @default("254715135141")
   promoText       String?
   promoCode       String?
   promoActive     Boolean @default(false)

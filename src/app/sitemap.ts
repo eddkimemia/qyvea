@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { prisma } from "@/lib/db";
 import { MOCK_PRODUCTS } from "@/lib/mock-products";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://qyvea.co.ke";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://syntech.co.ke";
 
 export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
   const staticRoutes = ["", "/shop", "/about", "/estates", "/blog", "/checkout", "/login", "/admin/login"].map((route) => ({

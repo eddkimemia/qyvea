@@ -24,8 +24,8 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
         <span className="text-xs bg-zinc-100 px-2 py-1 rounded font-mono">{product.id.slice(0,8)}</span>
       </div>
 
-      <Card className="border-2 border-[#7FAF25]/20">
-        <div className="h-1 bg-[#7FAF25]" />
+      <Card className="border-2 border-[#0038A0]/20">
+        <div className="h-1 bg-[#0038A0]" />
         <CardHeader>
           <CardTitle>{product.name}</CardTitle>
           <p className="text-sm text-zinc-500">{product.category.replace("_"," ")} • {product.slug}</p>
@@ -34,22 +34,22 @@ export default async function EditProductPage({ params }: { params: Promise<{ id
           <form action={`/api/products?id=${product.id}`} method="post" className="grid md:grid-cols-2 gap-3">
             {/* We use POST with _method=PUT trick — API handles via ?id */}
             <input type="hidden" name="_method" value="PUT" />
-            <input name="name" defaultValue={product.name} placeholder="Product name *" required className="md:col-span-2 border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
-            <input name="slug" defaultValue={product.slug} placeholder="slug" required className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
-            <select name="category" defaultValue={product.category} required className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none bg-white">
+            <input name="name" defaultValue={product.name} placeholder="Product name *" required className="md:col-span-2 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="slug" defaultValue={product.slug} placeholder="slug" required className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <select name="category" defaultValue={product.category} required className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none bg-white">
               {categories.map(c=> <option key={c} value={c}>{c.replace("_"," ")}</option>)}
             </select>
-            <input name="price" type="number" defaultValue={product.price} placeholder="Price KES *" required className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="price" type="number" defaultValue={product.price} placeholder="Price KES *" required className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
             <input name="oldPrice" type="number" defaultValue={product.oldPrice || ""} placeholder="Old price" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-            <input name="image" defaultValue={product.image} placeholder="Image URL" required className="md:col-span-2 border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="image" defaultValue={product.image} placeholder="Image URL" required className="md:col-span-2 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
             <input name="stockQty" type="number" defaultValue={product.stockQty} placeholder="Stock qty" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
             <input name="labourPrice" type="number" defaultValue={product.labourPrice || ""} placeholder="Labour KES" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
             <textarea name="description" defaultValue={product.description} placeholder="Description" rows={3} className="md:col-span-2 border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
             <div className="md:col-span-2 flex flex-wrap gap-4">
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="featured" defaultChecked={product.featured} className="accent-[#7FAF25]" /> Featured</label>
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={product.active} className="accent-[#7FAF25]" /> Active</label>
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="installationAvailable" defaultChecked={product.installationAvailable} className="accent-[#7FAF25]" /> Installation</label>
-              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="inStock" defaultChecked={product.inStock} className="accent-[#7FAF25]" /> In stock</label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="featured" defaultChecked={product.featured} className="accent-[#0038A0]" /> Featured</label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="active" defaultChecked={product.active} className="accent-[#0038A0]" /> Active</label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="installationAvailable" defaultChecked={product.installationAvailable} className="accent-[#0038A0]" /> Installation</label>
+              <label className="flex items-center gap-2 text-sm"><input type="checkbox" name="inStock" defaultChecked={product.inStock} className="accent-[#0038A0]" /> In stock</label>
             </div>
             <div className="md:col-span-2">
               <Button type="submit" className="w-full h-11">Save Changes (PUT)</Button>

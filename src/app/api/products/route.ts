@@ -66,7 +66,7 @@ async function handleUpsert(data: any, id?: string) {
     payload.reviewsCount = 0;
     payload.views = 0;
     payload.sold = 0;
-    payload.tags = payload.category ? [payload.category, "Qyvea"] : ["Qyvea"];
+    payload.tags = payload.category ? [payload.category, "Syntech"] : ["Syntech"];
     if (payload.price && !payload.specs) {
       payload.specs = [
         { key: "Warranty", value: "5 Years Workmanship + Manufacturer" },

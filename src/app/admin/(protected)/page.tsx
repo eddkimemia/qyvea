@@ -43,21 +43,21 @@ export default async function AdminDashboardPage() {
       <div className="flex flex-wrap items-center justify-between gap-3">
         <div>
           <h1 className="text-2xl font-black tracking-tight">Dashboard</h1>
-          <p className="text-sm text-zinc-500">Qyvea PostgreSQL • Brand <span className="text-[#7FAF25] font-bold">#7FAF25</span> • 36 products across 13 categories</p>
+          <p className="text-sm text-zinc-500">Syntech PostgreSQL • Brand <span className="text-[#0038A0] font-bold">#0038A0</span> • 36 products across 13 categories</p>
         </div>
-        <Badge className="bg-[#7FAF25] text-black font-bold">LIVE SYNC</Badge>
+        <Badge className="bg-[#0038A0] text-white font-bold">LIVE SYNC</Badge>
       </div>
 
       {/* Stats */}
       <div className="grid md:grid-cols-4 gap-4">
-        <Card className="border-2 border-[#7FAF25]/20 hover:shadow-md transition overflow-hidden">
-          <div className="h-1 bg-[#7FAF25]" />
+        <Card className="border-2 border-[#0038A0]/20 hover:shadow-md transition overflow-hidden">
+          <div className="h-1 bg-[#0038A0]" />
           <CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Products</CardTitle></CardHeader>
-          <CardContent><div className="text-3xl font-black">{stats.products}</div><p className="text-xs text-zinc-500">13 categories • <Link href="/admin/products" className="text-[#5A7F1B] underline">Manage →</Link></p></CardContent>
+          <CardContent><div className="text-3xl font-black">{stats.products}</div><p className="text-xs text-zinc-500">13 categories • <Link href="/admin/products" className="text-[#0038A0] underline">Manage →</Link></p></CardContent>
         </Card>
-        <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Orders</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.orders}</div><p className="text-xs text-zinc-500"><Link href="/admin/orders" className="text-[#5A7F1B] underline">View orders →</Link></p></CardContent></Card>
-        <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Leads</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.leads}</div><p className="text-xs text-zinc-500"><Link href="/admin/leads" className="text-[#5A7F1B] underline">CRM →</Link></p></CardContent></Card>
-        <Card className="bg-[#0A0A0A] text-white border-0"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-400">Revenue</CardTitle></CardHeader><CardContent><div className="text-3xl font-black text-[#7FAF25]">{formatKES(stats.revenue)}</div><p className="text-xs text-zinc-400">Total fulfilled</p></CardContent></Card>
+        <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Orders</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.orders}</div><p className="text-xs text-zinc-500"><Link href="/admin/orders" className="text-[#0038A0] underline">View orders →</Link></p></CardContent></Card>
+        <Card className="border-2 border-black/5"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-500">Leads</CardTitle></CardHeader><CardContent><div className="text-3xl font-black">{stats.leads}</div><p className="text-xs text-zinc-500"><Link href="/admin/leads" className="text-[#0038A0] underline">CRM →</Link></p></CardContent></Card>
+        <Card className="bg-[#002070] text-white border-0"><CardHeader className="pb-2"><CardTitle className="text-xs uppercase tracking-widest text-zinc-400">Revenue</CardTitle></CardHeader><CardContent><div className="text-3xl font-black text-[#0038A0]">{formatKES(stats.revenue)}</div><p className="text-xs text-zinc-400">Total fulfilled</p></CardContent></Card>
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
@@ -105,7 +105,7 @@ export default async function AdminDashboardPage() {
       </div>
 
       <div className="grid lg:grid-cols-2 gap-6">
-        <Card className="border-[#7FAF25]/20">
+        <Card className="border-[#0038A0]/20">
           <CardHeader><CardTitle className="text-base flex items-center gap-2"><span className="h-2 w-2 rounded-full bg-amber-500" /> Low Stock Alerts</CardTitle></CardHeader>
           <CardContent>
             {lowStock.length === 0 ? (
@@ -139,10 +139,10 @@ export default async function AdminDashboardPage() {
         </Card>
       </div>
 
-      <Card className="border-2 border-[#7FAF25]/10 bg-[#F2F9E6]/30">
+      <Card className="border-2 border-[#0038A0]/10 bg-[#F5F7FA]/30">
         <CardHeader><CardTitle className="text-base">Quick Actions & Pages</CardTitle></CardHeader>
         <CardContent className="grid sm:grid-cols-2 lg:grid-cols-4 gap-3 text-sm">
-          <Link href="/admin/products" className="border-2 border-[#7FAF25]/20 rounded-xl p-4 hover:bg-[#7FAF25] hover:text-black hover:border-[#7FAF25] transition bg-white group">
+          <Link href="/admin/products" className="border-2 border-[#0038A0]/20 rounded-xl p-4 hover:bg-[#0038A0] hover:text-black hover:border-[#0038A0] transition bg-white group">
             <p className="font-bold">📦 Products</p><p className="text-xs opacity-70 group-hover:opacity-90">Edit • Add • Delete • Stock</p>
           </Link>
           <Link href="/admin/orders" className="border rounded-xl p-4 hover:bg-zinc-50 bg-white">

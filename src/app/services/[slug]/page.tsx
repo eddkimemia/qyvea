@@ -84,12 +84,12 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       {/* Header with Unsplash image */}
       <div className="relative rounded-2xl overflow-hidden">
         <img src={svc.image} alt={svc.title} className="absolute inset-0 h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-[#0A0A0A]/80 to-black/20" />
-        <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#7FAF25]" />
+        <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-[#002070]/80 to-black/20" />
+        <div className="absolute bottom-0 left-0 right-0 h-1 bg-[#0038A0]" />
         <div className="relative p-6 md:p-10 max-w-3xl">
-          <Badge className="bg-[#7FAF25] text-black font-bold mb-3">SERVICE • CERTIFIED • WARRANTIED</Badge>
+          <Badge className="bg-[#0038A0] text-white font-bold mb-3">SERVICE • CERTIFIED • WARRANTIED</Badge>
           <h1 className="text-3xl md:text-4xl font-black text-white tracking-tight leading-tight">{svc.title}</h1>
-          <p className="text-zinc-200 mt-3 leading-relaxed">{svc.desc} — Starting from <span className="text-[#7FAF25] font-bold">{svc.priceFrom}</span>. Free site survey & quote.</p>
+          <p className="text-zinc-200 mt-3 leading-relaxed">{svc.desc} — Starting from <span className="text-[#0038A0] font-bold">{svc.priceFrom}</span>. Free site survey & quote.</p>
           <div className="mt-6 flex flex-wrap gap-3">
             <Link href={`tel:${SITE.phone}`}><Button>Call {SITE.phone}</Button></Link>
             <Link href={`https://wa.me/${SITE.whatsapp}?text=Hi!%20I%20need%20${encodeURIComponent(svc.title)}`} target="_blank"><Button variant="outline" className="bg-white/10 border-white text-white hover:bg-white hover:text-black backdrop-blur">WhatsApp Quote</Button></Link>
@@ -98,33 +98,33 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
       </div>
 
       <div className="grid md:grid-cols-2 gap-6 mt-8">
-        <Card className="border-2 border-[#7FAF25]/20 overflow-hidden">
-          <div className="h-1 bg-[#7FAF25]" />
+        <Card className="border-2 border-[#0038A0]/20 overflow-hidden">
+          <div className="h-1 bg-[#0038A0]" />
           <CardHeader><CardTitle>What&apos;s Included</CardTitle><p className="text-xs text-zinc-500 uppercase tracking-widest">Professional scope</p></CardHeader>
-          <CardContent><ul className="space-y-2.5 text-sm text-zinc-700">{svc.bullets.map(b=><li key={b} className="flex gap-2"><span className="h-2 w-2 rounded-full bg-[#7FAF25] mt-1.5 shrink-0" />{b}</li>)}</ul></CardContent>
+          <CardContent><ul className="space-y-2.5 text-sm text-zinc-700">{svc.bullets.map(b=><li key={b} className="flex gap-2"><span className="h-2 w-2 rounded-full bg-[#0038A0] mt-1.5 shrink-0" />{b}</li>)}</ul></CardContent>
         </Card>
         <Card><CardHeader><CardTitle>Pricing</CardTitle><p className="text-xs text-zinc-500 uppercase tracking-widest">Transparent • No hidden costs</p></CardHeader><CardContent className="space-y-4">
           <div className="grid grid-cols-3 gap-3 text-center text-sm">
-            <div className="border rounded-xl p-3 hover:border-[#7FAF25]/30 transition"><p className="font-bold">Basic</p><p className="text-zinc-500 text-xs">Homes & shops</p><p className="font-bold mt-2 text-[#0A0A0A]">Call for Price</p></div>
-            <div className="border-2 border-[#7FAF25] rounded-xl p-3 bg-[#F2F9E6] shadow-sm"><p className="font-bold text-[#3F5D13]">Business</p><p className="text-zinc-600 text-xs">Offices</p><p className="font-bold mt-2">Call for Price</p><Badge className="bg-[#7FAF25] text-black text-[10px] mt-1">POPULAR</Badge></div>
-            <div className="border rounded-xl p-3 hover:border-[#7FAF25]/30 transition"><p className="font-bold">Enterprise</p><p className="text-zinc-500 text-xs">Large sites</p><p className="font-bold mt-2 text-[#0A0A0A]">Call for Price</p></div>
+            <div className="border rounded-xl p-3 hover:border-[#0038A0]/30 transition"><p className="font-bold">Basic</p><p className="text-zinc-500 text-xs">Homes & shops</p><p className="font-bold mt-2 text-[#002070]">Call for Price</p></div>
+            <div className="border-2 border-[#0038A0] rounded-xl p-3 bg-[#F5F7FA] shadow-sm"><p className="font-bold text-[#002070]">Business</p><p className="text-zinc-600 text-xs">Offices</p><p className="font-bold mt-2">Call for Price</p><Badge className="bg-[#0038A0] text-white text-[10px] mt-1">POPULAR</Badge></div>
+            <div className="border rounded-xl p-3 hover:border-[#0038A0]/30 transition"><p className="font-bold">Enterprise</p><p className="text-zinc-500 text-xs">Large sites</p><p className="font-bold mt-2 text-[#002070]">Call for Price</p></div>
           </div>
-          <p className="text-xs text-zinc-500 leading-relaxed">Custom quotes based on site, quantity & complexity. Free survey within Nairobi. Countrywide available. <span className="text-[#5A7F1B] font-medium">5-year workmanship warranty.</span></p>
+          <p className="text-xs text-zinc-500 leading-relaxed">Custom quotes based on site, quantity & complexity. Free survey within Nairobi. Countrywide available. <span className="text-[#0038A0] font-medium">5-year workmanship warranty.</span></p>
           <Link href="#contact"><Button className="w-full">Get Custom Quote in 30min</Button></Link>
         </CardContent></Card>
       </div>
 
       {/* Related Products — filtered by service category */}
       {relatedProducts.length > 0 && (
-        <Card className="mt-6 overflow-hidden border-2 border-[#7FAF25]/10">
-          <div className="h-1 bg-[#7FAF25]" />
+        <Card className="mt-6 overflow-hidden border-2 border-[#0038A0]/10">
+          <div className="h-1 bg-[#0038A0]" />
           <CardHeader className="pb-2">
             <div className="flex items-center justify-between">
               <div>
                 <CardTitle>Related Products — {category?.replace("_", " ")}</CardTitle>
                 <p className="text-sm text-zinc-500">Genuine stock for {svc.title} • Supply & install • 5-yr warranty</p>
               </div>
-              <Link href={`/shop?category=${category}`} className="hidden sm:inline-flex text-sm font-semibold text-[#5A7F1B] hover:text-[#7FAF25] hover:underline">View all {category?.replace("_", " ")} →</Link>
+              <Link href={`/shop?category=${category}`} className="hidden sm:inline-flex text-sm font-semibold text-[#0038A0] hover:text-[#0038A0] hover:underline">View all {category?.replace("_", " ")} →</Link>
             </div>
           </CardHeader>
           <CardContent>
@@ -148,16 +148,16 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         <p className="text-xs text-center text-zinc-500 py-2">Professional installation • Certified techs • 500+ projects</p>
       </Card>
 
-      <Card className="mt-8 border-2 border-[#7FAF25]/20 shadow-md" id="contact">
-        <div className="h-1 bg-[#7FAF25]" />
+      <Card className="mt-8 border-2 border-[#0038A0]/20 shadow-md" id="contact">
+        <div className="h-1 bg-[#0038A0]" />
         <CardHeader><CardTitle>Secure Your Property Today</CardTitle><p className="text-sm text-zinc-500">Free consultation & custom quote. Our experts will design the perfect solution.</p></CardHeader>
         <CardContent>
           <form action="/api/leads" method="post" className="grid md:grid-cols-2 gap-3">
-            <input name="name" placeholder="Full name *" required className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
-            <input name="phone" placeholder="Phone *" required className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
-            <input name="location" placeholder="Location (e.g., Westlands)" className="border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="name" placeholder="Full name *" required className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="phone" placeholder="Phone *" required className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <input name="location" placeholder="Location (e.g., Westlands)" className="border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
             <input type="hidden" name="service" value={slug.toUpperCase().replace(/-/g,"_")} />
-            <textarea name="message" placeholder="Describe your site..." rows={3} className="md:col-span-2 border-2 border-zinc-200 focus:border-[#7FAF25] rounded-lg px-3 py-2.5 text-sm outline-none" />
+            <textarea name="message" placeholder="Describe your site..." rows={3} className="md:col-span-2 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
             <Button type="submit" className="md:col-span-2 h-11 text-base">Send Request — 2hr Reply</Button>
           </form>
         </CardContent>

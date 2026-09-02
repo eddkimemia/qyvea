@@ -8,15 +8,15 @@ const buttonVariants = cva(
   {
     variants: {
       variant: {
-        // Primary CTA: Qyvea lime #7FAF25 with near-black text for best contrast
-        default: "bg-[#7FAF25] text-black hover:bg-[#6A9A1F] shadow-sm hover:shadow-md font-semibold",
+        // Primary CTA: Syntech lime #0038A0 with near-black text for best contrast
+        default: "bg-[#0038A0] text-white hover:bg-[#002070] shadow-sm hover:shadow-md font-semibold",
         destructive: "bg-red-600 text-white hover:bg-red-700 shadow-sm",
         // Outline: lime border, white bg
-        outline: "border-2 border-[#7FAF25] bg-white text-[#5A7F1B] hover:bg-[#F2F9E6] hover:text-[#3F5D13] dark:border-[#7FAF25] dark:bg-transparent dark:text-[#7FAF25]",
+        outline: "border-2 border-[#0038A0] bg-white text-[#0038A0] hover:bg-[#F5F7FA] hover:text-[#002070] dark:border-[#0038A0] dark:bg-transparent dark:text-[#0038A0]",
         // Secondary: luxe black — best pairing with lime primary
-        secondary: "bg-[#0A0A0A] text-white hover:bg-black border border-transparent hover:border-[#7FAF25]/30 shadow-sm",
-        ghost: "hover:bg-[#F2F9E6] hover:text-[#3F5D13] text-zinc-700 dark:hover:bg-zinc-900",
-        link: "text-[#5A7F1B] underline-offset-4 hover:underline hover:text-[#7FAF25]",
+        secondary: "bg-[#002070] text-white hover:bg-black border border-transparent hover:border-[#0038A0]/30 shadow-sm",
+        ghost: "hover:bg-[#F5F7FA] hover:text-[#002070] text-zinc-700 dark:hover:bg-zinc-900",
+        link: "text-[#0038A0] underline-offset-4 hover:underline hover:text-[#0038A0]",
       },
       size: {
         default: "h-10 px-4 py-2",

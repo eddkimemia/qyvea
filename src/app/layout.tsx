@@ -5,7 +5,7 @@ import { SiteFooter } from "@/components/site-footer";
 import { Providers } from "@/components/providers";
 import { SITE } from "@/lib/constants";
 
-const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://qyvea.co.ke";
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://syntech.co.ke";
 
 export const metadata: Metadata = {
   metadataBase: new URL(siteUrl),
@@ -15,7 +15,7 @@ export const metadata: Metadata = {
   },
   description: `${SITE.description} Licensed NCA, EPRA, PSRA, ISO 9001:2015. 500+ projects, 47 counties. 5-year warranty, 2-hour response.`,
   keywords: [
-    "CCTV Kenya", "CCTV installation Nairobi", "biometrics Kenya", "electric fence Kenya", "solar Kenya", "solar backup", "automatic gates", "fire alarm Kenya", "networking Nairobi", "smart home Kenya", "electrical installation", "BMS", "cybersecurity Kenya", "Qyvea", "Qyvea Limited", "security company Kenya", "NCA licensed", "EPRA certified",
+    "CCTV Kenya", "CCTV installation Nairobi", "biometrics Kenya", "electric fence Kenya", "solar Kenya", "solar backup", "automatic gates", "fire alarm Kenya", "networking Nairobi", "smart home Kenya", "electrical installation", "BMS", "cybersecurity Kenya", "Syntech", "Syntech Limited", "security company Kenya", "NCA licensed", "EPRA certified",
   ],
   authors: [{ name: SITE.name, url: siteUrl }],
   creator: SITE.name,
@@ -29,13 +29,13 @@ export const metadata: Metadata = {
     siteName: SITE.name,
     type: "website",
     locale: "en_KE",
-    images: [{ url: `${siteUrl}/logo.svg`, width: 120, height: 36, alt: SITE.name }],
+    images: [{ url: `${siteUrl}/syntechlogo.jpg`, width: 400, height: 120, alt: SITE.name }],
   },
   twitter: {
     card: "summary_large_image",
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
-    creator: "@NgigiElias",
+    creator: "@syntechsolutions",
   },
   robots: {
     index: true,
@@ -51,19 +51,20 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
     "@type": "LocalBusiness",
     name: SITE.name,
     url: siteUrl,
-    logo: `${siteUrl}/logo.svg`,
-    image: `${siteUrl}/logo.svg`,
+    logo: `${siteUrl}/syntechlogo.jpg`,
+    image: `${siteUrl}/syntechlogo.jpg`,
     description: SITE.description,
     address: { "@type": "PostalAddress", streetAddress: SITE.address, addressLocality: "Nairobi", addressCountry: "KE" },
     telephone: SITE.phone,
     email: SITE.email,
     sameAs: [
-      "https://wa.me/254113301244",
-      "https://www.facebook.com/profile.php?id=61590574734874",
-      "https://www.instagram.com/qyvea254?igsh=OTRmcXJqbjh0a3lz",
-      "https://x.com/NgigiElias",
-      "https://www.tiktok.com/@qyvea",
-      "https://www.linkedin.com/company/securetech-solutions-kenya",
+      "https://wa.me/254715135141",
+      "https://www.facebook.com/SyntechSolutions",
+      "https://www.instagram.com/syntechsolutions",
+      "https://x.com/syntechsolutions",
+      "https://www.tiktok.com/@syntechsolutions",
+      "https://www.linkedin.com/company/syntech-solutions-ltd",
+      "https://www.youtube.com/@syntechsolutions",
     ],
     areaServed: { "@type": "Country", name: "Kenya" },
     priceRange: "KES",
@@ -87,7 +88,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         </Providers>
         {/* Floating WhatsApp — official #25D366 */}
         <a
-          href={`https://wa.me/${SITE.whatsapp}?text=Hi%20Qyvea!%20I%20need%20a%20quote.`}
+          href={`https://wa.me/${SITE.whatsapp}?text=Hi%20Syntech!%20I%20need%20a%20quote.`}
           target="_blank"
           rel="noopener noreferrer"
           className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-50 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full p-3.5 md:p-4 shadow-[0_8px_24px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_32px_rgba(37,211,102,0.45)] transition-all hover:scale-105 flex items-center justify-center"

@@ -6,8 +6,8 @@ import { prisma } from "@/lib/db";
 export const dynamic = "force-dynamic";
 
 export const metadata = {
-  title: "Blog | Qyvea Limited — Security, Solar & IT Insights Kenya",
-  description: "Qyvea blog: CCTV costs, solar backup, biometrics, estate security guides. Expert installs across 47 counties. Updated 2026.",
+  title: "Blog | Syntech Limited — Security, Solar & IT Insights Kenya",
+  description: "Syntech blog: CCTV costs, solar backup, biometrics, estate security guides. Expert installs across 47 counties. Updated 2026.",
 };
 
 const FALLBACK_POSTS = [
@@ -27,21 +27,21 @@ export default async function BlogPage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <div className="max-w-3xl">
-        <Badge className="bg-[#7FAF25] text-black font-bold">BLOG • MANAGED BY ADMIN</Badge>
-        <h1 className="text-3xl md:text-4xl font-black tracking-tight mt-2">Qyvea Insights</h1>
+        <Badge className="bg-[#0038A0] text-white font-bold">BLOG • MANAGED BY ADMIN</Badge>
+        <h1 className="text-3xl md:text-4xl font-black tracking-tight mt-2">Syntech Insights</h1>
         <p className="text-zinc-600 mt-2">Security, solar & IT guides for Kenyan homes, estates & businesses. Updated by admin, SEO-optimized, 2026.</p>
       </div>
 
       <div className="grid md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
         {posts.map((p) => (
           <Link key={p.slug} href={`/blog/${p.slug}`} className="group">
-            <Card className="overflow-hidden h-full hover:shadow-lg hover:border-[#7FAF25]/30 transition flex flex-col">
+            <Card className="overflow-hidden h-full hover:shadow-lg hover:border-[#0038A0]/30 transition flex flex-col">
               <div className="aspect-[16/9] overflow-hidden bg-zinc-100">
                 <img src={p.image} alt={p.title} className="h-full w-full object-cover group-hover:scale-105 transition duration-500" />
               </div>
               <CardHeader className="pb-2">
-                <div className="flex gap-1 flex-wrap">{p.tags?.slice(0,2).map((t:string)=><Badge key={t} variant="secondary" className="text-[11px]">{t}</Badge>)}{p.featured && <Badge className="bg-[#7FAF25] text-black text-[11px]">Featured</Badge>}</div>
-                <CardTitle className="text-lg leading-tight group-hover:text-[#7FAF25] line-clamp-2">{p.title}</CardTitle>
+                <div className="flex gap-1 flex-wrap">{p.tags?.slice(0,2).map((t:string)=><Badge key={t} variant="secondary" className="text-[11px]">{t}</Badge>)}{p.featured && <Badge className="bg-[#0038A0] text-white text-[11px]">Featured</Badge>}</div>
+                <CardTitle className="text-lg leading-tight group-hover:text-[#0038A0] line-clamp-2">{p.title}</CardTitle>
               </CardHeader>
               <CardContent className="pt-0 flex-1">
                 <p className="text-sm text-zinc-600 line-clamp-3">{p.excerpt}</p>

@@ -52,7 +52,7 @@ export default async function AdminProductsPage({
             <Button type="submit" size="sm" variant="secondary">Filter</Button>
             <Link href="/admin/products" className="text-sm underline">Clear</Link>
           </form>
-          <Badge className="bg-[#7FAF25] text-black">PostgreSQL • live</Badge>
+          <Badge className="bg-[#0038A0] text-white">PostgreSQL • live</Badge>
         </CardContent>
       </Card>
 
@@ -74,7 +74,7 @@ export default async function AdminProductsPage({
                 <tr><td colSpan={6} className="p-8 text-center text-zinc-500">No products — seed via <code className="bg-zinc-100 px-1 rounded">npm run db:seed</code> or add new.</td></tr>
               ) : (
                 products.map((p: any) => (
-                  <tr key={p.id} className="border-b last:border-0 hover:bg-[#F2F9E6]/40">
+                  <tr key={p.id} className="border-b last:border-0 hover:bg-[#F5F7FA]/40">
                     <td className="p-3">
                       <div className="flex gap-3 items-center">
                         <img src={p.image || `https://placehold.co/48x48/7FAF25/0A0A0A?text=${p.category[0]}`} alt={p.name} className="h-10 w-10 rounded-lg object-cover border" />
@@ -90,7 +90,7 @@ export default async function AdminProductsPage({
                       <span className={`px-2 py-0.5 rounded-full text-xs font-bold ${p.stockQty < 10 ? "bg-amber-100 text-amber-800" : "bg-green-100 text-green-800"}`}>{p.stockQty} • {p.inStock ? "In" : "Out"}</span>
                     </td>
                     <td className="p-3 text-center">
-                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.active ? "bg-[#7FAF25] text-black" : "bg-zinc-200"}`}>{p.active ? "Active" : "Hidden"}</span>
+                      <span className={`text-xs px-2 py-0.5 rounded-full font-medium ${p.active ? "bg-[#0038A0] text-white" : "bg-zinc-200"}`}>{p.active ? "Active" : "Hidden"}</span>
                       {p.featured && <span className="ml-1 text-[10px] bg-black text-white px-1.5 py-0.5 rounded-full">FEATURED</span>}
                     </td>
                     <td className="p-3 text-right">
