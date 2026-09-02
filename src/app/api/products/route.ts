@@ -6,6 +6,7 @@ export async function GET(req: NextRequest) {
   const q = searchParams.get("q");
   const category = searchParams.get("category");
   const featured = searchParams.get("featured");
+  const slugs = searchParams.get("slugs");
   const take = Math.min(parseInt(searchParams.get("take") || "20"), 100);
   const skip = parseInt(searchParams.get("skip") || "0");
 
@@ -13,13 +14,14 @@ export async function GET(req: NextRequest) {
   if (q) where.name = { contains: q, mode: "insensitive" };
   if (category) where.category = category;
   if (featured) where.featured = featured === "true";
+  if (slugs) where.slug = { in: slugs.split(",").map((s) => s.trim()) };
 
   try {
     const [items, total] = await Promise.all([
       prisma.product.findMany({ where, take, skip, orderBy: { createdAt: "desc" } }),
       prisma.product.count({ where }),
     ]);
-    return NextResponse.json({ items, total, take, skip });
+    return NextResponse.json({ items, products: items, total, take, skip });
   } catch (e: any) {
     return NextResponse.json({ items: [], total: 0, error: e.message }, { status: 500 });
   }

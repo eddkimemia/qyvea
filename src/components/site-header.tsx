@@ -116,7 +116,7 @@ export function SiteHeader() {
                 <Search className="h-4 w-4" />
               </Button>
               {/* Wishlist */}
-              <Link href="/shop" className="relative hidden sm:flex">
+              <Link href="/wishlist" className="relative hidden sm:flex">
                 <Button variant="ghost" size="icon" className="hover:text-[#0038A0] relative h-9 w-9">
                   <Heart className="h-4 w-4" />
                   {wishlist.length > 0 && <span className="absolute -top-0.5 -right-0.5 bg-[#0038A0] text-white text-[8px] font-bold rounded-full h-3.5 w-3.5 grid place-items-center">{wishlist.length}</span>}

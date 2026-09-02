@@ -12,7 +12,7 @@ export function MobileBottomBar() {
   return (
     <div className="fixed bottom-0 left-0 right-0 z-[55] lg:hidden bg-white border-t-2 border-[#002070] shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
       <div className="grid grid-cols-3 gap-0">
-        <Link href="/shop" className="flex flex-col items-center justify-center py-2.5 hover:bg-[#F5F7FA] transition">
+        <Link href="/wishlist" className="flex flex-col items-center justify-center py-2.5 hover:bg-[#F5F7FA] transition">
           <div className="relative">
             <Heart className="h-5 w-5 text-[#002070]" />
             {wishlist.length > 0 && <span className="absolute -top-1.5 -right-2 bg-[#0038A0] text-white text-[9px] font-bold rounded-full h-3.5 w-3.5 grid place-items-center">{wishlist.length}</span>}

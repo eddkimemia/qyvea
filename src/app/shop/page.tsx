@@ -6,6 +6,7 @@ import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IMAGES } from "@/lib/images";
 import { MOCK_PRODUCTS } from "@/lib/mock-products";
+import { MobileCategoryFilter } from "@/components/mobile-category-filter";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -76,8 +77,18 @@ export default async function ShopPage({ searchParams }: SearchParams) {
         </div>
       </div>
 
+      {/* Mobile filter dropdown */}
+      <MobileCategoryFilter
+        currentCategory={sp.category}
+        currentSort={sp.sort}
+        currentQ={sp.q}
+        currentMin={sp.min}
+        currentMax={sp.max}
+        productCount={products.length}
+      />
+
       <div className="grid lg:grid-cols-[280px_1fr] gap-6">
-        <Card className="h-fit sticky top-[72px] border-2 border-[#0038A0]/10 shadow-sm">
+        <Card className="hidden lg:block h-fit sticky top-[72px] border-2 border-[#0038A0]/10 shadow-sm">
           <div className="h-1 bg-[#0038A0]" />
           <CardContent className="p-4 space-y-4">
             <form className="space-y-4">
