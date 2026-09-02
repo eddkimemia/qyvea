@@ -1,9 +1,13 @@
+"use client";
+
 import Link from "next/link";
 import { formatKES } from "@/lib/utils";
 import { Badge } from "@/components/ui/badge";
 import { Button } from "@/components/ui/button";
 import { ShoppingCart, Heart, Eye, Star } from "lucide-react";
 import { imageForCategory } from "@/lib/images";
+import { useStore } from "@/lib/store";
+import { useState } from "react";
 
 export type ProductCardProps = {
   product: {
@@ -26,6 +30,18 @@ export function ProductCard({ product }: ProductCardProps) {
   const discount = product.oldPrice ? Math.round(((product.oldPrice - product.price) / product.oldPrice) * 100) : 0;
   const fallback = imageForCategory(product.category);
   const img = product.image || fallback;
+  const addToCart = useStore((s) => s.addToCart);
+  const wishlist = useStore((s) => s.wishlist);
+  const toggleWishlist = useStore((s) => s.toggleWishlist);
+  const isWishlisted = wishlist.includes(product.slug);
+  const [added, setAdded] = useState(false);
+
+  const handleAdd = () => {
+    addToCart({ productId: product.id, slug: product.slug, name: product.name, price: product.price, qty: 1 });
+    setAdded(true);
+    setTimeout(() => setAdded(false), 1200);
+  };
+
   return (
     <div className="group relative rounded-xl border bg-white overflow-hidden hover:shadow-xl hover:-translate-y-0.5 transition-all dark:bg-zinc-900 dark:border-zinc-800 flex flex-col">
       {product.badge && <Badge className="absolute left-2 top-2 z-10 bg-[#7FAF25] text-black font-bold shadow">{product.badge}</Badge>}
@@ -47,8 +63,12 @@ export function ProductCard({ product }: ProductCardProps) {
           {product.oldPrice && <span className="text-sm text-zinc-500 line-through">{formatKES(product.oldPrice)}</span>}
         </div>
         <div className="flex gap-2 mt-2">
-          <Button size="sm" className="flex-1"><ShoppingCart className="h-4 w-4" /> Add</Button>
-          <Button size="sm" variant="outline"><Heart className="h-4 w-4" /></Button>
+          <Button size="sm" className="flex-1" onClick={handleAdd} disabled={!product.inStock}>
+            <ShoppingCart className="h-4 w-4" /> {added ? "Added!" : "Add"}
+          </Button>
+          <Button size="sm" variant="outline" onClick={() => toggleWishlist(product.slug)} className={isWishlisted ? "bg-[#F2F9E6] border-[#7FAF25] text-[#3F5D13]" : ""}>
+            <Heart className={`h-4 w-4 ${isWishlisted ? "fill-[#7FAF25] text-[#7FAF25]" : ""}`} />
+          </Button>
           <Link href={`/shop/${product.slug}`}><Button size="sm" variant="ghost"><Eye className="h-4 w-4" /></Button></Link>
         </div>
         <p className={`text-xs font-medium ${product.inStock ? "text-[#5A7F1B]" : "text-red-600"}`}>{product.inStock ? "In Stock • Free delivery Nairobi > KES 5k" : "Out of Stock"}</p>

@@ -1,12 +1,27 @@
 import Link from "next/link";
 import { Button } from "@/components/ui/button";
+import { auth, signOut } from "@/lib/auth";
+import { redirect } from "next/navigation";
 
-export default function AdminLayout({ children }: { children: React.ReactNode }) {
+export default async function AdminLayout({ children }: { children: React.ReactNode }) {
+  const session = await auth();
+  // Allow mock admin even without DB — JWT contains role
+  const role = (session?.user as any)?.role;
+  const email = session?.user?.email;
+  if (!session || !email) {
+    redirect("/admin/login?callbackUrl=/admin");
+  }
+  // Only ADMIN can access /admin; partner/user gets redirected
+  if (role !== "ADMIN") {
+    redirect("/admin/login?error=admin_only");
+  }
+
   const nav = [
     { href: "/admin", label: "Dashboard", icon: "📊" },
     { href: "/admin/products", label: "Products", icon: "📦" },
     { href: "/admin/orders", label: "Orders", icon: "🧾" },
     { href: "/admin/leads", label: "Leads", icon: "👥" },
+    { href: "/admin/blog", label: "Blog", icon: "📝" },
     { href: "/admin/settings", label: "Settings", icon: "⚙️" },
   ];
 
@@ -35,9 +50,17 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
               <Link href="/shop" target="_blank"><Button variant="outline" size="sm" className="w-full">View Store ↗</Button></Link>
               <Link href="/api/products" target="_blank"><Button size="sm" className="w-full">API: /api/products</Button></Link>
             </div>
-            <div className="px-3 pb-3">
-              <p className="text-[11px] text-zinc-500">Signed in as <span className="font-mono">admin@qyvea.co.ke</span></p>
-              <p className="text-[11px] text-zinc-400">Role: ADMIN • PostgreSQL</p>
+            <div className="px-3 pb-3 space-y-2">
+              <p className="text-[11px] text-zinc-500 break-all">Signed in as <span className="font-mono">{email}</span></p>
+              <p className="text-[11px] text-zinc-400">Role: {role} • PostgreSQL</p>
+              <form
+                action={async () => {
+                  "use server";
+                  await signOut({ redirectTo: "/admin/login" });
+                }}
+              >
+                <Button type="submit" variant="ghost" size="sm" className="w-full h-7 text-xs">Sign Out</Button>
+              </form>
             </div>
           </div>
         </aside>

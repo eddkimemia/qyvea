@@ -1,10 +1,11 @@
 import { prisma } from "@/lib/db";
 import { notFound } from "next/navigation";
 import { formatKES } from "@/lib/utils";
-import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IMAGES, imageForCategory } from "@/lib/images";
+import { MOCK_PRODUCTS } from "@/lib/mock-products";
+import { ProductActions } from "@/components/product-actions";
 import Link from "next/link";
 import { Star, ShieldCheck, Truck, Wrench } from "lucide-react";
 
@@ -19,13 +20,20 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   } catch {}
 
   if (!product) {
-    const mocks: Record<string, any> = {
-      "hikvision-4ch-kit-4bullet-1080p": { name: "Hikvision 4CH DVR Kit - 4 Bullet Cameras 1080p + 1TB", price: 28500, oldPrice: 32000, category: "CCTV", rating: 4.7, reviewsCount: 34, inStock: true, description: "Complete 4-camera kit with mobile app, 1TB storage, night vision.", badge: "HOT", installationAvailable: true, labourPrice: 4500, specs: [{key:"Channels",value:"4CH"},{key:"Resolution",value:"1080p"}] },
-      "zkteco-f22-biometric": { name: "ZKTeco F22 Biometric + Card Reader", price: 18500, oldPrice: 21000, category:"BIOMETRICS", rating:4.6, reviewsCount:41, inStock:true, description:"Fingerprint & RFID, TCP/IP, access control."},
+    const mock = ([...MOCK_PRODUCTS] as any[]).find((p) => p.slug === slug);
+    if (!mock) return notFound();
+    product = {
+      ...mock,
+      id: mock.id,
+      description: `${mock.name} - Genuine, manufacturer warranty. Supply & install available countrywide. 5-year workmanship warranty.`,
+      specs: [
+        { key: "Warranty", value: "5 Years Workmanship + Manufacturer" },
+        { key: "Installation", value: mock.installationAvailable ? "Available Same-Day in Nairobi" : "Product Only" },
+      ],
+      views: (mock as any).sold ? (mock as any).sold * 9 : 500,
+      sold: (mock as any).sold || 50,
+      stockQty: (mock as any).stockQty || 10,
     };
-    const m = mocks[slug];
-    if (!m) return notFound();
-    product = { slug, id: slug, images: [], sold: 100, views: 500, stockQty: 10, ...m };
   }
 
   const discount = product.oldPrice ? Math.round(((product.oldPrice - product.price)/product.oldPrice)*100) : 0;
@@ -82,28 +90,11 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               <div className="text-sm flex-1">
                 <p className="font-bold">Professional Installation Available</p>
                 <p className="text-zinc-600 mt-1">Our certified technicians will install this product at your premises. {product.labourPrice ? <span className="font-semibold text-[#3F5D13]">Labour from {formatKES(product.labourPrice)}.</span> : ""} Same-day in Nairobi.</p>
-                <label className="flex items-center gap-2 mt-3 font-medium cursor-pointer"><input type="checkbox" className="accent-[#7FAF25] h-4 w-4" /> Add installation service to my order</label>
               </div>
             </CardContent>
           </Card>
 
-          <div className="mt-6 flex flex-col sm:flex-row gap-3">
-            <Button size="lg" className="flex-1 h-12 text-base shadow-md">Add to Cart</Button>
-            <Link
-              href={`https://wa.me/254113301244?text=${encodeURIComponent(`Hello Qyvea! \n\nI want to ORDER this product:\n\n*${product.name}*\nPrice: ${formatKES(product.price)}${product.oldPrice ? " (was " + formatKES(product.oldPrice) + ")" : ""}\nCategory: ${product.category.replace("_"," ")}\nLink: https://qyvea.co.ke/shop/${product.slug}\n\nPlease confirm:\n- Availability in stock\n- Delivery to [my location]\n- Installation cost (if needed)\n\nThank you!`)}`}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="flex-1"
-            >
-              <Button size="lg" className="w-full h-12 text-base bg-[#25D366] hover:bg-[#20BD5A] text-white border-0 shadow-md hover:shadow-lg gap-2">
-                <svg viewBox="0 0 32 32" className="h-5 w-5 fill-white shrink-0" aria-hidden="true">
-                  <path d="M16.04 2C8.43 2 2.22 8.21 2.22 15.83c0 2.44.64 4.81 1.85 6.9L2.08 30l7.48-1.97a13.76 13.76 0 0 0 6.48 1.64h.01c7.61 0 13.82-6.21 13.82-13.83 0-3.7-1.44-7.17-4.05-9.78A13.75 13.75 0 0 0 16.04 2Zm7.93 19.8c-.33.95-1.95 1.84-2.71 1.96-.68.1-1.36.1-2.2-.1-.58-.14-1.33-.33-2.28-.65-4.02-1.72-6.64-5.74-6.84-6-.2-.27-1.66-2.21-1.66-4.22s1.05-3 1.43-3.41c.33-.36.87-.52 1.39-.52h1c.37 0 .69.02.99.83.33.95 1.14 3.28 1.24 3.52.1.24.16.52.02.83-.14.31-.21.5-.42.77-.2.27-.43.57-.61.77-.2.22-.41.46-.18.9.23.44 1.04 1.72 2.23 2.79 1.53 1.36 2.82 1.78 3.22 1.98.31.15.5.13.68-.08.19-.2.79-.92 1-1.22.21-.31.42-.26.71-.16.29.1 1.83.87 2.15 1.02.31.16.52.24.6.37.08.13.08.76-.25 1.71Z" />
-                </svg>
-                Order on WhatsApp
-              </Button>
-            </Link>
-          </div>
-          <p className="text-xs text-center text-zinc-500 mt-2">Instant quote • Reply in 30 min • No payment needed now</p>
+          <ProductActions product={{ id: product.id, slug: product.slug, name: product.name, price: product.price, oldPrice: product.oldPrice, category: product.category }} />
 
           <div className="mt-6 grid grid-cols-3 gap-3 text-xs text-center">
             <div className="border-2 border-[#7FAF25]/20 rounded-xl p-3 bg-[#F2F9E6]"><Truck className="h-5 w-5 mx-auto text-[#5A7F1B]" /><p className="font-bold mt-1">Free delivery</p><p className="text-zinc-500">Nairobi &gt; KES 5k</p></div>

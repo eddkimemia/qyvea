@@ -6,6 +6,7 @@ import { SITE } from "@/lib/constants";
 import { prisma } from "@/lib/db";
 import { ProductCard } from "@/components/product-card";
 import { IMAGES } from "@/lib/images";
+import { MOCK_PRODUCTS } from "@/lib/mock-products";
 import { Phone, ShieldCheck, Clock, Award, ArrowRight, Building2, Home, Hotel, Landmark, GraduationCap, Stethoscope } from "lucide-react";
 
 export const dynamic = "force-dynamic";
@@ -27,12 +28,7 @@ export default async function HomePage() {
 
   const displayProducts = products.length
     ? products
-    : [
-        { id: "1", name: "Hikvision 4CH DVR Kit - 4 Bullet Cameras 1080p + 1TB", slug: "hikvision-4ch-kit", category: "CCTV", price: 28500, oldPrice: 32000, rating: 4.7, reviewsCount: 34, inStock: true, badge: "HOT", installationAvailable: true },
-        { id: "2", name: "ZKTeco F22 Biometric + Card Reader", slug: "zkteco-f22", category: "BIOMETRICS", price: 18500, oldPrice: 21000, rating: 4.6, reviewsCount: 41, inStock: true, badge: "FEATURED", installationAvailable: true },
-        { id: "3", name: "Solar Backup Kit 3KVA Inverter + 2x200Ah", slug: "solar-3kva", category: "SOLAR", price: 145000, oldPrice: 165000, rating: 4.9, reviewsCount: 44, inStock: true, badge: "SALE", installationAvailable: true },
-        { id: "4", name: "Centurion D5 Evo Sliding Gate Motor 500kg", slug: "centurion-d5", category: "GATE_AUTOMATION", price: 68000, oldPrice: 75000, rating: 4.8, reviewsCount: 37, inStock: true, badge: null, installationAvailable: true },
-      ];
+    : (MOCK_PRODUCTS.filter((p) => (p as any).featured).slice(0, 8) as any[]);
 
   return (
     <div className="flex flex-col">

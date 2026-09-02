@@ -5,6 +5,7 @@ import { Input } from "@/components/ui/input";
 import { Card, CardContent } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { IMAGES } from "@/lib/images";
+import { MOCK_PRODUCTS } from "@/lib/mock-products";
 import Link from "next/link";
 
 export const dynamic = "force-dynamic";
@@ -27,23 +28,29 @@ export default async function ShopPage({ searchParams }: SearchParams) {
   if (sp.sort === "sold") orderBy = { sold: "desc" };
 
   let products: any[] = [];
+  let dbFailed = false;
   try {
     products = await prisma.product.findMany({ where, orderBy, take: 48 });
   } catch {
     products = [];
+    dbFailed = true;
   }
 
+  // Fallback to MOCK_PRODUCTS (39 items, all 13 categories) when DB empty / not migrated
   if (!products.length) {
-    products = [
-      { id: "1", name: "Hikvision 4CH DVR Kit - 4 Bullet Cameras 1080p + 1TB", slug: "hikvision-4ch-kit-4bullet-1080p", category: "CCTV", price: 28500, oldPrice: 32000, rating: 4.7, reviewsCount: 34, inStock: true, badge: "HOT", installationAvailable: true },
-      { id: "2", name: "ZKTeco F22 Biometric + Card Reader", slug: "zkteco-f22-biometric", category: "BIOMETRICS", price: 18500, oldPrice: 21000, rating: 4.6, reviewsCount: 41, inStock: true, badge: "FEATURED", installationAvailable: true },
-      { id: "3", name: "Nemtek Druid 18 Energizer", slug: "nemtek-druid-18-energizer", category: "ELECTRIC_FENCE", price: 38000, oldPrice: null, rating: 4.7, reviewsCount: 29, inStock: true, installationAvailable: true },
-      { id: "4", name: "Solar Backup Kit 3KVA Inverter + 2x200Ah + 2x550W", slug: "solar-backup-3kva-200ah", category: "SOLAR", price: 145000, oldPrice: 165000, rating: 4.9, reviewsCount: 44, inStock: true, badge: "SALE", installationAvailable: true },
-    ].filter(p => {
-      if (sp.category && p.category !== sp.category) return false;
-      if (sp.q && !p.name.toLowerCase().includes(sp.q.toLowerCase())) return false;
-      return true;
-    });
+    let filtered: any[] = [...MOCK_PRODUCTS] as any[];
+    if (sp.category) filtered = filtered.filter((p) => p.category === sp.category);
+    if (sp.q) filtered = filtered.filter((p) => p.name.toLowerCase().includes(sp.q!.toLowerCase()));
+    if (sp.min) filtered = filtered.filter((p) => p.price >= parseInt(sp.min!));
+    if (sp.max) filtered = filtered.filter((p) => p.price <= parseInt(sp.max!));
+    // sort mock like DB
+    if (sp.sort === "price_asc") filtered.sort((a, b) => a.price - b.price);
+    else if (sp.sort === "price_desc") filtered.sort((a, b) => b.price - a.price);
+    else if (sp.sort === "rating") filtered.sort((a, b) => b.rating - a.rating);
+    else if (sp.sort === "sold") filtered.sort((a, b) => (b.sold || 0) - (a.sold || 0));
+    products = filtered;
+    // annotate fallback for UI
+    if (dbFailed) products = filtered; // still show mock
   }
 
   const categories = ["CCTV","INTERCOM","ACCESS_CONTROL","BIOMETRICS","NETWORKING","ELECTRIC_FENCE","GATE_AUTOMATION","FIRE_ALARM","SOLAR","SMART_HOME","ELECTRICAL","IT_SUPPORT","ACCESSORIES"];

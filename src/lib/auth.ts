@@ -1,33 +1,73 @@
-// Auth placeholder — wire up next-auth when ready.
-// This keeps types strict and isolates auth logic.
-// Usage: import { auth } from "@/lib/auth" after you create auth.config.ts
+import NextAuth from "next-auth";
+import Credentials from "next-auth/providers/credentials";
+import { PrismaAdapter } from "@auth/prisma-adapter";
+import { prisma } from "@/lib/db";
+import bcrypt from "bcryptjs";
 
-// Example config (uncomment & adjust when enabling next-auth):
-//
-// import NextAuth from "next-auth";
-// import Credentials from "next-auth/providers/credentials";
-// import { PrismaAdapter } from "@auth/prisma-adapter";
-// import { prisma } from "@/lib/db";
-// import bcrypt from "bcryptjs";
-//
-// export const { handlers, auth, signIn, signOut } = NextAuth({
-//   adapter: PrismaAdapter(prisma),
-//   session: { strategy: "jwt" },
-//   providers: [
-//     Credentials({
-//       credentials: { email: {}, password: {} },
-//       authorize: async (creds) => {
-//         const user = await prisma.user.findUnique({ where: { email: creds.email as string } });
-//         if (!user?.password) return null;
-//         const ok = await bcrypt.compare(creds.password as string, user.password);
-//         return ok ? user : null;
-//       },
-//     }),
-//   ],
-//   callbacks: {
-//     jwt: async ({ token, user }) => { if (user) token.role = (user as any).role; return token; },
-//     session: async ({ session, token }) => { (session.user as any).role = token.role; return session; },
-//   },
-// });
+export const { handlers, auth, signIn, signOut } = NextAuth({
+  adapter: PrismaAdapter(prisma) as any,
+  session: { strategy: "jwt" },
+  trustHost: true,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  providers: [
+    Credentials({
+      name: "Credentials",
+      credentials: {
+        email: { label: "Email", type: "email" },
+        password: { label: "Password", type: "password" },
+      },
+      authorize: async (credentials) => {
+        const email = (credentials?.email as string)?.toLowerCase().trim();
+        const password = credentials?.password as string;
+        if (!email || !password) return null;
 
-export const authPlaceholder = "Configure src/lib/auth.ts with NextAuth when ready. See README.";
+        // Allow mock admin even if DB not available (fallback for demo)
+        const isMockAdmin = email === "admin@qyvea.co.ke" && password === "Admin123!";
+        const isMockPartner = email === "partner@qyvea.co.ke" && password === "Partner123!";
+
+        try {
+          const user = await prisma.user.findUnique({ where: { email } });
+          if (!user || !user.password) {
+            // fallback mock if DB missing but credentials match mock
+            if (isMockAdmin) return { id: "mock-admin", name: "Qyvea Admin", email: "admin@qyvea.co.ke", image: null, role: "ADMIN" } as any;
+            if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@qyvea.co.ke", image: null, role: "PARTNER" } as any;
+            return null;
+          }
+          const ok = await bcrypt.compare(password, user.password);
+          if (!ok) return null;
+          return {
+            id: user.id,
+            name: user.name,
+            email: user.email,
+            image: user.image,
+            role: user.role,
+          } as any;
+        } catch {
+          // DB unavailable — allow mock logins only
+          if (isMockAdmin) return { id: "mock-admin", name: "Qyvea Admin", email: "admin@qyvea.co.ke", image: null, role: "ADMIN" } as any;
+          if (isMockPartner) return { id: "mock-partner", name: "Demo Partner", email: "partner@qyvea.co.ke", image: null, role: "PARTNER" } as any;
+          return null;
+        }
+      },
+    }),
+  ],
+  callbacks: {
+    jwt: async ({ token, user }) => {
+      if (user) {
+        (token as any).role = (user as any).role;
+        (token as any).id = (user as any).id;
+      }
+      return token;
+    },
+    session: async ({ session, token }) => {
+      if (token) {
+        (session.user as any).role = (token as any).role;
+        (session.user as any).id = (token as any).id;
+      }
+      return session;
+    },
+  },
+  pages: {
+    signIn: "/login",
+  },
+});

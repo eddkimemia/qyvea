@@ -226,7 +226,67 @@ async function main() {
     });
   }
 
-  console.log(`Seed done. Admin: ${admin.email} / Admin123!`);
+  // Blog posts — SEO ready
+  const blogPosts = [
+    {
+      title: "CCTV Installation Cost in Kenya 2026: What Affects Your Quote?",
+      slug: "cctv-installation-cost-kenya-2026",
+      excerpt: "4CH vs 8CH vs 16CH, dome vs bullet, storage and labour — we break down real 2026 pricing for Nairobi homes & businesses.",
+      content: `Planning CCTV in 2026? Costs depend on camera count, resolution (1080p vs 5MP), storage (1TB vs 4TB), night vision, and analytics.\n\n**Qyvea tip:** For a 3-bedroom home, a 4CH 1080p kit + 1TB at KES 28,500 installed covers most needs. Businesses need 8CH+ with remote monitoring — from KES 52,000.\n\nWe offer same-week install, 5-year workmanship warranty, and free site survey across 47 counties. Get a quote in 30 minutes via WhatsApp.`,
+      image: "https://images.unsplash.com/photo-1557597774-9d273605dfa9?auto=format&fit=crop&w=1200&q=80",
+      tags: ["CCTV", "Security", "Kenya"],
+      published: true,
+      featured: true,
+      seoTitle: "CCTV Installation Cost Kenya 2026 | Qyvea",
+      seoDescription: "CCTV cost in Kenya 2026: 4CH, 8CH, 16CH pricing, what affects quotes, and Qyvea’s 5-year warranty. Free site survey.",
+    },
+    {
+      title: "Solar Backup for CCTV & Electric Fence: Stay Secure During Blackouts",
+      slug: "solar-backup-cctv-electric-fence-blackouts",
+      excerpt: "Keep your fence, cameras and lights on when Kenya Power goes off. 3KVA vs 5KVA kits explained.",
+      content: `Blackouts shouldn’t mean black screens. A 3KVA inverter + 2x200Ah + 2x550W keeps 8 cameras, fence and lights for 8-12 hours.\n\n**Bundles from KES 85k** with auto-changeover and lithium options. Qyvea designs for your load, installs in 1-3 days, and warrants 5 years.`,
+      image: "https://images.unsplash.com/photo-1509391366360-2e959784a276?auto=format&fit=crop&w=1200&q=80",
+      tags: ["Solar", "Backup", "Power"],
+      published: true,
+      featured: true,
+      seoTitle: "Solar Backup for CCTV & Fence Kenya | Qyvea",
+      seoDescription: "Solar backup kits Kenya: 3KVA & 5KVA for CCTV & fence, lithium vs lead-acid, prices and install by Qyvea.",
+    },
+    {
+      title: "Biometric Access vs Keys: Why Kenyan Offices Are Switching in 2026",
+      slug: "biometric-access-vs-keys-kenya-2026",
+      excerpt: "Fingerprint, face, card — 98% fewer tail-gating incidents and auditable logs. Here’s how to choose.",
+      content: `Keys get copied. Cards get shared. Biometrics don’t. ZKTeco F22 + face terminals give you per-person logs, time attendance, and anti-passback.\n\n**From KES 18,500 installed** with mobile access. Qyvea integrates with payroll and CCTV for one dashboard.`,
+      image: "https://images.unsplash.com/photo-1563986768609-322da13575f3?auto=format&fit=crop&w=1200&q=80",
+      tags: ["Biometrics", "Access Control"],
+      published: true,
+      featured: false,
+      seoTitle: "Biometric Access Control Kenya 2026 | Qyvea",
+      seoDescription: "Biometric access control Kenya: F22, Face Terminal, why offices choose biometrics over keys.",
+    },
+    {
+      title: "Estate Security: One Contract for 50–200 Homes (HOA Guide)",
+      slug: "estate-security-hoa-guide-kenya",
+      excerpt: "How Kitengela & Syokimau estates save 35% with bulk CCTV, fence and gates — single SLA, one manager.",
+      content: `Managing 87 homes? One contract beats 87 quotes. Qyvea offers per-unit pricing, 4-hour emergency SLA, and monthly health reports for HOAs.\n\n**15+ estates, 2,000+ homes** already secured. Request bulk pricing today.`,
+      image: "https://images.unsplash.com/photo-1600607687939-ce8a6c25118c?auto=format&fit=crop&w=1200&q=80",
+      tags: ["Estates", "HOA", "Gated Community"],
+      published: true,
+      featured: true,
+      seoTitle: "Estate Security Kenya HOA Guide | Qyvea",
+      seoDescription: "Estate security for HOAs Kenya: bulk pricing, one contract, SLA for 50-200 homes. Qyvea.",
+    },
+  ];
+
+  for (const post of blogPosts) {
+    await prisma.post.upsert({
+      where: { slug: post.slug },
+      update: { title: post.title, excerpt: post.excerpt, content: post.content, image: post.image, published: post.published, featured: post.featured, seoTitle: post.seoTitle, seoDescription: post.seoDescription, tags: post.tags },
+      create: { ...post, authorId: admin.id },
+    });
+  }
+
+  console.log(`Seed done. Admin: ${admin.email} / Admin123! + ${blogPosts.length} posts`);
 }
 
 main()

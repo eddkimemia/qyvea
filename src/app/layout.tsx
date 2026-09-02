@@ -2,31 +2,89 @@ import type { Metadata } from "next";
 import "./globals.css";
 import { SiteHeader } from "@/components/site-header";
 import { SiteFooter } from "@/components/site-footer";
+import { Providers } from "@/components/providers";
 import { SITE } from "@/lib/constants";
 
+const siteUrl = process.env.NEXT_PUBLIC_APP_URL || "https://qyvea.co.ke";
+
 export const metadata: Metadata = {
+  metadataBase: new URL(siteUrl),
   title: {
-    default: `${SITE.name} | Kenya's Security & IT Integration Experts`,
+    default: `${SITE.name} | Kenya's Security & IT Integration Experts — CCTV, Solar, Biometrics`,
     template: `%s | ${SITE.name}`,
   },
-  description: SITE.description,
-  keywords: ["CCTV Kenya", "biometrics", "solar", "electric fence", "Nairobi security", "Qyvea"],
-  authors: [{ name: SITE.name }],
+  description: `${SITE.description} Licensed NCA, EPRA, PSRA, ISO 9001:2015. 500+ projects, 47 counties. 5-year warranty, 2-hour response.`,
+  keywords: [
+    "CCTV Kenya", "CCTV installation Nairobi", "biometrics Kenya", "electric fence Kenya", "solar Kenya", "solar backup", "automatic gates", "fire alarm Kenya", "networking Nairobi", "smart home Kenya", "electrical installation", "BMS", "cybersecurity Kenya", "Qyvea", "Qyvea Limited", "security company Kenya", "NCA licensed", "EPRA certified",
+  ],
+  authors: [{ name: SITE.name, url: siteUrl }],
+  creator: SITE.name,
+  publisher: SITE.name,
+  category: "Security & Technology",
+  alternates: { canonical: siteUrl },
   openGraph: {
     title: `${SITE.name} — ${SITE.tagline}`,
     description: SITE.description,
+    url: siteUrl,
+    siteName: SITE.name,
     type: "website",
     locale: "en_KE",
+    images: [{ url: `${siteUrl}/logo.svg`, width: 120, height: 36, alt: SITE.name }],
   },
+  twitter: {
+    card: "summary_large_image",
+    title: `${SITE.name} — ${SITE.tagline}`,
+    description: SITE.description,
+    creator: "@NgigiElias",
+  },
+  robots: {
+    index: true,
+    follow: true,
+    googleBot: { index: true, follow: true, "max-image-preview": "large", "max-snippet": -1, "max-video-preview": -1 },
+  },
+  verification: { google: process.env.NEXT_PUBLIC_GOOGLE_SITE_VERIFICATION || undefined },
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
+  const orgJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "LocalBusiness",
+    name: SITE.name,
+    url: siteUrl,
+    logo: `${siteUrl}/logo.svg`,
+    image: `${siteUrl}/logo.svg`,
+    description: SITE.description,
+    address: { "@type": "PostalAddress", streetAddress: SITE.address, addressLocality: "Nairobi", addressCountry: "KE" },
+    telephone: SITE.phone,
+    email: SITE.email,
+    sameAs: [
+      "https://wa.me/254113301244",
+      "https://www.facebook.com/profile.php?id=61590574734874",
+      "https://www.instagram.com/qyvea254?igsh=OTRmcXJqbjh0a3lz",
+      "https://x.com/NgigiElias",
+      "https://www.tiktok.com/@qyvea",
+      "https://www.linkedin.com/company/securetech-solutions-kenya",
+    ],
+    areaServed: { "@type": "Country", name: "Kenya" },
+    priceRange: "KES",
+  };
+  const websiteJsonLd = {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    name: SITE.name,
+    url: siteUrl,
+    potentialAction: { "@type": "SearchAction", target: `${siteUrl}/shop?q={search_term_string}`, "query-input": "required name=search_term_string" },
+  };
   return (
     <html lang="en">
       <body className="min-h-screen flex flex-col">
-        <SiteHeader />
-        <main className="flex-1">{children}</main>
-        <SiteFooter />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }} />
+        <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
+        <Providers>
+          <SiteHeader />
+          <main className="flex-1">{children}</main>
+          <SiteFooter />
+        </Providers>
         {/* Floating WhatsApp — official #25D366 */}
         <a
           href={`https://wa.me/${SITE.whatsapp}?text=Hi%20Qyvea!%20I%20need%20a%20quote.`}
