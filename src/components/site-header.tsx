@@ -67,7 +67,7 @@ export function SiteHeader() {
       </div>
 
       {/* Main nav — FIXED */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white/95 backdrop-blur supports-[backdrop-filter]:bg-white/60 dark:bg-zinc-950 border-b dark:border-zinc-800">
+      <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-2 shrink-0">
