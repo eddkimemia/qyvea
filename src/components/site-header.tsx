@@ -171,7 +171,7 @@ export function SiteHeader() {
           <div className="fixed inset-0 bg-black/30 backdrop-blur-sm z-40 lg:hidden" onClick={() => setMobileOpen(false)} aria-hidden="true" />
           <div className="fixed top-0 left-0 right-0 bottom-0 bg-white z-50 lg:hidden overflow-y-auto pt-2">
             <div className="flex items-center justify-between px-4 py-3 border-b">
-              <Link href="/" onClick={() => setMobileOpen(false)}><img src="/syntechlogo.jpg" alt="Syntech" className="h-8 object-contain" /></Link>
+              <button onClick={() => { setMobileOpen(false); router.push("/"); }} className="text-left"><img src="/syntechlogo.jpg" alt="Syntech" className="h-8 object-contain" /></button>
               <Button variant="ghost" size="icon" onClick={() => setMobileOpen(false)}><X className="h-5 w-5" /></Button>
             </div>
             <div className="px-4 py-3 space-y-1">

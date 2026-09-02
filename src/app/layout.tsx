@@ -97,7 +97,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
           href={`https://wa.me/${SITE.whatsapp}?text=Hi%20Syntech!%20I%20need%20a%20quote.`}
           target="_blank"
           rel="noopener noreferrer"
-          className="fixed bottom-5 right-5 md:bottom-6 md:right-6 z-50 bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full p-3.5 md:p-4 shadow-[0_8px_24px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_32px_rgba(37,211,102,0.45)] transition-all hover:scale-105 flex items-center justify-center"
+          className="fixed bottom-20 right-5 md:bottom-6 md:right-6 z-[60] bg-[#25D366] hover:bg-[#20BD5A] text-white rounded-full p-3.5 md:p-4 shadow-[0_8px_24px_rgba(37,211,102,0.35)] hover:shadow-[0_12px_32px_rgba(37,211,102,0.45)] transition-all hover:scale-105 flex items-center justify-center"
           aria-label="Chat on WhatsApp"
         >
           {/* Official WhatsApp bubble icon — white */}

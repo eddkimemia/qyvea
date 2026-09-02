@@ -58,7 +58,7 @@ export default async function HomePage() {
               We don&apos;t just install — we <span className="text-white font-semibold underline decoration-[#F00000] decoration-2">protect what you&apos;ve built</span>. CCTV, biometrics, solar & networks with <span className="text-white font-semibold">5-year warranty</span> across 47 counties.
             </p>
             <div className="mt-7 flex flex-wrap gap-3">
-              <Link href="#contact"><Button size="lg" className="shadow-lg shadow-[#F00000]/20 bg-[#0038A0] hover:bg-[#F00000]">Get Free Quote <ArrowRight className="h-4 w-4" /></Button></Link>
+              <Link href="/quote"><Button size="lg" className="shadow-lg shadow-[#F00000]/20 bg-[#0038A0] hover:bg-[#F00000]">Get Free Quote <ArrowRight className="h-4 w-4" /></Button></Link>
               <Link href={`tel:${SITE.phone}`}><Button size="lg" variant="outline" className="border-white/80 text-white hover:bg-[#F00000] hover:border-[#F00000] hover:text-white bg-transparent"><Phone className="h-4 w-4" /> Call {SITE.phoneDisplay}</Button></Link>
             </div>
             {/* Trust stats — red accent */}
