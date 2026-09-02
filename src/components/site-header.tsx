@@ -70,7 +70,6 @@ export function SiteHeader() {
 
           {/* Desktop nav links */}
           <nav className="hidden lg:flex items-center gap-1 text-sm font-medium">
-            <Link href="/shop" className={`px-3 py-2 rounded-lg transition font-medium ${isActive("/shop") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Shop</Link>
             {/* SECURITY */}
             <div className="relative group">
               <button className={`px-3 py-2 rounded-lg transition flex items-center gap-1 font-medium ${SERVICES.filter(s=>s.cat==="Security").some(s=>isActive(s.href)) ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Security <span className="text-xs opacity-60 group-hover:rotate-180 transition-transform">▾</span></button>
@@ -129,11 +128,22 @@ export function SiteHeader() {
                 </div>
               </div>
             </div>
+            <Link href="/shop" className={`px-3 py-2 rounded-lg transition font-medium ${isActive("/shop") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Shop</Link>
             <Link href="/blog" className={`px-3 py-2 rounded-lg transition ${isActive("/blog") ? "bg-[#0038A0] text-white" : "hover:bg-[#F5F7FA] hover:text-[#0038A0]"}`}>Blog</Link>
           </nav>
 
-          {/* Desktop right — only auth + hamburger */}
+          {/* Desktop right — cart, wishlist, auth */}
           <div className="hidden lg:flex items-center gap-1">
+            <Link href="/shop" className="relative">
+              <Button variant="ghost" size="icon" className="hover:text-[#0038A0] relative">
+                <Heart className="h-5 w-5" />
+                {wishlist.length > 0 && <span className="absolute -top-1 -right-1 bg-[#0038A0] text-white text-[10px] font-bold rounded-full h-4 w-4 grid place-items-center">{wishlist.length}</span>}
+              </Button>
+            </Link>
+            <Button variant="ghost" size="icon" className="relative hover:text-[#0038A0]" onClick={() => setCartOpen(true)}>
+              <ShoppingCart className="h-5 w-5" />
+              {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#0038A0] text-white text-[10px] font-bold rounded-full h-4 w-4 grid place-items-center">{cartCount}</span>}
+            </Button>
             {session?.user ? (
               <>
                 {(session.user as any).role === "ADMIN" ? (
@@ -162,18 +172,8 @@ export function SiteHeader() {
               <Input placeholder="Search CCTV, solar, biometrics, gates, ICT products..." className="pl-10 pr-20 bg-white border-[#0038A0]/20 focus:border-[#0038A0] h-10 shadow-sm" value={query} onChange={(e) => setQuery(e.target.value)} />
               <Button type="submit" size="sm" className="absolute right-1 top-1 h-8 px-5">Search</Button>
             </form>
-            {/* Desktop actions next to search */}
+            {/* Desktop: Get Free Quote next to search */}
             <div className="hidden lg:flex items-center gap-1">
-              <Link href="/shop" className="relative">
-                <Button variant="ghost" size="icon" className="hover:text-[#0038A0] relative">
-                  <Heart className="h-5 w-5" />
-                  {wishlist.length > 0 && <span className="absolute -top-1 -right-1 bg-[#0038A0] text-white text-[10px] font-bold rounded-full h-4 w-4 grid place-items-center">{wishlist.length}</span>}
-                </Button>
-              </Link>
-              <Button variant="ghost" size="icon" className="relative hover:text-[#0038A0]" onClick={() => setCartOpen(true)}>
-                <ShoppingCart className="h-5 w-5" />
-                {cartCount > 0 && <span className="absolute -top-1 -right-1 bg-[#0038A0] text-white text-[10px] font-bold rounded-full h-4 w-4 grid place-items-center">{cartCount}</span>}
-              </Button>
               <Link href="#contact"><Button size="sm">Get Free Quote</Button></Link>
             </div>
 
@@ -319,7 +319,7 @@ export function SiteHeader() {
         </div>
       )}
       {/* Mobile bottom action bar */}
-      <div className="fixed bottom-0 left-0 right-0 z-50 lg:hidden bg-white border-t-2 border-[#002070] shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
+      <div className="fixed bottom-0 left-0 right-0 z-[55] lg:hidden bg-white border-t-2 border-[#002070] shadow-[0_-4px_20px_rgba(0,0,0,0.1)]">
         <div className="grid grid-cols-3 gap-0">
           <Link href="/shop" className="flex flex-col items-center justify-center py-2.5 hover:bg-[#F5F7FA] transition">
             <div className="relative">
@@ -341,8 +341,6 @@ export function SiteHeader() {
           </a>
         </div>
       </div>
-      {/* Spacer for mobile bottom bar */}
-      <div className="h-16 lg:hidden" />
     </header>
   );
 }

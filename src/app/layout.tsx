@@ -87,7 +87,7 @@ export default function RootLayout({ children }: { children: React.ReactNode }) 
         <script type="application/ld+json" dangerouslySetInnerHTML={{ __html: JSON.stringify(websiteJsonLd) }} />
         <Providers>
           <SiteHeader />
-          <main className="flex-1">{children}</main>
+          <main className="flex-1 pb-16 lg:pb-0">{children}</main>
           <SiteFooter />
         </Providers>
         {/* Floating WhatsApp — official #25D366 */}
