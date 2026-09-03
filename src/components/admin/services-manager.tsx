@@ -6,6 +6,7 @@ import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { Badge } from "@/components/ui/badge";
 import { ImageUploader } from "@/components/image-uploader";
+import Link from "next/link";
 
 interface Service {
   id: string;
@@ -23,7 +24,6 @@ interface Service {
 export function ServicesManager({ initial }: { initial: Service[] }) {
   const router = useRouter();
   const [services, setServices] = useState<Service[]>(initial);
-  const [editing, setEditing] = useState<Service | null>(null);
   const [showCreate, setShowCreate] = useState(false);
   const [error, setError] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
@@ -38,32 +38,6 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
   const [cFeatured, setCFeatured] = useState(false);
   const [cActive, setCActive] = useState(true);
   const [cImages, setCImages] = useState<string[]>([]);
-
-  // edit fields
-  const [eTitle, setETitle] = useState("");
-  const [eSlug, setESlug] = useState("");
-  const [eExcerpt, setEExcerpt] = useState("");
-  const [eDescription, setEDescription] = useState("");
-  const [eIcon, setEIcon] = useState("");
-  const [ePrice, setEPrice] = useState("");
-  const [eFeatured, setEFeatured] = useState(false);
-  const [eActive, setEActive] = useState(true);
-  const [eImages, setEImages] = useState<string[]>([]);
-
-  const startEdit = (s: Service) => {
-    setEditing(s);
-    setETitle(s.title);
-    setESlug(s.slug);
-    setEExcerpt(s.excerpt || "");
-    setEDescription(s.description || "");
-    setEIcon(s.icon || "");
-    setEPrice(s.priceFrom?.toString() || "");
-    setEFeatured(s.featured);
-    setEActive(s.active);
-    setEImages(s.image ? [s.image] : []);
-    setError(null);
-    setShowCreate(false);
-  };
 
   const handleCreate = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -92,31 +66,6 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
     } catch (err: any) { setError(err.message); } finally { setLoading(false); }
   };
 
-  const handleUpdate = async (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!editing) return;
-    setLoading(true);
-    try {
-      const payload: any = {
-        title: eTitle,
-        slug: eSlug.toUpperCase(),
-        excerpt: eExcerpt || null,
-        description: eDescription || null,
-        icon: eIcon || null,
-        image: eImages[0] || null,
-        priceFrom: ePrice ? parseInt(ePrice) : null,
-        featured: eFeatured,
-        active: eActive,
-      };
-      const res = await fetch(`/api/services?id=${editing.id}&_method=PUT`, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify(payload) });
-      const json = await res.json();
-      if (!res.ok) throw new Error(json.error);
-      setServices(services.map((s) => (s.id === editing.id ? json : s)));
-      setEditing(null);
-      router.refresh();
-    } catch (err: any) { setError(err.message); } finally { setLoading(false); }
-  };
-
   const handleDelete = async (id: string) => {
     if (!confirm("Delete service?")) return;
     const res = await fetch(`/api/services?id=${id}&_method=DELETE`, { method: "POST" });
@@ -127,8 +76,11 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
   return (
     <div className="space-y-4">
       <div className="flex justify-between items-center">
-        <p className="text-sm text-zinc-500">{services.length} services • Edit title, image, price, featured.</p>
-        <Button size="sm" onClick={() => { setShowCreate(!showCreate); setEditing(null); }}>{showCreate ? "Cancel" : "+ Add Service"}</Button>
+        <p className="text-sm text-zinc-500">{services.length} services • Rich content, images, pricing.</p>
+        <div className="flex gap-2">
+          <Link href="/admin/services/new"><Button size="sm" variant="outline">+ Add via Page</Button></Link>
+          <Button size="sm" onClick={() => setShowCreate(!showCreate)}>{showCreate ? "Cancel" : "+ Quick Add"}</Button>
+        </div>
       </div>
 
       {error && <div className="bg-red-50 border border-red-200 text-red-700 rounded-xl px-4 py-3 text-sm">{error}</div>}
@@ -136,7 +88,7 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
       {showCreate && (
         <Card className="border-2 border-[#0038A0]/20">
           <div className="h-1 bg-[#0038A0]" />
-          <CardHeader><CardTitle>New Service</CardTitle><p className="text-sm text-zinc-500">Slug must match ServiceSlug enum: CCTV, BIOMETRICS, etc. For custom, use existing enum value.</p></CardHeader>
+          <CardHeader><CardTitle>Quick Add Service</CardTitle><p className="text-sm text-zinc-500">Slug must match ServiceSlug enum. For full rich editor use <Link href="/admin/services/new" className="underline text-[#0038A0]">/new</Link> page.</p></CardHeader>
           <CardContent>
             <form onSubmit={handleCreate} className="space-y-3">
               <ImageUploader value={cImages} onChange={setCImages} max={1} label="Service Image" />
@@ -148,9 +100,9 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
                 </select>
               </div>
               <input value={cExcerpt} onChange={(e) => setCExcerpt(e.target.value)} placeholder="Excerpt (short)" className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <textarea value={cDescription} onChange={(e) => setCDescription(e.target.value)} placeholder="Full description (supports line breaks, HTML allowed)" rows={3} className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
+              <textarea value={cDescription} onChange={(e) => setCDescription(e.target.value)} placeholder="Description (plain or HTML)" rows={3} className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
               <div className="grid md:grid-cols-3 gap-3">
-                <input value={cIcon} onChange={(e) => setCIcon(e.target.value)} placeholder="Icon e.g. Shield, Video" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
+                <input value={cIcon} onChange={(e) => setCIcon(e.target.value)} placeholder="Icon e.g. Shield" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
                 <input value={cPrice} onChange={(e) => setCPrice(e.target.value)} type="number" placeholder="Price From KES" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
                 <div className="flex gap-3 items-center">
                   <label className="flex items-center gap-1.5 text-sm"><input type="checkbox" checked={cFeatured} onChange={(e) => setCFeatured(e.target.checked)} className="accent-[#0038A0]" /> Featured</label>
@@ -163,35 +115,9 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
         </Card>
       )}
 
-      {editing && (
-        <Card className="border-2 border-amber-200 bg-amber-50/20">
-          <CardHeader><CardTitle>Edit {editing.title}</CardTitle><p className="text-xs text-zinc-500">{editing.slug}</p></CardHeader>
-          <CardContent>
-            <form onSubmit={handleUpdate} className="space-y-3">
-              <ImageUploader value={eImages} onChange={setEImages} max={1} label="Service Image" />
-              <input value={eTitle} onChange={(e) => setETitle(e.target.value)} className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <input value={eExcerpt} onChange={(e) => setEExcerpt(e.target.value)} placeholder="Excerpt" className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <textarea value={eDescription} onChange={(e) => setEDescription(e.target.value)} rows={3} className="w-full border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <div className="grid md:grid-cols-3 gap-3">
-                <input value={eIcon} onChange={(e) => setEIcon(e.target.value)} placeholder="Icon" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-                <input value={ePrice} onChange={(e) => setEPrice(e.target.value)} type="number" placeholder="Price From" className="border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-                <div className="flex gap-3 items-center">
-                  <label className="flex items-center gap-1.5 text-sm"><input type="checkbox" checked={eFeatured} onChange={(e) => setEFeatured(e.target.checked)} className="accent-[#0038A0]" /> Featured</label>
-                  <label className="flex items-center gap-1.5 text-sm"><input type="checkbox" checked={eActive} onChange={(e) => setEActive(e.target.checked)} className="accent-[#0038A0]" /> Active</label>
-                </div>
-              </div>
-              <div className="flex gap-2">
-                <Button type="submit" disabled={loading} className="flex-1">{loading ? "Saving..." : "Save"}</Button>
-                <Button type="button" variant="outline" className="flex-1" onClick={() => setEditing(null)}>Cancel</Button>
-              </div>
-            </form>
-          </CardContent>
-        </Card>
-      )}
-
       <div className="grid md:grid-cols-2 gap-4">
         {services.map((s) => (
-          <Card key={s.id} className="overflow-hidden hover:shadow-md transition">
+          <Card key={s.id} className="overflow-hidden hover:shadow-md transition flex flex-col">
             {s.image && <img src={s.image} alt={s.title} className="h-36 w-full object-cover" />}
             <CardHeader className="pb-2">
               <CardTitle className="text-base flex items-center justify-between gap-2">
@@ -200,12 +126,13 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
               </CardTitle>
               <p className="text-xs text-zinc-500">{s.slug} • {s.priceFrom ? `KES ${s.priceFrom.toLocaleString()} from` : "No price"} • {s.active ? "Active" : "Hidden"}</p>
             </CardHeader>
-            <CardContent className="space-y-3">
-              <p className="text-sm text-zinc-600 line-clamp-2">{s.excerpt || s.description?.slice(0, 120) || "No excerpt"}</p>
-              <div className="flex gap-2">
-                <Button size="sm" variant="outline" className="flex-1 h-8" onClick={() => startEdit(s)}>Edit</Button>
+            <CardContent className="space-y-3 flex-1 flex flex-col">
+              <p className="text-sm text-zinc-600 line-clamp-2 flex-1">{s.excerpt || s.description?.slice(0, 120) || "No excerpt"}</p>
+              <div className="flex gap-2 mt-auto">
+                <Link href={`/admin/services/${s.id}/edit`} className="flex-1"><Button size="sm" className="w-full h-8">Edit →</Button></Link>
                 <Button size="sm" variant="ghost" className="h-8 text-red-600" onClick={() => handleDelete(s.id)}>Del</Button>
               </div>
+              <Link href={`/services/${s.slug.toLowerCase().replace(/_/g, "-")}`} target="_blank" className="text-xs text-[#0038A0] hover:underline text-center block">View on site ↗</Link>
             </CardContent>
           </Card>
         ))}

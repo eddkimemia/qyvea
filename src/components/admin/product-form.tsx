@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { ImageUploader } from "@/components/image-uploader";
+import { RichTextEditor } from "@/components/rich-text-editor";
 
 const CATEGORIES = ["CCTV","INTERCOM","ACCESS_CONTROL","BIOMETRICS","NETWORKING","ELECTRIC_FENCE","GATE_AUTOMATION","FIRE_ALARM","SOLAR","SMART_HOME","ELECTRICAL","IT_SUPPORT","ACCESSORIES","ICT"];
 
@@ -160,8 +161,10 @@ export function ProductForm({ initial, id }: { initial?: any; id?: string }) {
             </div>
 
             <div className="md:col-span-2">
-              <label className="text-sm font-semibold">Description</label>
-              <textarea value={description} onChange={(e) => setDescription(e.target.value)} rows={4} placeholder="Detailed description, specs in prose..." className="w-full mt-1 border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
+              <label className="text-sm font-semibold">Description — Rich Text</label>
+              <div className="mt-1">
+                <RichTextEditor value={description} onChange={setDescription} placeholder="Detailed description — use headings, lists, links, uploaded images..." minHeight="200px" />
+              </div>
             </div>
 
             <div className="md:col-span-2">

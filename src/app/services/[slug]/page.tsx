@@ -417,9 +417,74 @@ const SERVICE_CATEGORY_MAP: Record<string, string> = {
 
 export const dynamic = "force-dynamic";
 
+const SLUG_TO_ENUM: Record<string, string> = {
+  cctv: "CCTV",
+  biometrics: "BIOMETRICS",
+  "electric-fence": "ELECTRIC_FENCE",
+  "automatic-gates": "AUTOMATIC_GATES",
+  "fire-alarm-systems": "FIRE_ALARM",
+  networking: "NETWORKING",
+  "smart-home-automation": "SMART_HOME",
+  "solar-installation": "SOLAR_INSTALLATION",
+  "solar-solutions": "SOLAR_BACKUP",
+  "electrical-installation": "ELECTRICAL_INSTALLATION",
+  bms: "BMS",
+  cybersecurity: "CYBERSECURITY",
+  "system-integration": "SYSTEM_INTEGRATION",
+  "it-support": "IT_SUPPORT",
+  maintenance: "MAINTENANCE",
+  estates: "ESTATE_SOLUTIONS",
+  "website-design": "WEBSITE_DESIGN",
+  "graphic-design": "GRAPHIC_DESIGN",
+  "ai-solutions": "AI_SOLUTIONS",
+};
+
 export default async function ServicePage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const svc = SERVICES[slug];
+  const fallback = SERVICES[slug];
+  // Try DB first
+  let dbSvc: any = null;
+  const enumSlug = SLUG_TO_ENUM[slug] || slug.toUpperCase().replace(/-/g, "_");
+  try {
+    dbSvc = await prisma.service.findFirst({ where: { slug: enumSlug as any } } as any);
+    if (!dbSvc) {
+      // also try by case-insensitive title slug match
+      dbSvc = await prisma.service.findFirst({ where: { slug: slug.toUpperCase().replace(/-/g, "_") as any } } as any);
+    }
+  } catch {}
+  // Build merged service
+  let svc: ServiceData | null = null;
+  if (fallback && dbSvc) {
+    svc = {
+      ...fallback,
+      title: dbSvc.title || fallback.title,
+      desc: dbSvc.excerpt || fallback.desc,
+      longDesc: dbSvc.description || fallback.longDesc,
+      image: dbSvc.image || fallback.image,
+      priceFrom: dbSvc.priceFrom ? `KES ${Number(dbSvc.priceFrom).toLocaleString()}` : fallback.priceFrom,
+    };
+  } else if (dbSvc) {
+    // DB only — create generic from DB
+    svc = {
+      title: dbSvc.title,
+      desc: dbSvc.excerpt || "",
+      longDesc: dbSvc.description || dbSvc.excerpt || "",
+      bullets: ["Professional installation", "5-year warranty", "24/7 support", "Licensed technicians"],
+      process: fallback?.process || [
+        { step: "1", title: "Consultation", desc: "We assess your needs and site." },
+        { step: "2", title: "Design", desc: "Custom solution and transparent quote." },
+        { step: "3", title: "Installation", desc: "Certified team installs and configures." },
+        { step: "4", title: "Handover", desc: "Training and warranty documentation." },
+      ],
+      faqs: fallback?.faqs || [],
+      testimonial: fallback?.testimonial || { quote: "Excellent service and support.", author: "Client", role: "Syntech Customer" },
+      industries: fallback?.industries || ["Residential", "Commercial", "Industrial"],
+      priceFrom: dbSvc.priceFrom ? `KES ${Number(dbSvc.priceFrom).toLocaleString()}` : "Contact for price",
+      image: dbSvc.image || IMAGES.services.cctv,
+    };
+  } else {
+    svc = fallback as ServiceData;
+  }
   if (!svc) return notFound();
 
   const category = SERVICE_CATEGORY_MAP[slug];
@@ -448,11 +513,19 @@ export default async function ServicePage({ params }: { params: Promise<{ slug: 
         </div>
       </div>
 
-      {/* Detailed Description */}
+      {/* Detailed Description — DB-driven rich HTML supported */}
       <Card className="mt-8 border-2 border-[#0038A0]/15">
         <div className="h-1 bg-[#0038A0]" />
         <CardContent className="p-6 md:p-8">
-          <p className="text-zinc-700 leading-relaxed text-sm md:text-base">{svc.longDesc}</p>
+          {(() => {
+            const html = svc.longDesc || "";
+            const isHtml = /<\/?[a-z][\s\S]*>/i.test(html);
+            return isHtml ? (
+              <div className="prose prose-zinc max-w-none prose-headings:font-black prose-a:text-[#0038A0] prose-img:rounded-xl prose-img:border" dangerouslySetInnerHTML={{ __html: html }} />
+            ) : (
+              <p className="text-zinc-700 leading-relaxed text-sm md:text-base">{html}</p>
+            );
+          })()}
           <div className="mt-6 grid grid-cols-2 md:grid-cols-3 gap-4">
             {svc.industries.map((ind) => (
               <div key={ind} className="flex items-center gap-2 text-sm text-zinc-600">

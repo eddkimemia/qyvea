@@ -95,7 +95,7 @@ export default async function AdminProductsPage({
                     </td>
                     <td className="p-3 text-right">
                       <div className="flex justify-end gap-1">
-                        <Link href={`/admin/products/${p.id}`}><Button size="sm" variant="outline" className="h-7 text-xs">Edit</Button></Link>
+                        <Link href={`/admin/products/${p.id}/edit`}><Button size="sm" variant="outline" className="h-7 text-xs">Edit</Button></Link>
                         <form action={`/api/products?id=${p.id}&_method=DELETE`} method="post">
                           <Button size="sm" variant="ghost" className="h-7 text-xs text-red-600" type="submit">Del</Button>
                         </form>
