@@ -4,10 +4,14 @@ import { prisma } from "@/lib/db";
 import bcrypt from "bcryptjs";
 import { rateLimit } from "@/lib/rate-limit";
 
+const fallbackSecret = "1lKFDOJ+j726WM7q61RamLtp2CPiAgEWeiK5RaPWvNQ="; // same as local .env, used only if Vercel env missing — rotate via dashboard
+if (!process.env.AUTH_SECRET && !process.env.NEXTAUTH_SECRET) {
+  console.warn("[Auth] AUTH_SECRET/NEXTAUTH_SECRET not set — using fallback. Set AUTH_SECRET in Vercel dashboard for production.");
+}
 export const { handlers, auth, signIn, signOut } = NextAuth({
   session: { strategy: "jwt" },
   trustHost: true,
-  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET,
+  secret: process.env.AUTH_SECRET || process.env.NEXTAUTH_SECRET || fallbackSecret,
   logger: {
     error(error) { console.error("[NextAuth ERROR]", error); },
     warn(code) { console.warn("[NextAuth WARN]", code); },

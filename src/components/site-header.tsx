@@ -47,8 +47,8 @@ export function SiteHeader() {
 
   return (
     <>
-    <header className="w-full">
-      {/* Top bar — NOT sticky */}
+    <header className="sticky top-0 z-50 w-full bg-white border-b border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+      {/* Top bar */}
       <div className="bg-[#002070] text-white text-xs border-b-2 border-[#F00000]">
         <div className="container mx-auto flex h-7 items-center justify-between px-4">
           <div className="hidden md:flex gap-3 overflow-hidden whitespace-nowrap">
@@ -66,8 +66,8 @@ export function SiteHeader() {
         </div>
       </div>
 
-      {/* Main nav — FIXED */}
-      <div className="fixed top-0 left-0 right-0 z-50 bg-white border-b border-zinc-200 dark:bg-zinc-950 dark:border-zinc-800">
+      {/* Main nav */}
+      <div className="bg-white dark:bg-zinc-950">
         <div className="container mx-auto px-4">
           <div className="flex h-16 items-center justify-between gap-3">
             <Link href="/" className="flex items-center gap-2 shrink-0">
@@ -252,8 +252,6 @@ export function SiteHeader() {
 
 
     </header>
-    {/* Spacer for fixed nav */}
-    <div className="h-16" />
     </>
   );
 }
