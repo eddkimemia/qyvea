@@ -45,10 +45,42 @@ async function handleUpsert(data: any, id?: string) {
   if (data.oldPrice) payload.oldPrice = data.oldPrice ? parseInt(String(data.oldPrice)) : null;
   else if (data.oldPrice === "" || data.oldPrice === null) payload.oldPrice = null;
   if (data.image) payload.image = String(data.image);
+  // Handle multiple images: supports JSON array string, comma-separated, or array
+  const rawImages = data.images ?? data.imageList ?? data.gallery;
+  if (rawImages !== undefined) {
+    let arr: string[] = [];
+    if (Array.isArray(rawImages)) arr = rawImages.map(String);
+    else if (typeof rawImages === "string") {
+      const s = rawImages.trim();
+      if (s.startsWith("[")) {
+        try { const parsed = JSON.parse(s); if (Array.isArray(parsed)) arr = parsed.map(String); } catch { arr = s.split(",").map((x) => x.trim()).filter(Boolean); }
+      } else {
+        arr = s.split(",").map((x) => x.trim()).filter(Boolean);
+      }
+    }
+    arr = arr.map((u) => u.trim()).filter(Boolean);
+    if (arr.length) {
+      payload.images = arr;
+      if (!payload.image) payload.image = arr[0];
+    } else if (arr.length === 0) {
+      payload.images = [];
+    }
+  }
   if (data.description) payload.description = String(data.description);
   if (data.stockQty !== undefined) payload.stockQty = parseInt(String(data.stockQty)) || 0;
   if (data.labourPrice !== undefined) payload.labourPrice = data.labourPrice ? parseInt(String(data.labourPrice)) : null;
+  if (data.labourNote !== undefined) payload.labourNote = data.labourNote ? String(data.labourNote) : null;
   if (data.badge !== undefined) payload.badge = data.badge ? String(data.badge) : null;
+  if (data.tags !== undefined) {
+    if (Array.isArray(data.tags)) payload.tags = data.tags.map(String);
+    else if (typeof data.tags === "string") payload.tags = String(data.tags).split(",").map((t) => t.trim()).filter(Boolean);
+  }
+  if (data.specs !== undefined) {
+    // specs can be JSON string
+    if (typeof data.specs === "string") {
+      try { payload.specs = JSON.parse(data.specs); } catch { payload.specs = String(data.specs).split(",").map((kv) => { const [k, ...rest] = kv.split(":"); return { key: k.trim(), value: rest.join(":").trim() }; }).filter((x) => x.key); }
+    } else if (Array.isArray(data.specs)) payload.specs = data.specs;
+  }
 
   const featured = parseBool(data.featured);
   if (featured !== undefined) payload.featured = featured;
@@ -61,6 +93,7 @@ async function handleUpsert(data: any, id?: string) {
 
   if (payload.stockQty !== undefined) payload.inStock = payload.stockQty > 0;
   if (payload.image && !payload.images) payload.images = [payload.image];
+  if (payload.images && payload.images.length && !payload.image) payload.image = payload.images[0];
 
   // Defaults for create
   if (!id) {

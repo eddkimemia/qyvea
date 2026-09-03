@@ -10,6 +10,14 @@ export async function GET() {
   }
 }
 
+function parseBool(v: any) {
+  if (v === undefined || v === null) return undefined;
+  if (typeof v === "boolean") return v;
+  if (v === "on" || v === "true" || v === "1") return true;
+  if (v === "false" || v === "0") return false;
+  return Boolean(v);
+}
+
 export async function POST(req: NextRequest) {
   const ct = req.headers.get("content-type") || "";
   const isForm = ct.includes("multipart/form-data") || ct.includes("application/x-www-form-urlencoded");
@@ -23,13 +31,18 @@ export async function POST(req: NextRequest) {
     }
 
     const payload: any = {};
-    if (data.whatsappNumber) payload.whatsappNumber = String(data.whatsappNumber).replace(/\D/g, "");
-    if (data.promoText !== undefined) payload.promoText = String(data.promoText);
-    if (data.promoCode !== undefined) payload.promoCode = String(data.promoCode);
-    if (data.promoActive !== undefined) {
-      const v = data.promoActive;
-      payload.promoActive = v === "on" || v === "true" || v === true || v === "1";
+    const strFields = ["whatsappNumber","phone","phoneDisplay","email","address","siteName","siteTagline","siteDescription","siteUrl","logoUrl","faviconUrl","promoText","promoCode","businessHours","facebookUrl","instagramUrl","linkedinUrl","tiktokUrl","xUrl","youtubeUrl","currency"];
+    for (const f of strFields) {
+      if (data[f] !== undefined) {
+        const v = String(data[f]).trim();
+        if (f === "whatsappNumber") payload[f] = v.replace(/\D/g, "");
+        else payload[f] = v || null;
+      }
     }
+    if (data.promoActive !== undefined) payload.promoActive = parseBool(data.promoActive) ?? false;
+    if (data.maintenanceMode !== undefined) payload.maintenanceMode = parseBool(data.maintenanceMode) ?? false;
+    if (data.defaultDeliveryFee !== undefined) payload.defaultDeliveryFee = parseInt(String(data.defaultDeliveryFee)) || 0;
+    if (data.taxRate !== undefined) payload.taxRate = parseFloat(String(data.taxRate)) || 0;
 
     const updated = await prisma.settings.upsert({
       where: { id: "singleton" },

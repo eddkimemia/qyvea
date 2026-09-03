@@ -135,8 +135,13 @@ export default async function BlogPostPage({ params }: { params: Promise<{ slug:
             <img src={post.image} alt={post.title} className="w-full h-auto max-h-[420px] object-cover" />
           </div>
           <Card className="mt-6">
-            <CardContent className="p-6 prose prose-zinc max-w-none prose-headings:font-black prose-a:text-[#0038A0]">
-              <div dangerouslySetInnerHTML={{ __html: post.content?.replace(/\n/g, "<br />") || "" }} />
+            <CardContent className="p-6 prose prose-zinc max-w-none prose-headings:font-black prose-a:text-[#0038A0] prose-img:rounded-xl prose-img:border max-w-none">
+              {(() => {
+                const c = post.content || "";
+                const isHtml = /<\/?[a-z][\s\S]*>/i.test(c);
+                const html = isHtml ? c : c.replace(/\n/g, "<br />");
+                return <div dangerouslySetInnerHTML={{ __html: html }} />;
+              })()}
               <div className="not-prose mt-6 flex flex-wrap gap-2">
                 <Link href="/shop"><Button>Shop Equipment</Button></Link>
                 <Link href="/services/website-design"><Button variant="outline">Website Design</Button></Link>

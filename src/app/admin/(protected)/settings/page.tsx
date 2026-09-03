@@ -1,71 +1,80 @@
 import { prisma } from "@/lib/db";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";
+import { SettingsForm } from "@/components/admin/settings-form";
 
 export const dynamic = "force-dynamic";
 
 export default async function AdminSettingsPage() {
   let settings: any = null;
-  let counts = { products: 0, users: 0 };
+  let counts = { products: 0, users: 0, orders: 0, leads: 0, posts: 0 };
   try {
     settings = await prisma.settings.findUnique({ where: { id: "singleton" } });
-    counts.products = await prisma.product.count();
-    counts.users = await prisma.user.count();
+    const [p, u, o, l, po] = await Promise.all([
+      prisma.product.count(),
+      prisma.user.count(),
+      prisma.order.count(),
+      prisma.lead.count(),
+      prisma.post.count(),
+    ]);
+    counts = { products: p, users: u, orders: o, leads: l, posts: po };
   } catch {}
-  settings = settings || { whatsappNumber: "254715135141", promoText: "Free Delivery in Nairobi on orders over KES 5,000", promoCode: "", promoActive: true };
+  settings = settings || {
+    whatsappNumber: "254715135141",
+    phone: "+254 715 135 141",
+    phoneDisplay: "0715 135 141",
+    email: "info@syntech.co.ke",
+    address: "Westlands, Nairobi",
+    siteName: "Syntech Solutions",
+    siteTagline: "One Company, Every Solution",
+    siteDescription: "Kenya's trusted security & IT integration company.",
+    siteUrl: "https://syntech.co.ke",
+    logoUrl: "/syntechlogo.jpg",
+    faviconUrl: "/fav.png",
+    promoText: "Free Delivery in Nairobi on orders over KES 5,000",
+    promoCode: "",
+    promoActive: true,
+    businessHours: "Mon–Fri: 8:00 AM – 6:00 PM",
+    maintenanceMode: false,
+    facebookUrl: "https://www.facebook.com/SyntechSolutions",
+    instagramUrl: "https://www.instagram.com/syntechsolutions",
+    linkedinUrl: "https://www.linkedin.com/company/syntech-solutions-ltd",
+    tiktokUrl: "https://www.tiktok.com/@syntechsolutions",
+    xUrl: "https://x.com/syntechsolutions",
+    youtubeUrl: "https://www.youtube.com/@syntechsolutions",
+    defaultDeliveryFee: 0,
+    taxRate: 0,
+    currency: "KES",
+  };
 
   return (
-    <div className="space-y-4 max-w-3xl">
+    <div className="space-y-6">
       <div className="flex items-center justify-between">
-        <h1 className="text-xl font-black">Settings</h1>
+        <div>
+          <h1 className="text-xl font-black">Settings</h1>
+          <p className="text-sm text-zinc-500">All site configuration — logos, contact, social, promo, commerce. Changes reflect instantly (DB-driven).</p>
+        </div>
         <Badge variant="secondary" className="bg-[#0038A0] text-white">Store Configuration</Badge>
       </div>
 
-      <Card className="border-2 border-[#0038A0]/20">
-        <div className="h-1 bg-[#0038A0]" />
-        <CardHeader><CardTitle>Store Settings</CardTitle><p className="text-sm text-zinc-500">Update your store’s public settings — changes reflect instantly on the website.</p></CardHeader>
-        <CardContent>
-          <form action="/api/settings" method="post" className="space-y-4">
-            <div>
-              <label className="text-sm font-semibold">WhatsApp Number</label>
-              <input name="whatsappNumber" defaultValue={settings.whatsappNumber} placeholder="254715135141" required className="w-full mt-1 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
-              <p className="text-xs text-zinc-500 mt-1">Used for WhatsApp buttons and floating chat. Include country code without +.</p>
-            </div>
-            <div>
-              <label className="text-sm font-semibold">Promo Banner Text</label>
-              <input name="promoText" defaultValue={settings.promoText} placeholder="Free Delivery..." className="w-full mt-1 border-2 border-zinc-200 focus:border-[#0038A0] rounded-lg px-3 py-2.5 text-sm outline-none" />
-            </div>
-            <div className="grid grid-cols-2 gap-3">
-              <div>
-                <label className="text-sm font-semibold">Promo Code</label>
-                <input name="promoCode" defaultValue={settings.promoCode || ""} placeholder="SYNTECH5" className="w-full mt-1 border-2 border-zinc-200 rounded-lg px-3 py-2.5 text-sm outline-none" />
-              </div>
-              <div className="flex items-end gap-2 pb-2">
-                <label className="flex items-center gap-2 text-sm font-medium"><input type="checkbox" name="promoActive" defaultChecked={settings.promoActive} className="accent-[#0038A0] h-4 w-4" /> Promo Active</label>
-              </div>
-            </div>
-            <Button type="submit" className="w-full h-11">Save Settings</Button>
-          </form>
-        </CardContent>
-      </Card>
+      <SettingsForm initial={settings} />
 
       <Card>
-        <CardHeader><CardTitle>Store Overview</CardTitle><p className="text-sm text-zinc-500">Quick stats for your Syntech store.</p></CardHeader>
-        <CardContent className="text-sm space-y-2">
-          <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Products</span><span className="font-bold">{counts.products}</span></div>
-          <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Users</span><span className="font-bold">{counts.users}</span></div>
-          <div className="flex justify-between border-b py-2"><span className="text-zinc-500">Website</span><span className="font-medium">syntech.co.ke</span></div>
-          <div className="flex justify-between"><span className="text-zinc-500">Support</span><span className="text-xs">0715 135 141 • info@syntech.co.ke</span></div>
+        <CardHeader><CardTitle>Store Overview</CardTitle><p className="text-sm text-zinc-500">Live counts from your Syntech database.</p></CardHeader>
+        <CardContent className="grid sm:grid-cols-3 lg:grid-cols-5 gap-3 text-sm">
+          <div className="border rounded-xl p-3 text-center"><p className="text-2xl font-black">{counts.products}</p><p className="text-xs text-zinc-500">Products</p></div>
+          <div className="border rounded-xl p-3 text-center"><p className="text-2xl font-black">{counts.users}</p><p className="text-xs text-zinc-500">Users</p></div>
+          <div className="border rounded-xl p-3 text-center"><p className="text-2xl font-black">{counts.orders}</p><p className="text-xs text-zinc-500">Orders</p></div>
+          <div className="border rounded-xl p-3 text-center"><p className="text-2xl font-black">{counts.leads}</p><p className="text-xs text-zinc-500">Leads</p></div>
+          <div className="border rounded-xl p-3 text-center"><p className="text-2xl font-black">{counts.posts}</p><p className="text-xs text-zinc-500">Posts</p></div>
         </CardContent>
       </Card>
 
       <Card className="border-red-200 bg-red-50/50">
         <CardHeader><CardTitle className="text-red-700">Danger Zone</CardTitle></CardHeader>
         <CardContent className="flex flex-wrap gap-2">
-          <Button variant="outline" className="border-red-200 text-red-700 hover:bg-red-100">Export Products CSV</Button>
-          <Button variant="outline" className="border-red-200 text-red-700 hover:bg-red-100">Clear All Orders</Button>
-          <p className="text-xs text-red-600 w-full">Irreversible — use with caution. Back up DB first.</p>
+          <Badge variant="outline" className="border-red-200 text-red-700">Export will be added via /api/export</Badge>
+          <p className="text-xs text-red-600 w-full">Irreversible actions — back up DB first. Use Prisma Studio for advanced ops.</p>
         </CardContent>
       </Card>
     </div>

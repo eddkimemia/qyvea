@@ -38,7 +38,8 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
   }
 
   const discount = product.oldPrice ? Math.round(((product.oldPrice - product.price)/product.oldPrice)*100) : 0;
-  const heroImg = product.image || imageForCategory(product.category);
+  const gallery: string[] = (product.images && product.images.length ? product.images : product.image ? [product.image] : []);
+  const heroImg = gallery[0] || product.image || imageForCategory(product.category);
 
   return (
     <div className="container mx-auto px-4 py-6 md:py-8">
@@ -55,13 +56,24 @@ export default async function ProductDetail({ params }: { params: Promise<{ slug
               {discount>0 && <Badge className="bg-red-600 text-white font-bold">-{discount}%</Badge>}
             </div>
           </div>
-          <div className="grid grid-cols-3 gap-2">
-            {[IMAGES.products.networking, IMAGES.products.cctvKit, IMAGES.hero.tech].map((src,i)=>(
-              <div key={i} className="aspect-square rounded-xl overflow-hidden border-2 hover:border-[#0038A0] transition cursor-pointer">
-                <img src={src} alt="thumb" className="h-full w-full object-cover" />
-              </div>
-            ))}
-          </div>
+          {gallery.length > 1 && (
+            <div className="grid grid-cols-3 gap-2">
+              {gallery.slice(0, 6).map((src, i) => (
+                <div key={i} className="aspect-square rounded-xl overflow-hidden border-2 hover:border-[#0038A0] transition bg-zinc-50">
+                  <img src={src} alt={`thumb ${i + 1}`} className="h-full w-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
+          {gallery.length <= 1 && (
+            <div className="grid grid-cols-3 gap-2">
+              {[IMAGES.products.networking, IMAGES.products.cctvKit, IMAGES.hero.tech].map((src, i) => (
+                <div key={i} className="aspect-square rounded-xl overflow-hidden border-2 hover:border-[#0038A0] transition cursor-pointer bg-zinc-50">
+                  <img src={src} alt="thumb" className="h-full w-full object-cover" />
+                </div>
+              ))}
+            </div>
+          )}
         </div>
 
         <div>

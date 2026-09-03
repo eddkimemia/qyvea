@@ -299,12 +299,33 @@ model Subscription {
 }
 
 model Settings {
-  id              String  @id @default("singleton")
-  whatsappNumber  String  @default("254715135141")
-  promoText       String?
-  promoCode       String?
-  promoActive     Boolean @default(false)
-  updatedAt       DateTime @updatedAt
+  id                 String   @id @default("singleton")
+  whatsappNumber     String   @default("254715135141")
+  phone              String   @default("+254 715 135 141")
+  phoneDisplay       String   @default("0715 135 141")
+  email              String   @default("info@syntech.co.ke")
+  address            String   @default("Westlands, Nairobi")
+  siteName           String   @default("Syntech Solutions")
+  siteTagline        String   @default("One Company, Every Solution")
+  siteDescription    String?  @db.Text @default("Kenya's trusted security & IT integration company. CCTV, biometrics, solar, networking — 500+ projects, 47 counties. Licensed, insured, 5-year warranty.")
+  siteUrl            String   @default("https://syntech.co.ke")
+  logoUrl            String?  @default("/syntechlogo.jpg")
+  faviconUrl         String?  @default("/fav.png")
+  promoText          String?
+  promoCode          String?
+  promoActive        Boolean  @default(false)
+  businessHours      String?  @default("Mon–Fri: 8:00 AM – 6:00 PM\nSat: 9:00 AM – 1:00 PM\nSun & Holidays: Closed")
+  maintenanceMode    Boolean  @default(false)
+  facebookUrl        String?  @default("https://www.facebook.com/SyntechSolutions")
+  instagramUrl       String?  @default("https://www.instagram.com/syntechsolutions")
+  linkedinUrl        String?  @default("https://www.linkedin.com/company/syntech-solutions-ltd")
+  tiktokUrl          String?  @default("https://www.tiktok.com/@syntechsolutions")
+  xUrl               String?  @default("https://x.com/syntechsolutions")
+  youtubeUrl         String?  @default("https://www.youtube.com/@syntechsolutions")
+  defaultDeliveryFee Int      @default(0)
+  taxRate            Float    @default(0)
+  currency           String   @default("KES")
+  updatedAt          DateTime @updatedAt
 }
 
 model PageView {
