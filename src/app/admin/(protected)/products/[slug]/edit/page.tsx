@@ -10,11 +10,13 @@ import { Eye, ExternalLink, Package, Star, TrendingUp, Box } from "lucide-react"
 
 export const dynamic = "force-dynamic";
 
-export default async function EditProductPage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function EditProductPage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let product: any = null;
   try {
-    product = await prisma.product.findUnique({ where: { id } });
+    // Prefer slug, fallback to id for backwards compatibility (cuids)
+    product = await prisma.product.findUnique({ where: { slug } });
+    if (!product) product = await prisma.product.findUnique({ where: { id: slug } });
   } catch {}
   if (!product) return notFound();
 

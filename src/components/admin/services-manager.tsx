@@ -129,7 +129,7 @@ export function ServicesManager({ initial }: { initial: Service[] }) {
             <CardContent className="space-y-3 flex-1 flex flex-col">
               <p className="text-sm text-zinc-600 line-clamp-2 flex-1">{s.excerpt || s.description?.slice(0, 120) || "No excerpt"}</p>
               <div className="flex gap-2 mt-auto">
-                <Link href={`/admin/services/${s.id}/edit`} className="flex-1"><Button size="sm" className="w-full h-8">Edit →</Button></Link>
+                <Link href={`/admin/services/${s.slug}/edit`} className="flex-1"><Button size="sm" className="w-full h-8">Edit →</Button></Link>
                 <Button size="sm" variant="ghost" className="h-8 text-red-600" onClick={() => handleDelete(s.id)}>Del</Button>
               </div>
               <Link href={`/services/${s.slug.toLowerCase().replace(/_/g, "-")}`} target="_blank" className="text-xs text-[#0038A0] hover:underline text-center block">View on site ↗</Link>

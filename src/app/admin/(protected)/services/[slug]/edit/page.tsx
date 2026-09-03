@@ -9,11 +9,18 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 
 export const dynamic = "force-dynamic";
 
-export default async function EditServicePage({ params }: { params: Promise<{ id: string }> }) {
-  const { id } = await params;
+export default async function EditServicePage({ params }: { params: Promise<{ slug: string }> }) {
+  const { slug } = await params;
   let service: any = null;
   try {
-    service = await prisma.service.findUnique({ where: { id } });
+    // Try by slug (case-insensitive), fallback to id for backwards compat
+    const upper = slug.toUpperCase().replace(/-/g, "_");
+    service = await prisma.service.findFirst({ where: { slug: upper as any } });
+    if (!service) service = await prisma.service.findUnique({ where: { id: slug } });
+    if (!service) {
+      // also try exact slug as stored (maybe lower)
+      service = await prisma.service.findFirst({ where: { slug: slug as any } });
+    }
   } catch {}
   if (!service) return notFound();
 
