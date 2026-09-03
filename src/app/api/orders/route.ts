@@ -1,9 +1,33 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/db";
+import { auth } from "@/lib/auth";
 
 export async function GET() {
   try {
-    const orders = await prisma.order.findMany({ include: { items: true }, orderBy: { createdAt: "desc" }, take: 100 });
+    const session = await auth();
+    const role = (session?.user as any)?.role;
+    const email = session?.user?.email?.toLowerCase();
+    const userId = (session?.user as any)?.id;
+    // Admin sees all, user sees own
+    if (role === "ADMIN") {
+      const orders = await prisma.order.findMany({ include: { items: true, user: true }, orderBy: { createdAt: "desc" }, take: 100 });
+      return NextResponse.json({ orders });
+    }
+    if (session?.user?.email) {
+      const where: any = { OR: [{ userId }, { email }].filter((v) => v?.userId || v?.email) };
+      // Fix OR structure
+      const ors: any[] = [];
+      if (userId && !String(userId).startsWith("mock-")) ors.push({ userId });
+      if (email) ors.push({ email });
+      const orders = await prisma.order.findMany({
+        where: ors.length ? { OR: ors } : { userId: "___none___" },
+        include: { items: { include: { product: true } } },
+        orderBy: { createdAt: "desc" },
+        take: 50,
+      });
+      return NextResponse.json({ orders });
+    }
+    const orders = await prisma.order.findMany({ include: { items: true }, orderBy: { createdAt: "desc" }, take: 20 });
     return NextResponse.json({ orders });
   } catch (e: any) {
     return NextResponse.json({ error: e.message }, { status: 500 });
@@ -15,6 +39,22 @@ export async function POST(req: NextRequest) {
     const body = await req.json();
     const { items, phone, email, address, includeInstallation, notes, deliveryFee = 0, installationFee = 0 } = body;
     if (!items?.length) return NextResponse.json({ error: "items required" }, { status: 400 });
+
+    // Attach user if logged in
+    let userId: string | null = null;
+    try {
+      const session = await auth();
+      const uid = (session?.user as any)?.id;
+      if (uid && !String(uid).startsWith("mock-")) {
+        // Verify user exists
+        const u = await prisma.user.findUnique({ where: { id: uid }, select: { id: true } });
+        if (u) userId = u.id;
+      }
+      if (!userId && session?.user?.email) {
+        const byEmail = await prisma.user.findUnique({ where: { email: session.user.email.toLowerCase() }, select: { id: true } });
+        if (byEmail) userId = byEmail.id;
+      }
+    } catch {}
 
     // Validate productIds exist and resolve to valid ones
     // This prevents FK constraint violation if cart contains deleted/outdated products
@@ -69,6 +109,7 @@ export async function POST(req: NextRequest) {
             address,
             notes: enrichedNotes,
             includeInstallation: !!includeInstallation,
+            ...(userId ? { userId } : {}),
             items: { create: [{ productId: fallback.id, qty: 1, price: totalFallback - deliveryFee - installationFee }] },
           },
           include: { items: true },
@@ -98,6 +139,7 @@ export async function POST(req: NextRequest) {
         address,
         notes: enrichedNotes,
         includeInstallation: !!includeInstallation,
+        ...(userId ? { userId } : {}),
         items: { create: validatedItems },
       },
       include: { items: true },

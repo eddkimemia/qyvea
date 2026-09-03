@@ -133,10 +133,9 @@ export function SiteHeader() {
               {session?.user ? (
                 <>
                   {(session.user as any).role === "ADMIN" ? (
-                    <Link href="/admin" className="hidden lg:inline-flex"><Button variant="secondary" size="sm" className="bg-[#002070] text-white hover:bg-black h-8 text-xs"><User className="h-3 w-3" /> Dashboard</Button></Link>
-                  ) : (
-                    <span className="hidden lg:flex items-center gap-1 text-xs font-medium max-w-[100px] truncate"><User className="h-3 w-3" /> {(session.user as any).email?.split("@")[0]}</span>
-                  )}
+                    <Link href="/admin" className="hidden lg:inline-flex"><Button variant="secondary" size="sm" className="bg-[#002070] text-white hover:bg-black h-8 text-xs"><User className="h-3 w-3" /> Admin</Button></Link>
+                  ) : null}
+                  <Link href="/dashboard" className="hidden lg:inline-flex"><Button variant={(session.user as any).role === "ADMIN" ? "ghost" : "secondary"} size="sm" className="h-8 text-xs gap-1"><User className="h-3 w-3" /> {(session.user as any).role === "ADMIN" ? "Dashboard" : (session.user as any).email?.split("@")[0]}</Button></Link>
                   <Button variant="ghost" size="sm" className="hidden lg:inline-flex h-8 text-xs" onClick={() => signOut({ callbackUrl: "/" })}><LogOut className="h-3 w-3" /></Button>
                 </>
               ) : (
@@ -238,7 +237,8 @@ export function SiteHeader() {
                 <Link href="/quote" onClick={() => setMobileOpen(false)} className="block"><Button className="w-full bg-[#F00000] hover:bg-[#CC0000]">Get Free Quote</Button></Link>
                 {session?.user ? (
                   <>
-                    {(session.user as any).role === "ADMIN" && <Link href="/admin" onClick={() => setMobileOpen(false)} className="block py-2 text-sm font-semibold text-[#F00000]">Dashboard</Link>}
+                    <Link href="/dashboard" onClick={() => setMobileOpen(false)} className="block py-2 text-sm font-semibold text-[#0038A0]">My Dashboard</Link>
+                    {(session.user as any).role === "ADMIN" && <Link href="/admin" onClick={() => setMobileOpen(false)} className="block py-2 text-sm font-semibold text-[#F00000]">Admin Panel</Link>}
                     <button onClick={() => { setMobileOpen(false); signOut({ callbackUrl: "/" }); }} className="block py-2 text-left text-sm w-full">Sign Out ({(session.user as any).email})</button>
                   </>
                 ) : (
