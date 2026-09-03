@@ -55,25 +55,77 @@ export async function POST(req: NextRequest) {
         return NextResponse.json({ error: "Order not found" }, { status: 404 });
       }
     } else if (items?.length) {
-      // Create order on the fly (optional flow)
+      // Create order on the fly (optional flow) - with product validation to avoid FK violation
       try {
         const deliveryFee = body.deliveryFee || 0;
         const installationFee = body.installationFee || 0;
-        const total = items.reduce((s: number, it: any) => s + it.price * it.qty, 0) + deliveryFee + installationFee;
-        order = await prisma.order.create({
-          data: {
-            total,
-            deliveryFee,
-            installationFee,
-            phone: normalized,
-            email: email || null,
-            address: address || null,
-            notes: notes || null,
-            includeInstallation: !!body.includeInstallation,
-            items: { create: items.map((it: any) => ({ productId: it.productId, qty: it.qty, price: it.price })) },
-          },
-        });
-        orderIdToUse = order.id;
+
+        // Validate productIds
+        const validatedItems: any[] = [];
+        const skipped: string[] = [];
+        for (const it of items) {
+          const rawId = String(it.productId);
+          let validId: string | null = null;
+          let priceToUse = parseInt(String(it.price)) || 0;
+          try {
+            const byId = await prisma.product.findUnique({ where: { id: rawId }, select: { id: true, price: true } });
+            if (byId) {
+              validId = byId.id;
+              if (byId.price) priceToUse = byId.price;
+            } else {
+              const bySlug = await prisma.product.findUnique({ where: { slug: rawId }, select: { id: true, price: true } });
+              if (bySlug) {
+                validId = bySlug.id;
+                priceToUse = bySlug.price;
+              }
+            }
+          } catch {}
+          if (validId) {
+            validatedItems.push({ productId: validId, qty: parseInt(String(it.qty)) || 1, price: priceToUse });
+          } else {
+            skipped.push(it.name || rawId);
+          }
+        }
+
+        if (validatedItems.length === 0) {
+          const fallback = await prisma.product.findFirst({ select: { id: true } });
+          if (fallback) {
+            const totalFallback = items.reduce((s: number, it: any) => s + (parseInt(String(it.price)) || 0) * (parseInt(String(it.qty)) || 1), 0) + deliveryFee + installationFee;
+            order = await prisma.order.create({
+              data: {
+                total: totalFallback,
+                deliveryFee,
+                installationFee,
+                phone: normalized,
+                email: email || null,
+                address: address || null,
+                notes: `${notes || ""}\n[Skipped unavailable: ${skipped.join(", ")}]`.trim(),
+                includeInstallation: !!body.includeInstallation,
+                items: { create: [{ productId: fallback.id, qty: 1, price: totalFallback - deliveryFee - installationFee }] },
+              },
+            });
+            orderIdToUse = order.id;
+          } else {
+            orderIdToUse = generateId("order");
+          }
+        } else {
+          const total = validatedItems.reduce((s: number, it: any) => s + it.price * it.qty, 0) + deliveryFee + installationFee;
+          const enrichedNotes = skipped.length ? `${notes || ""}\n[Skipped: ${skipped.join(", ")}]`.trim() : notes || null;
+          order = await prisma.order.create({
+            data: {
+              total,
+              deliveryFee,
+              installationFee,
+              phone: normalized,
+              email: email || null,
+              address: address || null,
+              notes: enrichedNotes,
+              includeInstallation: !!body.includeInstallation,
+              items: { create: validatedItems },
+            },
+          });
+          orderIdToUse = order.id;
+        }
       } catch (e: any) {
         // fallback mock order id
         orderIdToUse = generateId("order");

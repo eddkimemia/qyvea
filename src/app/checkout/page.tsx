@@ -23,6 +23,8 @@ export default function CheckoutPage() {
   const [stkData, setStkData] = useState<any>(null);
   const [stkStatus, setStkStatus] = useState<"idle" | "sent" | "success" | "failed">("idle");
   const [pollError, setPollError] = useState<string | null>(null);
+  const [checkoutError, setCheckoutError] = useState<string | null>(null);
+  const [checkoutWarning, setCheckoutWarning] = useState<string | null>(null);
   const pollRef = useRef<NodeJS.Timeout | null>(null);
 
   const subtotal = cart.reduce((sum, c) => sum + c.price * c.qty, 0);
@@ -41,16 +43,18 @@ export default function CheckoutPage() {
     e.preventDefault();
     if (!cart.length) return;
     if (!form.name || !form.phone) {
-      alert("Name and phone required");
+      setCheckoutError("Name and phone required");
       return;
     }
     setLoading(true);
+    setCheckoutError(null);
+    setCheckoutWarning(null);
     try {
       const res = await fetch("/api/orders", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: cart.map((c) => ({ productId: c.productId, qty: c.qty, price: c.price })),
+          items: cart.map((c) => ({ productId: c.productId, qty: c.qty, price: c.price, name: c.name })),
           phone: form.phone,
           email: form.email,
           address: `${form.address} ${form.location}`.trim(),
@@ -61,11 +65,19 @@ export default function CheckoutPage() {
         }),
       });
       const json = await res.json();
-      if (!res.ok) throw new Error(json.error || "Order failed");
+      if (!res.ok) {
+        const msg = json.error || "Order failed";
+        if (json.code === "INVALID_CART" || json.code === "FK_VIOLATION" || msg.includes("no longer available") || msg.includes("Foreign key")) {
+          throw new Error(msg + " Please clear your cart and add products again.");
+        }
+        throw new Error(msg);
+      }
+      if (json.warning) setCheckoutWarning(json.warning);
       clearCart();
-      router.push(`/checkout?success=1&order=${json.order?.id?.slice(0, 8) || ""}&method=cod`);
+      // Small delay to show warning if any
+      setTimeout(() => router.push(`/checkout?success=1&order=${json.order?.id?.slice(0, 8) || ""}&method=cod`), json.warning ? 1500 : 0);
     } catch (err: any) {
-      alert(err.message);
+      setCheckoutError(err.message);
     } finally {
       setLoading(false);
     }
@@ -87,6 +99,7 @@ export default function CheckoutPage() {
     setStkLoading(true);
     setStkStatus("idle");
     setPollError(null);
+    setCheckoutError(null);
     setStkData(null);
 
     try {
@@ -94,7 +107,7 @@ export default function CheckoutPage() {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({
-          items: cart.map((c) => ({ productId: c.productId, qty: c.qty, price: c.price })),
+          items: cart.map((c) => ({ productId: c.productId, qty: c.qty, price: c.price, name: c.name })),
           phone: mpesaPhone,
           email: form.email,
           address: `${form.address} ${form.location}`.trim(),
@@ -105,7 +118,14 @@ export default function CheckoutPage() {
         }),
       });
       const orderJson = await orderRes.json();
-      if (!orderRes.ok) throw new Error(orderJson.error || "Order creation failed");
+      if (!orderRes.ok) {
+        const msg = orderJson.error || "Order creation failed";
+        if (orderJson.code === "INVALID_CART" || orderJson.code === "FK_VIOLATION" || msg.includes("no longer available") || msg.includes("Foreign key")) {
+          throw new Error(msg + " Please clear your cart and add products again.");
+        }
+        throw new Error(msg);
+      }
+      if (orderJson.warning) setCheckoutWarning(orderJson.warning);
       const orderId = orderJson.order?.id;
 
       const stkRes = await fetch("/api/mpesa/stk", {
@@ -250,6 +270,25 @@ export default function CheckoutPage() {
                 </label>
               </CardContent>
             </Card>
+
+            {checkoutError && (
+              <div className="bg-red-50 border-2 border-red-200 rounded-xl p-4">
+                <p className="text-sm font-bold text-red-800">Checkout failed</p>
+                <p className="text-sm text-red-700 mt-1">{checkoutError}</p>
+                {(checkoutError.includes("no longer available") || checkoutError.includes("clear cart") || checkoutError.includes("Foreign key")) && (
+                  <div className="mt-3 flex gap-2">
+                    <Button size="sm" variant="outline" className="border-red-300 text-red-700 hover:bg-red-100" onClick={() => { clearCart(); setCheckoutError(null); setPollError(null); }}>Clear Cart</Button>
+                    <Link href="/shop"><Button size="sm" variant="outline">Browse Shop</Button></Link>
+                  </div>
+                )}
+              </div>
+            )}
+            {checkoutWarning && (
+              <div className="bg-amber-50 border-2 border-amber-200 rounded-xl p-4">
+                <p className="text-sm font-bold text-amber-800">Note</p>
+                <p className="text-sm text-amber-700 mt-1">{checkoutWarning}</p>
+              </div>
+            )}
 
             <Card className="border-2 border-[#0038A0]/15">
               <div className="h-1 bg-[#0038A0]" />
